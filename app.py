@@ -1,8 +1,8 @@
-from flask import Flask,request
+from flask import Flask,request,abort
 from celery import Celery
 import os
 from IPython import embed
-
+import utils
 
 app = Flask(__name__)
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
@@ -21,9 +21,15 @@ def main():
 @app.route('/webhook',methods=['POST'])
 def handle_payload():
     content = request.get_json(silent=True)
-    signature = request.headers['X-Hub-Signature']
+    #embed()
+    header_signature = request.headers['X-Hub-Signature']
+    embed()
+    if header_signature is None:
+        abort(403)
+    if not utils.verify_signature(header_signature,request.data,GITHUB_HOOK_SECRET):
+        abort(403)
 
-    return "Valid request"
+    return "Authenticated request :D"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
