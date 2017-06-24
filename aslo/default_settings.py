@@ -35,3 +35,5 @@ BUILD_DOCKER_IMAGE = env('BUILD_DOCKER_IMAGE', 'sugar-activity-build')
 BUILD_CLONE_REPO = env('BUILD_CLONE_REPO', '/var/tmp/activities/')
 # Path where bundles are going to be stored
 BUILD_BUNDLE_DIR = env('BUILD_BUNDLE_DIR', '/srv/activities/')
+# Temporary path to store bundles
+TEMP_BUNDLE_DIR = env('TEMP_BUNDLE_DIR','/var/tmp/bundles/')

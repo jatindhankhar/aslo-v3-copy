@@ -1,3 +1,6 @@
 *.pyc
 env
 .env
+dist
+bundles
+repos

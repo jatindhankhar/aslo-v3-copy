@@ -22,7 +22,7 @@ def init_app():
 
     from .api import api
     app.register_blueprint(api, url_prefix='/api')
-
+    
     # logging
     logger.setLevel(logging.INFO)
     fmt = logging.Formatter('[%(asctime)s] %(levelname).3s %(message)s')

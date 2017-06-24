@@ -1,2 +1,2 @@
-. env/bin/activate
+#. env/bin/activate
 exec honcho start

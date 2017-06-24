@@ -5,10 +5,55 @@ from flask import current_app as app
 from aslo.celery_app import logger
 from subprocess import call
 from .exceptions import BuildProcessError
+import requests
+import zipfile
 
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
+
+
+def get_bundle_path(bundle_name):
+    return os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_name)
+
+
+def check_and_download_assets(assets):
+
+    def download_asset(download_url, name):
+        response = requests.get(download_url, stream=True)
+        # Save with every block of 1024 bytes
+        logger.info("Downloading File .. " + name)
+        with open(app.config['TEMP_BUNDLE_DIR'] + "/" + name, "wb") as handle:
+            for block in response.iter_content(chunk_size=1024):
+                handle.write(block)
+        return
+
+    def check_info_file(name):
+        logger.info("Checking For Activity.info")
+        xo_file = zipfile.ZipFile(app.config['TEMP_BUNDLE_DIR'] + "/" + name)
+        return any("activity.info" in filename for filename in xo_file.namelist())
+
+    def asset_name_check(asset_name):
+        print("Checking for presence of .xo in name of " + asset_name)
+        return ".xo" in asset_name
+
+    def verify_bundle(bundle_name):
+        bundle_path = get_bundle_path(bundle_name)
+        return os.path.exists(bundle_path) and os.path.isfile(bundle_path)
+
+    def asset_manifest_check(download_url, bundle_name):
+        download_asset(download_url, bundle_name)
+        if check_info_file(bundle_name):
+            # Check if that bundle already exists then we don't continue
+            # Return false if that particular bundle already exists
+            if verify_bundle(bundle_name):
+                os.remove(app.config['TEMP_BUNDLE_DIR'] + "/" + bundle_name)
+                raise BuildProcessError('File %s already exits' % bundle_name)
+            else:
+                shutil.move(app.config['TEMP_BUNDLE_DIR'] + "/" +
+                            bundle_name, app.config['BUILD_BUNDLE_DIR'])
+                return bundle_name
+        return False
 
 
 def clone_repo(url, name, tag):
@@ -91,3 +136,37 @@ def invoke_build(name):
 
     store_bundle()
     clean()
+
+
+def invoke_bundle_build(activity_file):
+    def parse_metadata_file():
+        parser = configparser.ConfigParser()
+        if len(parser.read_string(activity_file)) == 0:
+            raise BuildProcessError('Error parsing metadata file')
+
+        try:
+            attributes = dict(parser.items('Activity'))
+        except configparser.NoSectionError as e:
+            raise BuildProcessError(
+                'Error parsing metadata file. Exception message: %s', e
+            )
+
+        return attributes    
+                
+    def check_bundle(bundle_name):
+        xo_file = zipfile.ZipFile(get_bundle_path(bundle_name))
+        # Find the acitivity_file and return it
+        for filename in xo_file.namelist():
+            if 'activity.info' in filename:
+                return xo_file.read(filename)
+        logger.info(
+            'Bundle Check has failed. %s is not a valid bundle file ', bundle_name)
+        raise BuildProcessError(
+            'Bundle Check has failed. %s is not a valid bundle file ', bundle_name)
+
+    try:
+        activity_file = activity_file.deode()
+    except Exception as e:
+        raise BuildProcessError('Error decoding MeteData File. Exception Message: %s',e)
+    
+    
