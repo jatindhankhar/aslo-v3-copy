@@ -6,3 +6,4 @@ celery
 redis
 pymongo
 requests
+mongoengine

@@ -17,20 +17,45 @@ def get_bundle_path(bundle_name):
     return os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_name)
 
 
+def get_parser(activity_file, read_string=False):
+    parser = configparser.ConfigParser()
+    if read_string:
+        if len(parser.read_string(activity_file)) == 0:
+            raise BuildProcessError('Error parsing metadata file')
+        else:
+            return parser
+    else:
+        if len(parser.read(activity_file)) == 0:
+            raise BuildProcessError('Error parsing metadata file')
+        else:
+            return parser
+
+
+def validate_metadata_attributes(parser, attributes):
+    MANDATORY_ATTRIBUTES = ['name', 'bundle_id', 'summary', 'license',
+                            'categories', 'icon', 'activity_version', 'repository', 'activity_version']
+    return all(parser.has_option('Activity', attribute) for attribute in attributes)
+
+
 def check_and_download_assets(assets):
+
+    def check_asset(asset):
+        if asset_name_check(asset['name']):
+            return asset_manifest_check(asset['browser_download_url'], asset['name'])
+        return False
 
     def download_asset(download_url, name):
         response = requests.get(download_url, stream=True)
         # Save with every block of 1024 bytes
         logger.info("Downloading File .. " + name)
-        with open(app.config['TEMP_BUNDLE_DIR'] + "/" + name, "wb") as handle:
+        with open(os.path.join(app.config['TEMP_BUNDLE_DIR'],name), "wb") as handle:
             for block in response.iter_content(chunk_size=1024):
                 handle.write(block)
         return
 
     def check_info_file(name):
         logger.info("Checking For Activity.info")
-        xo_file = zipfile.ZipFile(app.config['TEMP_BUNDLE_DIR'] + "/" + name)
+        xo_file = zipfile.ZipFile(os.path.join(app.config['TEMP_BUNDLE_DIR'],name))
         return any("activity.info" in filename for filename in xo_file.namelist())
 
     def asset_name_check(asset_name):
@@ -47,13 +72,19 @@ def check_and_download_assets(assets):
             # Check if that bundle already exists then we don't continue
             # Return false if that particular bundle already exists
             if verify_bundle(bundle_name):
-                os.remove(app.config['TEMP_BUNDLE_DIR'] + "/" + bundle_name)
+                os.remove(os.path.join(app.config['TEMP_BUNDLE_DIR'],bundle_name))
                 raise BuildProcessError('File %s already exits' % bundle_name)
             else:
-                shutil.move(app.config['TEMP_BUNDLE_DIR'] + "/" +
-                            bundle_name, app.config['BUILD_BUNDLE_DIR'])
+                shutil.move(os.path.join(app.config['TEMP_BUNDLE_DIR'],
+                            bundle_name), app.config['BUILD_BUNDLE_DIR'])
                 return bundle_name
         return False
+
+    for asset in assets:
+        bundle_name = check_asset(asset)
+        if bundle_name:
+            return bundle_name
+    raise BuildProcessError('No valid bundles were found in this asset release')
 
 
 def clone_repo(url, name, tag):
@@ -85,10 +116,7 @@ def get_activity_metadata(name):
         return activity_file
 
     def parse_metadata_file():
-        parser = configparser.ConfigParser()
-        if len(parser.read(activity_file)) == 0:
-            raise BuildProcessError('Error parsing metadata file')
-
+        parser = get_parser(activity_file)
         try:
             attributes = dict(parser.items('Activity'))
         except configparser.NoSectionError as e:
@@ -138,12 +166,9 @@ def invoke_build(name):
     clean()
 
 
-def invoke_bundle_build(activity_file):
+def invoke_asset_build(bundle_name):
     def parse_metadata_file():
-        parser = configparser.ConfigParser()
-        if len(parser.read_string(activity_file)) == 0:
-            raise BuildProcessError('Error parsing metadata file')
-
+        parser = get_parser(activity_file)
         try:
             attributes = dict(parser.items('Activity'))
         except configparser.NoSectionError as e:
@@ -151,8 +176,8 @@ def invoke_bundle_build(activity_file):
                 'Error parsing metadata file. Exception message: %s', e
             )
 
-        return attributes    
-                
+        return attributes
+
     def check_bundle(bundle_name):
         xo_file = zipfile.ZipFile(get_bundle_path(bundle_name))
         # Find the acitivity_file and return it
@@ -165,8 +190,9 @@ def invoke_bundle_build(activity_file):
             'Bundle Check has failed. %s is not a valid bundle file ', bundle_name)
 
     try:
-        activity_file = activity_file.deode()
+        activity_file = check_bundle(bundle_name)
+        activity_file = activity_file.decode()
+        attributes = parse_metadata_file()
     except Exception as e:
-        raise BuildProcessError('Error decoding MeteData File. Exception Message: %s',e)
-    
-    
+        raise BuildProcessError(
+            'Error decoding MeteData File. Exception Message: %s', e)

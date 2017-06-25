@@ -49,22 +49,6 @@ def handle_asset_release(gh_json):
         bundle_name = build.check_and_download_assets(release['assets'])
         build.invoke_asset_build(bundle_name)
         
-        if bundle_name:
-           activity_file = utils.check_bundle(bundle_name)
-           if activity_file:
-               activity_file = activity_file.decode()
-               parser = utils.read_activity(activity_file,is_string=True)
-               print("Manifest Parsed .. OK")
-               # Check versions before invoking build
-               json_object = utils.get_activity_manifest(parser)
-               print("JSON Parsed .. OK")
-               print(json_object)
-               if is_a_new_release(json_object) is False:
-                     # TODO - Inform Author about Failure
-                    return "Failure"
-               print("Version check .. OK")
-               update_activity_record(json_object)
-
     except BuildProcessError as e:
         logger.exception("Error in activity building process")
         return False
