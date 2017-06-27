@@ -198,7 +198,7 @@ def invoke_asset_build(bundle_name):
     try:
         activity_file = check_bundle(bundle_name)
         activity_file = activity_file.decode()
-        attributes = parse_metadata_file()
+        return parse_metadata_file()
     except Exception as e:
         remove_bundle(bundle_name)        
         raise BuildProcessError(
