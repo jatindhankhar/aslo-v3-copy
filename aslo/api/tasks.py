@@ -33,7 +33,7 @@ def handle_source_release(gh_json):
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
         build.invoke_build(name)
-
+        logger.info(activity)
     except BuildProcessError as e:
         logger.exception("Error in activity building process")
         return False
@@ -47,7 +47,8 @@ def handle_asset_release(gh_json):
         tag = release['tag_name']
         
         bundle_name = build.check_and_download_assets(release['assets'])
-        build.invoke_asset_build(bundle_name)
+        activity = build.invoke_asset_build(bundle_name)
+        logger.info(activity)
         
     except BuildProcessError as e:
         logger.exception("Error in activity building process")

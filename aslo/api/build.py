@@ -7,7 +7,7 @@ from subprocess import call
 from .exceptions import BuildProcessError
 import requests
 import zipfile
-
+import json
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
@@ -16,12 +16,14 @@ def get_repo_location(name):
 def get_bundle_path(bundle_name):
     return os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_name)
 
-
+    
 def get_parser(activity_file, read_string=False):
     parser = configparser.ConfigParser()
     if read_string:
-        if len(parser.read_string(activity_file)) == 0:
-            raise BuildProcessError('Error parsing metadata file')
+        try:
+            parser.read_string(activity_file)
+        except Exception as e:
+            raise BuildProcessError('Error parsing metadata file. Error : %s',e)
         else:
             return parser
     else:
@@ -167,8 +169,12 @@ def invoke_build(name):
 
 
 def invoke_asset_build(bundle_name):
+    def remove_bundle(bundle_name):
+        logger.info("Removing Bundle : %s",bundle_name)
+        os.remove(get_bundle_path(bundle_name))
+ 
     def parse_metadata_file():
-        parser = get_parser(activity_file)
+        parser = get_parser(activity_file,read_string=True)
         try:
             attributes = dict(parser.items('Activity'))
         except configparser.NoSectionError as e:
@@ -194,5 +200,7 @@ def invoke_asset_build(bundle_name):
         activity_file = activity_file.decode()
         attributes = parse_metadata_file()
     except Exception as e:
+        remove_bundle(bundle_name)        
         raise BuildProcessError(
             'Error decoding MeteData File. Exception Message: %s', e)
+        
