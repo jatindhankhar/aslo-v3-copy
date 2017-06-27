@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, ListField, DynamicEmbeddedDocument, EmbeddedDocumentListField, IntField, FloatField, URLField, BooleanField, DateTimeField, ReferenceField
+from mongoengine import Document, StringField, ListField, DynamicEmbeddedDocument, EmbeddedDocumentListField, IntField, FloatField, URLField, BooleanField, DateTimeField, ReferenceField,ValidationError
 
 
 class Name(DynamicEmbeddedDocument):
@@ -36,6 +36,9 @@ class Release(Document):
     # Timestamp when the release was made
     timestamp = DateTimeField(required=True)
 
+    def __str__(self):
+        self.to_json()
+
 
 class MetaData(Document):
     name = EmbeddedDocumentListField(Name, required=True)
@@ -52,13 +55,15 @@ class MetaData(Document):
     previous_releases = ListField(ReferenceField(Release))
 
     def add_release(self, release):
-
+        if self.latest_release.activity_version >= release.activity_version:
+            # In that case delete the activity, since we can only reference data if we save it 
+            release.delete()
+            raise ValidationError("New release activity version {} is less than the current version {}".format(self.latest_release.activity_version,release.activity_version))
         # If First release (No previous releases) then just copy the release
-        if self.previous_releases.empty():
+        if len(self.previous_releases) == 0:
             latest_release = release
         else:
-            self.previous_releases.insert(self.latest_release)
+            self.previous_releases.append(self.latest_release)
             self.latest_release = release
 
-    def __str__(self):
-        return self.to_json
+    
