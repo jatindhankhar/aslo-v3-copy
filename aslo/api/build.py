@@ -9,33 +9,34 @@ from .exceptions import BuildProcessError
 import requests
 import zipfile
 import json
-import glob
-
-### Po crawling functionality inspired from Sam Parkinson's po crawl
-### https://github.com/samdroid-apps/aslo/blob/master/bot/po_crawl.py
+from glob import glob
 
 
-def translate(source_string,pofile_dir,source_language="en-US",target_language=None):
-    # If target language is specified we return only the intended version
-    if target_language is not None:
-        return get_translation_string(source_string,pofile_dir)[target_language]
-    # Else we return all translated strings
-    else:
-        return     
-
-
-def get_translation_string(source_string,source_language,pofile_dir,target_language=None):
-    translated_results = {}
-    matched_files = glob.glob(os.path.join(pofile_dir,"*.po"))
+def get_translations(activity_location):
+    po_files_location = os.path.join(activity_location,'po/')
+    translations = {}
+    
+    def get_language_code(filepath):
+        basename = os.path.basename(filepath)
+        return os.path.splitext(basename)[0]
+    
+    matched_files = glob(os.path.join(po_files_location,"*.po"))
     if len(matched_files) == 0:
-        raise BuildProcessError("Can't file po files for translation in the directory : %s",pofile_dir)
-    po_files = map(pofile,matched_files)
-    for i in po_files:
-        e = [e for e in i[0].translated_entries() if e.msgid == source_language]
-        if e:
-            print("{}".format(e.msgstr))
-            tag = i[1].replace('_', '-')
-            
+        raise BuildProcessError("No po files found at location . %s",po_files_location)
+
+    po_files = list(map(pofile,matched_files))
+    language_codes = list(map(get_language_code,matched_files))
+
+    # Intialize the dictionary
+    for language_code in language_codes:
+        translations[language_code] = {}
+
+    for po_file,language_code in zip(po_files,language_codes):
+        for entry in po_file.translated_entries():
+            #print(entry)
+            translations[language_code][entry.msgid] = entry.msgstr    
+
+    return translations
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
