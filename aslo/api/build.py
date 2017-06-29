@@ -11,6 +11,8 @@ import zipfile
 import json
 from glob import glob
 import uuid
+from mongoengine import connect
+from aslo.models.Activity import MetaData,Release,Developer,Summary,Name
 
 def get_translations(activity_location):
     po_files_location = os.path.join(activity_location,'po/')
@@ -195,6 +197,26 @@ def invoke_build(name):
 
     store_bundle()
     clean()
+
+def populate_database(activity,translations):
+    def translate_field(field_value,model_class):
+        results = []
+        for language_code in translations:
+            if field_value in translations[language_code]:
+                obj =model_class()
+                obj[language_code] = field_value
+                results.append(obj)
+        return results
+
+    connect(app.config['MONGO_DBNAME'])
+    try:
+        metadata = MetaData()
+        metadata.name.extend(translate_field(activity['name'],Name))
+        metadata.summary.extend(translate_field(activity['summary'],Summary))
+       
+
+    except Exception as e:
+        raise BuildProcessError("Failed to insert data inside the DB. Error : %s",e)
 
 def get_xo_translations(bundle_name):
     logger.info("Opening translations")
