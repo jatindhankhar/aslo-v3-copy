@@ -33,9 +33,10 @@ def handle_source_release(gh_json):
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
          # Get translations string invoking build, since we clean the repo afterwards
-        translation = build.get_translations(build.get_repo_location(name))
+        translations = build.get_translations(build.get_repo_location(name))
         build.invoke_build(name)
         logger.info(activity)
+        logger.info(translations["es"])
     except BuildProcessError as e:
         logger.exception("Error in activity building process")
         return False
@@ -50,6 +51,8 @@ def handle_asset_release(gh_json):
         
         bundle_name = build.check_and_download_assets(release['assets'])
         activity = build.invoke_asset_build(bundle_name)
+        translations = build.get_xo_translations(bundle_name)
+        logger.info(translations["es"])
         logger.info(activity)
         
     except BuildProcessError as e:

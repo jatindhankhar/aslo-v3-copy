@@ -10,7 +10,7 @@ import requests
 import zipfile
 import json
 from glob import glob
-
+import uuid
 
 def get_translations(activity_location):
     po_files_location = os.path.join(activity_location,'po/')
@@ -196,6 +196,32 @@ def invoke_build(name):
     store_bundle()
     clean()
 
+def get_xo_translations(bundle_name):
+    logger.info("Opening translations")
+    def clean_up(extact_dir):
+        shutil.rmtree(extact_dir)
+    try:
+        logger.info(get_bundle_path(bundle_name))
+        xo_archive = zipfile.ZipFile(get_bundle_path(bundle_name))
+        # Create a random UUID to store the extracted material
+        random_uuid = uuid.uuid4().hex
+        # Create the folder with name as random UUID
+        extract_dir = os.path.join(app.config['TEMP_BUNDLE_DIR'],random_uuid)
+        os.mkdir(extract_dir)
+        logger.info(extract_dir)
+        # Find root_prefix for the activities usually it's Name.Activity
+        archive_root_prefix = os.path.commonpath(xo_archive.namelist())
+        xo_archive.extractall(path=extract_dir)
+        translations = get_translations(os.path.join(extract_dir,archive_root_prefix))       
+        # Clean up
+        clean_up(extract_dir)
+        return translations
+    except Exception as e:
+        # If exception is cause due to FileExistError, probably that two uuids were same somehow then clean up
+        if e.__class__.__name__ is "FileExistsError":
+            clean_up(extract_dir)
+        raise BuildProcessError("Unable to open archive : %s. Error : %s ",bundle_name,e.__class__)        
+
 
 def invoke_asset_build(bundle_name):
     def remove_bundle(bundle_name):
@@ -212,7 +238,7 @@ def invoke_asset_build(bundle_name):
             )
 
         return attributes
-
+  
     def check_bundle(bundle_name):
         xo_file = zipfile.ZipFile(get_bundle_path(bundle_name))
         # Find the acitivity_file and return it
