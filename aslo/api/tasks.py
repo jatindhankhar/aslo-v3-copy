@@ -11,7 +11,7 @@ def build_process(self, gh_json):
         # and insert data into DB
         # Invoke different build programs depending upon whether it's a source/asset release
         if 'assets' in release and len(release['assets']) != 0:
-          handle_asset_release(gh_json)
+            handle_asset_release(gh_json)
         else:
             handle_source_release(gh_json)
 
@@ -29,10 +29,10 @@ def handle_source_release(gh_json):
         name = gh_json['repository']['name']
         release = gh_json['release']
         tag = release['tag_name']
-        
+
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
-         # Get translations string invoking build, since we clean the repo afterwards
+        # Get translations string invoking build, since we clean the repo afterwards
         translations = build.get_translations(build.get_repo_location(name))
         build.invoke_build(name)
         logger.info(activity)
@@ -41,6 +41,7 @@ def handle_source_release(gh_json):
         logger.exception("Error in activity building process")
         return False
 
+
 def handle_asset_release(gh_json):
     logger.info('Building for a asset release')
     try:
@@ -48,13 +49,13 @@ def handle_asset_release(gh_json):
         name = gh_json['repository']['name']
         release = gh_json['release']
         tag = release['tag_name']
-        
+
         bundle_name = build.check_and_download_assets(release['assets'])
         activity = build.invoke_asset_build(bundle_name)
         translations = build.get_xo_translations(bundle_name)
         logger.info(translations["es"])
         logger.info(activity)
-        
+
     except BuildProcessError as e:
         logger.exception("Error in activity building process")
         return False

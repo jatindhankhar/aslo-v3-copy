@@ -16,6 +16,10 @@ def env(variable, fallback_value=None):
 DEBUG = env('DEBUG', False)
 SECRET_KEY = env('SECRET_KEY', '')
 
+# IMGUR API CREDENTIALS
+IMGUR_CLIENT_ID = env('IMGUR_CLIENT_ID', '')
+IMGUR_CLIENT_SECRET = env('IMGUR_CLIENT_SECRET', '')
+
 # GITHUB WEBHOOK
 GITHUB_HOOK_SECRET = env('GITHUB_HOOK_SECRET', '')
 
@@ -36,4 +40,4 @@ BUILD_CLONE_REPO = env('BUILD_CLONE_REPO', '/var/tmp/activities/')
 # Path where bundles are going to be stored
 BUILD_BUNDLE_DIR = env('BUILD_BUNDLE_DIR', '/srv/activities/')
 # Temporary path to store bundles
-TEMP_BUNDLE_DIR = env('TEMP_BUNDLE_DIR','/var/tmp/bundles/')
+TEMP_BUNDLE_DIR = env('TEMP_BUNDLE_DIR', '/var/tmp/bundles/')

@@ -12,33 +12,36 @@ import json
 from glob import glob
 import uuid
 from mongoengine import connect
-from aslo.models.Activity import MetaData,Release,Developer,Summary,Name
+from aslo.models.Activity import MetaData, Release, Developer, Summary, Name
+
 
 def get_translations(activity_location):
-    po_files_location = os.path.join(activity_location,'po/')
+    po_files_location = os.path.join(activity_location, 'po/')
     translations = {}
-    
+
     def get_language_code(filepath):
         basename = os.path.basename(filepath)
         return os.path.splitext(basename)[0]
-    
-    matched_files = glob(os.path.join(po_files_location,"*.po"))
-    if len(matched_files) == 0:
-        raise BuildProcessError("No po files found at location . %s",po_files_location)
 
-    po_files = list(map(pofile,matched_files))
-    language_codes = list(map(get_language_code,matched_files))
+    matched_files = glob(os.path.join(po_files_location, "*.po"))
+    if len(matched_files) == 0:
+        raise BuildProcessError(
+            "No po files found at location . %s", po_files_location)
+
+    po_files = list(map(pofile, matched_files))
+    language_codes = list(map(get_language_code, matched_files))
 
     # Intialize the dictionary
     for language_code in language_codes:
         translations[language_code] = {}
 
-    for po_file,language_code in zip(po_files,language_codes):
+    for po_file, language_code in zip(po_files, language_codes):
         for entry in po_file.translated_entries():
-            #print(entry)
-            translations[language_code][entry.msgid] = entry.msgstr    
+            # print(entry)
+            translations[language_code][entry.msgid] = entry.msgstr
 
     return translations
+
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
@@ -47,14 +50,15 @@ def get_repo_location(name):
 def get_bundle_path(bundle_name):
     return os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_name)
 
-    
+
 def get_parser(activity_file, read_string=False):
     parser = configparser.ConfigParser()
     if read_string:
         try:
             parser.read_string(activity_file)
         except Exception as e:
-            raise BuildProcessError('Error parsing metadata file. Error : %s',e)
+            raise BuildProcessError(
+                'Error parsing metadata file. Error : %s', e)
         else:
             return parser
     else:
@@ -81,14 +85,15 @@ def check_and_download_assets(assets):
         response = requests.get(download_url, stream=True)
         # Save with every block of 1024 bytes
         logger.info("Downloading File .. " + name)
-        with open(os.path.join(app.config['TEMP_BUNDLE_DIR'],name), "wb") as handle:
+        with open(os.path.join(app.config['TEMP_BUNDLE_DIR'], name), "wb") as handle:
             for block in response.iter_content(chunk_size=1024):
                 handle.write(block)
         return
 
     def check_info_file(name):
         logger.info("Checking For Activity.info")
-        xo_file = zipfile.ZipFile(os.path.join(app.config['TEMP_BUNDLE_DIR'],name))
+        xo_file = zipfile.ZipFile(os.path.join(
+            app.config['TEMP_BUNDLE_DIR'], name))
         return any("activity.info" in filename for filename in xo_file.namelist())
 
     def asset_name_check(asset_name):
@@ -105,11 +110,12 @@ def check_and_download_assets(assets):
             # Check if that bundle already exists then we don't continue
             # Return false if that particular bundle already exists
             if verify_bundle(bundle_name):
-                os.remove(os.path.join(app.config['TEMP_BUNDLE_DIR'],bundle_name))
+                os.remove(os.path.join(
+                    app.config['TEMP_BUNDLE_DIR'], bundle_name))
                 raise BuildProcessError('File %s already exits' % bundle_name)
             else:
                 shutil.move(os.path.join(app.config['TEMP_BUNDLE_DIR'],
-                            bundle_name), app.config['BUILD_BUNDLE_DIR'])
+                                         bundle_name), app.config['BUILD_BUNDLE_DIR'])
                 return bundle_name
         return False
 
@@ -117,7 +123,8 @@ def check_and_download_assets(assets):
         bundle_name = check_asset(asset)
         if bundle_name:
             return bundle_name
-    raise BuildProcessError('No valid bundles were found in this asset release')
+    raise BuildProcessError(
+        'No valid bundles were found in this asset release')
 
 
 def clone_repo(url, name, tag):
@@ -198,12 +205,13 @@ def invoke_build(name):
     store_bundle()
     clean()
 
-def populate_database(activity,translations):
-    def translate_field(field_value,model_class):
+
+def populate_database(activity, translations):
+    def translate_field(field_value, model_class):
         results = []
         for language_code in translations:
             if field_value in translations[language_code]:
-                obj =model_class()
+                obj = model_class()
                 obj[language_code] = field_value
                 results.append(obj)
         return results
@@ -211,15 +219,17 @@ def populate_database(activity,translations):
     connect(app.config['MONGO_DBNAME'])
     try:
         metadata = MetaData()
-        metadata.name.extend(translate_field(activity['name'],Name))
-        metadata.summary.extend(translate_field(activity['summary'],Summary))
-       
+        metadata.name.extend(translate_field(activity['name'], Name))
+        metadata.summary.extend(translate_field(activity['summary'], Summary))
 
     except Exception as e:
-        raise BuildProcessError("Failed to insert data inside the DB. Error : %s",e)
+        raise BuildProcessError(
+            "Failed to insert data inside the DB. Error : %s", e)
+
 
 def get_xo_translations(bundle_name):
     logger.info("Opening translations")
+
     def clean_up(extact_dir):
         shutil.rmtree(extact_dir)
     try:
@@ -228,13 +238,14 @@ def get_xo_translations(bundle_name):
         # Create a random UUID to store the extracted material
         random_uuid = uuid.uuid4().hex
         # Create the folder with name as random UUID
-        extract_dir = os.path.join(app.config['TEMP_BUNDLE_DIR'],random_uuid)
+        extract_dir = os.path.join(app.config['TEMP_BUNDLE_DIR'], random_uuid)
         os.mkdir(extract_dir)
         logger.info(extract_dir)
         # Find root_prefix for the activities usually it's Name.Activity
         archive_root_prefix = os.path.commonpath(xo_archive.namelist())
         xo_archive.extractall(path=extract_dir)
-        translations = get_translations(os.path.join(extract_dir,archive_root_prefix))       
+        translations = get_translations(
+            os.path.join(extract_dir, archive_root_prefix))
         # Clean up
         clean_up(extract_dir)
         return translations
@@ -242,16 +253,17 @@ def get_xo_translations(bundle_name):
         # If exception is cause due to FileExistError, probably that two uuids were same somehow then clean up
         if e.__class__.__name__ is "FileExistsError":
             clean_up(extract_dir)
-        raise BuildProcessError("Unable to open archive : %s. Error : %s ",bundle_name,e.__class__)        
+        raise BuildProcessError(
+            "Unable to open archive : %s. Error : %s ", bundle_name, e.__class__)
 
 
 def invoke_asset_build(bundle_name):
     def remove_bundle(bundle_name):
-        logger.info("Removing Bundle : %s",bundle_name)
+        logger.info("Removing Bundle : %s", bundle_name)
         os.remove(get_bundle_path(bundle_name))
- 
+
     def parse_metadata_file():
-        parser = get_parser(activity_file,read_string=True)
+        parser = get_parser(activity_file, read_string=True)
         try:
             attributes = dict(parser.items('Activity'))
         except configparser.NoSectionError as e:
@@ -260,7 +272,7 @@ def invoke_asset_build(bundle_name):
             )
 
         return attributes
-  
+
     def check_bundle(bundle_name):
         xo_file = zipfile.ZipFile(get_bundle_path(bundle_name))
         # Find the acitivity_file and return it
@@ -277,7 +289,6 @@ def invoke_asset_build(bundle_name):
         activity_file = activity_file.decode()
         return parse_metadata_file()
     except Exception as e:
-        remove_bundle(bundle_name)        
+        remove_bundle(bundle_name)
         raise BuildProcessError(
             'Error decoding MeteData File. Exception Message: %s', e)
-        
