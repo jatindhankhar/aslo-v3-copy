@@ -8,3 +8,4 @@ pymongo
 requests
 mongoengine
 polib
+imgurpython
