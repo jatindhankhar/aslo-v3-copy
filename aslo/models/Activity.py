@@ -34,6 +34,7 @@ class Release(Document):
     is_gtk = BooleanField(required=True, default=False)
     has_old_toolbars = BooleanField(required=False, default=False)
     # Timestamp when the release was made
+    screenshots = ListField(URLField(required=False), required=False)
     timestamp = DateTimeField(required=True)
 
     def __str__(self):
@@ -50,7 +51,7 @@ class MetaData(Document):
     repository = StringField(required=True)
     developers = EmbeddedDocumentListField(Developer, required=True)
     # Use GridFs to store images
-    #icon = FileField()
+    icon = URLField(required=True)
     latest_release = ReferenceField(Release)
     previous_releases = ListField(ReferenceField(Release))
 

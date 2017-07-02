@@ -13,6 +13,7 @@ from glob import glob
 import uuid
 from mongoengine import connect
 from aslo.models.Activity import MetaData, Release, Developer, Summary, Name
+from aslo.api import imgur_client
 
 
 def get_translations(activity_location):
@@ -41,6 +42,27 @@ def get_translations(activity_location):
             translations[language_code][entry.msgid] = entry.msgstr
 
     return translations
+
+
+def upload_activity_icon(icon_path):
+    """Uploads activity icon to Imgur.
+
+    Args:
+        icon_path: Path where icon is stored
+    Returns:
+        Imgur Url where icon is hosted
+    Raises:
+        BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
+    """
+    if not (os.path.exists(icon_path) and os.path.isfile(icon_path)):
+        raise BuildProcessError("Cannot find icon at path %s", icon_path)
+
+    try:
+        response = imgur_client.upload_from_path(icon_path)
+        return response['link']
+    except Exception as e:
+        raise BuildProcessError(
+            "Something unexpected happened while uploading the icon. Exception Message %s", e)
 
 
 def get_repo_location(name):
@@ -72,6 +94,17 @@ def validate_metadata_attributes(parser, attributes):
     MANDATORY_ATTRIBUTES = ['name', 'bundle_id', 'summary', 'license',
                             'categories', 'icon', 'activity_version', 'repository', 'activity_version']
     return all(parser.has_option('Activity', attribute) for attribute in attributes)
+
+
+def upload_screenshots(manifest_part=False, screenhost_folder_path=None, url_manifest=None):
+    # If screenshots are part of the manifest
+    # Space separated list of urls, then upload urls
+    # Returns a list of links
+    if manifest_part:
+        pass
+    else:
+        # A folder containing screenshots
+        pass
 
 
 def check_and_download_assets(assets):

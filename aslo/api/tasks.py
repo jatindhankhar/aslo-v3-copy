@@ -32,6 +32,7 @@ def handle_source_release(gh_json):
 
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
+
         # Get translations string invoking build, since we clean the repo afterwards
         translations = build.get_translations(build.get_repo_location(name))
         build.invoke_build(name)
