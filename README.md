@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jatindhankhar/aslo-v3.svg?branch=master)](https://travis-ci.org/jatindhankhar/aslo-v3)
+
 ### aslo-v3
 This repo hosts the upcoming version of ASLO (Software centre) for SugarLabs
 
@@ -8,7 +10,7 @@ This repo hosts the upcoming version of ASLO (Software centre) for SugarLabs
 
 * **Docker (System)** - For running build tasks
 * **Mongo (System)** - Primary Database Engine
-* **Redis (System) ** - Broker for Background Tasks
+* **Redis (System)** - Broker for Background Tasks
 * **Celery** - For running background tasks
 * **Imgur** - For hosting Screenshots
 * **Flower (Optional)** - Dashboard for Celery
