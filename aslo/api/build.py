@@ -13,8 +13,6 @@ from glob import glob
 import uuid
 from mongoengine import connect
 from aslo.models.Activity import MetaData, Release, Developer, Summary, Name
-from aslo.api import imgur_client
-
 
 def get_translations(activity_location):
     po_files_location = os.path.join(activity_location, 'po/')
@@ -43,7 +41,6 @@ def get_translations(activity_location):
 
     return translations
 
-
 def upload_activity_icon(icon_path):
     """Uploads activity icon to Imgur.
 
@@ -55,15 +52,14 @@ def upload_activity_icon(icon_path):
         BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
     """
     if not (os.path.exists(icon_path) and os.path.isfile(icon_path)):
-        raise BuildProcessError("Cannot find icon at path %s", icon_path)
-
+        raise  BuildProcessError("Cannot find icon at path %s",icon_path)
+    
     try:
-        response = imgur_client.upload_from_path(icon_path)
+        response = app.imgur_client.upload_from_path(icon_path)
         return response['link']
     except Exception as e:
-        raise BuildProcessError(
-            "Something unexpected happened while uploading the icon. Exception Message %s", e)
-
+        raise BuildProcessError("Something unexpected happened while uploading the icon. Exception Message %s",e)
+        
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
@@ -96,17 +92,17 @@ def validate_metadata_attributes(parser, attributes):
     return all(parser.has_option('Activity', attribute) for attribute in attributes)
 
 
-def upload_screenshots(manifest_part=False, screenhost_folder_path=None, url_manifest=None):
+def upload_screenshots(manifest_part=False,screenhost_folder_path=None,url_manifest=None):
     # If screenshots are part of the manifest
     # Space separated list of urls, then upload urls
     # Returns a list of links
     if manifest_part:
         pass
     else:
-        # A folder containing screenshots
+    # A folder containing screenshots
         pass
-
-
+    
+    
 def check_and_download_assets(assets):
 
     def check_asset(asset):
