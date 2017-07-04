@@ -32,9 +32,12 @@ def handle_source_release(gh_json):
 
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
-
+        
+        # TODO: Couple out clean repo so we can avoid uploading screenshots for yet to fail builds
+        # Upload icons 
         # Get translations string invoking build, since we clean the repo afterwards
         translations = build.get_translations(build.get_repo_location(name))
+        imgur_links = build.upload_image_assets(activity,build.get_repo_location(name))  
         build.invoke_build(name)
         logger.info(activity)
         logger.info(translations["es"])

@@ -14,6 +14,7 @@ import uuid
 from mongoengine import connect
 from aslo.models.Activity import MetaData, Release, Developer, Summary, Name
 
+
 def get_translations(activity_location):
     po_files_location = os.path.join(activity_location, 'po/')
     translations = {}
@@ -41,6 +42,38 @@ def get_translations(activity_location):
 
     return translations
 
+
+def upload_image_assets(attribute_dict, activity_location):
+    """Uploads all image assets to Imgur.
+
+    Args:
+        attribute_dict: Dictionary containing activity.info attributes
+        repo_location: Location where repo/bundle is stored
+    Returns:
+        A dict having icon and screesnhots keys containing imgur urls
+    Raises:
+        BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
+    """
+    imgur_links = {"icon": "", "screenshots": []}
+    if "icon" not in attribute_dict:
+        raise BuildProcessError("Cannot find icons.")
+    icon_path = os.path.join(
+        activity_location, "activity", attribute_dict["icon"], ".svg")
+    imgur_links["icon"] = upload_activity_icon(icon_path)
+
+    if "screenshots" in attribute_dict:
+        screenshot_links = upload_screenshots(
+            attribute_dict["screenshots"].split(" "), urls=True)
+        imgur_links["screenshots"].extend(screenshot_links)
+
+    screenshot_path = os.path.join(activity_location, "screenshots")
+    if os.path.exists(screenshot_path):
+        screenshots = glob(os.path.join(screenshot_path, "*.*"))
+        imgur_links["screenshots"].extend(upload_screenshots(screenshots))
+
+    return imgur_links
+
+
 def upload_activity_icon(icon_path):
     """Uploads activity icon to Imgur.
 
@@ -52,14 +85,19 @@ def upload_activity_icon(icon_path):
         BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
     """
     if not (os.path.exists(icon_path) and os.path.isfile(icon_path)):
-        raise  BuildProcessError("Cannot find icon at path %s",icon_path)
-    
+        raise BuildProcessError("Cannot find icon at path %s", icon_path)
+
     try:
         response = app.imgur_client.upload_from_path(icon_path)
         return response['link']
     except Exception as e:
-        raise BuildProcessError("Something unexpected happened while uploading the icon. Exception Message %s",e)
-        
+        raise BuildProcessError(
+            "Something unexpected happened while uploading the icon. Exception Message %s", e)
+
+
+def get_icon_path(icon_name, activity_name):
+    return os.path.join(get_repo_location(activity_name), "activity", icon_name, ".svg")
+
 
 def get_repo_location(name):
     return os.path.join(app.config['BUILD_CLONE_REPO'], name)
@@ -92,17 +130,22 @@ def validate_metadata_attributes(parser, attributes):
     return all(parser.has_option('Activity', attribute) for attribute in attributes)
 
 
-def upload_screenshots(manifest_part=False,screenhost_folder_path=None,url_manifest=None):
+def upload_screenshots(screenshots, urls=False):
     # If screenshots are part of the manifest
     # Space separated list of urls, then upload urls
     # Returns a list of links
-    if manifest_part:
-        pass
+    imgur_links = []
+    if urls:
+        for screenshot in screenshots:
+            result = app.imgur_client.upload_from_url(screenshot)
+            imgur_links.append(result['link'])
     else:
-    # A folder containing screenshots
-        pass
-    
-    
+        for screenshot in screenshots:
+            result = app.imgur_client.upload_from_path(screenshot)
+            imgur_links.append(result['link'])
+    return imgur_links
+
+
 def check_and_download_assets(assets):
 
     def check_asset(asset):
@@ -256,34 +299,57 @@ def populate_database(activity, translations):
             "Failed to insert data inside the DB. Error : %s", e)
 
 
-def get_xo_translations(bundle_name):
-    logger.info("Opening translations")
+def clean_up(extact_dir):
+     """ Delete extraction directory of bunlde
+    Args:
+        extract: Extraction path of bundle
+    Returns:
+        None
+    Raises:
+        None
+    """
+     shutil.rmtree(extact_dir)
 
-    def clean_up(extact_dir):
-        shutil.rmtree(extact_dir)
+
+def extract_bundle(bundle_name):
+   """ Extracts bundle to random directory
+    Args:
+        bundle_name: Name of the bundle that needs to be extracted
+    Returns:
+        Path where bundle is extracted
+    Raises:
+        BuildProcessErorr: If file is corrupted and/or bundle cannot be extracted properly
+    """
+    logger.info("Extracting %s ....", bundle_name)
     try:
-        logger.info(get_bundle_path(bundle_name))
         xo_archive = zipfile.ZipFile(get_bundle_path(bundle_name))
         # Create a random UUID to store the extracted material
         random_uuid = uuid.uuid4().hex
         # Create the folder with name as random UUID
         extract_dir = os.path.join(app.config['TEMP_BUNDLE_DIR'], random_uuid)
         os.mkdir(extract_dir)
-        logger.info(extract_dir)
-        # Find root_prefix for the activities usually it's Name.Activity
         archive_root_prefix = os.path.commonpath(xo_archive.namelist())
         xo_archive.extractall(path=extract_dir)
-        translations = get_translations(
-            os.path.join(extract_dir, archive_root_prefix))
-        # Clean up
-        clean_up(extract_dir)
-        return translations
+        extraction_path = os.path.join(extract_dir, archive_root_prefix)
+
     except Exception as e:
-        # If exception is cause due to FileExistError, probably that two uuids were same somehow then clean up
-        if e.__class__.__name__ is "FileExistsError":
-            clean_up(extract_dir)
+         if e.__class__.__name__ is "FileExistsError":
+                clean_up(extract_dir)
         raise BuildProcessError(
             "Unable to open archive : %s. Error : %s ", bundle_name, e.__class__)
+
+def get_xo_translations(extract_dir):
+     """ Wrapper function  to crawl translations for a bundle
+    Args:
+        bundle_name: Directory where bunlde is extracted
+    Returns:
+        Dictionary containing translations
+    Raises:
+        None
+    """
+    return get_translations(extract_dir)
+  
+       
 
 
 def invoke_asset_build(bundle_name):
