@@ -1,6 +1,7 @@
 import os
 import shutil
 import configparser
+import base64
 from flask import current_app as app
 from aslo.celery_app import logger
 from subprocess import call
@@ -13,6 +14,7 @@ from glob import glob
 import uuid
 from mongoengine import connect
 from aslo.models.Activity import MetaData, Release, Developer, Summary, Name
+from imgurpython import ImgurClient
 
 
 def get_translations(activity_location):
@@ -43,7 +45,7 @@ def get_translations(activity_location):
     return translations
 
 
-def upload_image_assets(attribute_dict, activity_location):
+def process_image_assets(attribute_dict, activity_location):
     """Uploads all image assets to Imgur.
 
     Args:
@@ -54,53 +56,60 @@ def upload_image_assets(attribute_dict, activity_location):
     Raises:
         BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
     """
-    imgur_links = {"icon": "", "screenshots": []}
+    imgur_client = ImgurClient(
+        app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
+    processed_images = {"icon": "", "screenshots": []}
     if "icon" not in attribute_dict:
         raise BuildProcessError("Cannot find icons.")
     icon_path = os.path.join(
-        activity_location, "activity", attribute_dict["icon"], ".svg")
-    imgur_links["icon"] = upload_activity_icon(icon_path)
+        activity_location, "activity", attribute_dict["icon"] + ".svg")
+    processed_images["icon"] = convert_activity_icon(icon_path)
 
     if "screenshots" in attribute_dict:
         screenshot_links = upload_screenshots(
             attribute_dict["screenshots"].split(" "), urls=True)
-        imgur_links["screenshots"].extend(screenshot_links)
+        processed_images["screenshots"].extend(screenshot_links)
 
     screenshot_path = os.path.join(activity_location, "screenshots")
     if os.path.exists(screenshot_path):
         screenshots = glob(os.path.join(screenshot_path, "*.*"))
-        imgur_links["screenshots"].extend(upload_screenshots(screenshots))
+        processed_images["screenshots"].extend(upload_screenshots(screenshots))
 
-    return imgur_links
+    return processed_images
 
 
-def upload_activity_icon(icon_path):
-    """Uploads activity icon to Imgur.
+def convert_activity_icon(icon_path):
+    """Convert activity icon to base64 encoded strign.
 
     Args:
         icon_path: Path where icon is stored
     Returns:
-        Imgur Url where icon is hosted
+        Base64 encoded version of SVG Icon
     Raises:
-        BuildProcessErorr: When icon can't be uploaded due to netowrk issues or file being not present
+        BuildProcessErorr: When icon can't be converted or not found
     """
+    imgur_client = ImgurClient(
+        app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
     if not (os.path.exists(icon_path) and os.path.isfile(icon_path)):
         raise BuildProcessError("Cannot find icon at path %s", icon_path)
 
     try:
-        response = app.imgur_client.upload_from_path(icon_path)
-        return response['link']
+        logger.info("Icon path is %s", icon_path)
+        with open(icon_path, "rb") as f:
+            img_data = f.read()
+        encoded_string = base64.b64encode(img_data).decode()
+        return encoded_string
     except Exception as e:
         raise BuildProcessError(
-            "Something unexpected happened while uploading the icon. Exception Message %s", e)
+            "Something unexpected happened while converting the icon. Exception Message %s", e)
 
 
 def get_icon_path(icon_name, activity_name):
-    return os.path.join(get_repo_location(activity_name), "activity", icon_name, ".svg")
+    return os.path.join(get_repo_location(activity_name), "activity", icon_name + ".svg")
 
 
 def get_repo_location(name):
-    return os.path.join(app.config['BUILD_CLONE_REPO'], name)
+    return os.path.join(app.cnfig['BUILD_CLONE_REPO'], name)
 
 
 def get_bundle_path(bundle_name):
@@ -134,14 +143,16 @@ def upload_screenshots(screenshots, urls=False):
     # If screenshots are part of the manifest
     # Space separated list of urls, then upload urls
     # Returns a list of links
+    imgur_client = ImgurClient(
+        app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
     imgur_links = []
     if urls:
         for screenshot in screenshots:
-            result = app.imgur_client.upload_from_url(screenshot)
+            result = imgur_client.upload_from_url(screenshot)
             imgur_links.append(result['link'])
     else:
         for screenshot in screenshots:
-            result = app.imgur_client.upload_from_path(screenshot)
+            result = imgur_client.upload_from_path(screenshot)
             imgur_links.append(result['link'])
     return imgur_links
 
@@ -278,7 +289,7 @@ def invoke_build(name):
     clean()
 
 
-def populate_database(activity, translations):
+def populate_database(activity, translations, imgur_links):
     def translate_field(field_value, model_class):
         results = []
         for language_code in translations:
@@ -300,19 +311,19 @@ def populate_database(activity, translations):
 
 
 def clean_up(extact_dir):
-     """ Delete extraction directory of bunlde
-    Args:
-        extract: Extraction path of bundle
-    Returns:
-        None
-    Raises:
-        None
-    """
-     shutil.rmtree(extact_dir)
+    """ Delete extraction directory of bunlde
+   Args:
+       extract: Extraction path of bundle
+   Returns:
+       None
+   Raises:
+       None
+   """
+    shutil.rmtree(extact_dir)
 
 
 def extract_bundle(bundle_name):
-   """ Extracts bundle to random directory
+    """ Extracts bundle to random directory
     Args:
         bundle_name: Name of the bundle that needs to be extracted
     Returns:
@@ -331,15 +342,16 @@ def extract_bundle(bundle_name):
         archive_root_prefix = os.path.commonpath(xo_archive.namelist())
         xo_archive.extractall(path=extract_dir)
         extraction_path = os.path.join(extract_dir, archive_root_prefix)
-
+        return extraction_path
     except Exception as e:
-         if e.__class__.__name__ is "FileExistsError":
-                clean_up(extract_dir)
+        if e.__class__.__name__ is "FileExistsError":
+            clean_up(extract_dir)
         raise BuildProcessError(
             "Unable to open archive : %s. Error : %s ", bundle_name, e.__class__)
 
+
 def get_xo_translations(extract_dir):
-     """ Wrapper function  to crawl translations for a bundle
+    """ Wrapper function  to crawl translations for a bundle
     Args:
         bundle_name: Directory where bunlde is extracted
     Returns:
@@ -348,8 +360,6 @@ def get_xo_translations(extract_dir):
         None
     """
     return get_translations(extract_dir)
-  
-       
 
 
 def invoke_asset_build(bundle_name):
@@ -386,4 +396,4 @@ def invoke_asset_build(bundle_name):
     except Exception as e:
         remove_bundle(bundle_name)
         raise BuildProcessError(
-            'Error decoding MeteData File. Exception Message: %s', e)
+            'Error decoding MetaData File. Exception Message: %s', e)

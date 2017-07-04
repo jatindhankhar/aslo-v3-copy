@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 import logging
-from imgurpython import ImgurClient
 logger = logging.getLogger(__name__)
 
 
@@ -16,7 +15,6 @@ def init_app():
     from .celery_app import init_celery
     init_celery(app)
 
-    imgur_client = ImgurClient(app.config['IMGUR_CLIENT_ID'],app.config['IMGUR_CLIENT_SECRET'])
     # blueprints
     from .web import web
     app.register_blueprint(web)

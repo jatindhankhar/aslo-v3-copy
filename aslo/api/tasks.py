@@ -56,7 +56,10 @@ def handle_asset_release(gh_json):
 
         bundle_name = build.check_and_download_assets(release['assets'])
         activity = build.invoke_asset_build(bundle_name)
-        translations = build.get_xo_translations(bundle_name)
+        extracted_bundle = build.extract_bundle(bundle_name)
+        imgur_links = build.upload_image_assets(activity,extracted_bundle)
+        translations = build.get_xo_translations(extracted_bundle)
+
         logger.info(translations["es"])
         logger.info(activity)
 

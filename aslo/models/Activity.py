@@ -50,8 +50,8 @@ class MetaData(Document):
     #activity_version = StringField(required=True)
     repository = StringField(required=True)
     developers = EmbeddedDocumentListField(Developer, required=True)
-    # Use GridFs to store images
-    icon = URLField(required=True)
+    # Base64 encoded string to store images
+    icon = StringField(required=True)
     latest_release = ReferenceField(Release)
     previous_releases = ListField(ReferenceField(Release))
 
