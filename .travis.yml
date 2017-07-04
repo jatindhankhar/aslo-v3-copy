@@ -13,5 +13,6 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_ad8f1517fc45_key -iv $encrypted_ad8f1517fc45_iv
   -in .env.enc -out .env -d
 install: pip install -r requirements.txt
-script: bash start.sh
+# Run server only for 50 seconds, some time given for Imgur Client to verify keys, ideally it takes less than 2 seconds to validate and boot up whole server 
+script: timeout -sHUP 0.5m bash start.sh
 
