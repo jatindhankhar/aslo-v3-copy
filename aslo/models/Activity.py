@@ -49,20 +49,20 @@ class MetaData(Document):
     categories = StringField(default="")
     #activity_version = StringField(required=True)
     repository = StringField(required=True)
-    developers = EmbeddedDocumentListField(Developer, required=True)
+    developers = EmbeddedDocumentListField(Developer, required=False)
     # Base64 encoded string to store images
     icon = StringField(required=True)
     latest_release = ReferenceField(Release)
     previous_releases = ListField(ReferenceField(Release))
 
     def add_release(self, release):
-        if self.latest_release.activity_version >= release.activity_version:
+        if self.latest_release is not None and self.latest_release.activity_version >= release.activity_version:
             # In that case delete the activity, since we can only reference data if we save it
             release.delete()
             raise ValidationError("New release activity version {} is less than the current version {}".format(
                 self.latest_release.activity_version, release.activity_version))
         # If First release (No previous releases) then just copy the release
-        if len(self.previous_releases) == 0:
+        if self.latest_release is not None and len(self.previous_releases) == 0:
             latest_release = release
         else:
             self.previous_releases.append(self.latest_release)

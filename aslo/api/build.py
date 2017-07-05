@@ -2,6 +2,7 @@ import os
 import shutil
 import configparser
 import base64
+import datetime
 from flask import current_app as app
 from aslo.celery_app import logger
 from subprocess import call
@@ -46,7 +47,7 @@ def get_translations(activity_location):
 
 
 def process_image_assets(attribute_dict, activity_location):
-    """Uploads all image assets to Imgur.
+    """Processes all image assets and uploads screenshots to Imgur.
 
     Args:
         attribute_dict: Dictionary containing activity.info attributes
@@ -105,11 +106,21 @@ def convert_activity_icon(icon_path):
 
 
 def get_icon_path(icon_name, activity_name):
+    """ Returns icon path for an activity.
+
+    Args:
+        icon_name: Name of the icon 
+        activity_name: Name of the activity
+    Returns:
+       Icon path of the activity 
+    Raises:
+       None 
+    """
     return os.path.join(get_repo_location(activity_name), "activity", icon_name + ".svg")
 
 
 def get_repo_location(name):
-    return os.path.join(app.cnfig['BUILD_CLONE_REPO'], name)
+    return os.path.join(app.config['BUILD_CLONE_REPO'], name)
 
 
 def get_bundle_path(bundle_name):
@@ -140,9 +151,16 @@ def validate_metadata_attributes(parser, attributes):
 
 
 def upload_screenshots(screenshots, urls=False):
-    # If screenshots are part of the manifest
-    # Space separated list of urls, then upload urls
-    # Returns a list of links
+    """ Uploads screenshots to Imgur.
+
+    Args:
+        screenshots: List containing screenshots path or urls
+        urls: Default  - False. Determines whether screenshots are paths or urls
+    Returns:
+        Returns a list containing coressponding imgur links
+    Raises:
+       None 
+    """
     imgur_client = ImgurClient(
         app.config['IMGUR_CLIENT_ID'], app.config['IMGUR_CLIENT_SECRET'])
     imgur_links = []
@@ -227,6 +245,62 @@ def clone_repo(url, name, tag):
         raise BuildProcessError('[%s] command has failed' % ' '.join(cmd))
 
 
+def get_platform_versions(activity, repo_location):
+    logger.info("Applying heurisitc to determine platform versions")
+
+    def is_web():
+        if 'exec' in activity:
+            return activity['exec'] == 'sugar-activity-web'
+        return False  # Fallback
+
+    GTK3_IMPORT_TYPES = {'sugar3': 3, 'from gi.repository import Gtk': 3,
+                         'sugar.': 2, 'import pygtk': 2, 'pygtk.require': 2}
+
+    def is_gtk3():
+        setup_py_path = os.path.join(repo_location, 'setup.py')
+        all_files = os.listdir(repo_location)
+        try_paths = [setup_py_path] + all_files
+
+        for path in try_paths:
+            if os.path.isfile(path):
+                with open(path) as f:
+                     text = f.read()
+                     for sign in GTK3_IMPORT_TYPES:
+                         if sign in text:
+                            version = GTK3_IMPORT_TYPES[sign]
+                            return version == 3
+
+        # Fallback to assuming GTK3
+        return True
+
+    OLD_TOOLBAR_SIGNS = ['activity.ActivityToolbox', 'gtk.Toolbar']
+
+    def has_old_toolbars():
+        for path in os.listdir(repo_location):
+            if os.path.isfile(path):
+                with open(path) as f:
+                     text = f.read()
+                for sign in OLD_TOOLBAR_SIGNS:
+                    if sign in text:
+                        return True
+        return False
+
+    def determine_min_sugar_version(is_gtk3, is_web, has_old_toolbars):
+        min_sugar_version = '0.100' if is_web else (
+            '0.96' if is_gtk3 else (
+                '0.86' if not has_old_toolbars else '0.82'
+            ))
+        return min_sugar_version
+
+    platform_versions = {}
+    platform_versions['is_gtk3'] = is_gtk3()
+    platform_versions['is_web'] = is_web()
+    platform_versions['has_old_toolbars'] = has_old_toolbars()
+    platform_versions['min_sugar_version'] = determine_min_sugar_version(platform_versions['is_gtk3'], platform_versions['is_web'], platform_versions['has_old_toolbars'])
+
+    return platform_versions
+
+
 def get_activity_metadata(name):
     def metadata_file_exists():
         repo_dir = get_repo_location(name)
@@ -253,6 +327,19 @@ def get_activity_metadata(name):
     return parse_metadata_file()
 
 
+def clean_repo(repo_name):
+    """ Deletes cloned repository.
+
+    Args:
+        repo_name: Name of the repository
+    Returns:
+        None
+    Raises:
+       None 
+    """
+    shutil.rmtree(get_repo_location(repo_name))
+
+
 def invoke_build(name):
     def store_bundle():
         dist_dir = os.path.join(get_repo_location(name), 'dist')
@@ -275,9 +362,6 @@ def invoke_build(name):
 
         logger.info('Bundle succesfully stored at %s', stored_bundle)
 
-    def clean():
-        shutil.rmtree(get_repo_location(name))
-
     volume = get_repo_location(name) + ':/activity'
     docker_image = app.config['BUILD_DOCKER_IMAGE']
     docker_cmd = ['docker', 'run', '--rm', '-v', volume, docker_image]
@@ -286,11 +370,32 @@ def invoke_build(name):
         raise BuildProcessError('Docker building process has failed')
 
     store_bundle()
-    clean()
 
 
-def populate_database(activity, translations, imgur_links):
+def populate_database(activity, translations, processed_images):
+    """ Populates MongoDB with MONGO_DBNAME as the target table/collection
+
+    Args:
+        repo_name: Dictionary containing activity.info attributes
+        translations: Dictionary containing translations
+        processed_images: Dictionary processed icon and screenshots
+    Returns:
+        None
+    Raises:
+       BuildProccessError: When version numbers are not correct (less than the existing one in Database) or when Data cannot be inserted 
+    """
+
     def translate_field(field_value, model_class):
+        """ Helper function which translates a field value and prepares an object with language code as keys  
+
+        Args:
+            field_value: Value of the String to be converted
+            model_class: Model class whose object needs to prepared for insertion
+        Returns:
+            Model class object populated with proper translations of the word if any 
+        Raises:
+            None
+        """
         results = []
         for language_code in translations:
             if field_value in translations[language_code]:
@@ -303,9 +408,31 @@ def populate_database(activity, translations, imgur_links):
     try:
         metadata = MetaData()
         metadata.name.extend(translate_field(activity['name'], Name))
+        metadata.bundle_id = activity['bundle_id']
         metadata.summary.extend(translate_field(activity['summary'], Summary))
+        if 'categories' in activity:
+            metadata.categories = activity['categories']
+        metadata.repository = activity['repository']
+        metadata.icon = processed_images['icon']
+
+        release = Release()
+        release.activity_version = float(activity['activity_version'])
+        release.release_notes = activity['release_info']['release_time']
+        release.download_url = "https://mock.org/download_url"
+        release.min_sugar_version = float(activity['platform_versions']['min_sugar_version'])
+        release.is_web = activity['platform_versions']['is_web']
+        release.has_old_toolbars = activity['platform_versions']['has_old_toolbars']
+        release.screenshots.extend(processed_images['screenshots'])
+        release_time = datetime.datetime.strptime( activity['release_info']['release_time'], "%Y-%m-%dT%H:%M:%SZ" )
+        release.timestamp = release_time
+        release.save()
+
+        metadata.add_release(release)
+        metadata.save()
 
     except Exception as e:
+        metadata.delete()
+        release.delete()
         raise BuildProcessError(
             "Failed to insert data inside the DB. Error : %s", e)
 

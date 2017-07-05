@@ -32,14 +32,21 @@ def handle_source_release(gh_json):
 
         build.clone_repo(url, name, tag)
         activity = build.get_activity_metadata(name)
-        
-        # TODO: Couple out clean repo so we can avoid uploading screenshots for yet to fail builds
-        # Upload icons 
-        # Get translations string invoking build, since we clean the repo afterwards
-        translations = build.get_translations(build.get_repo_location(name))
-        imgur_links = build.upload_image_assets(activity,build.get_repo_location(name))  
+        # Insert/Override repository tag
+        activity['repository'] = url
+        repo_location = build.get_repo_location(name)
         build.invoke_build(name)
+        translations = build.get_translations(repo_location)
+        processed_images = build.process_image_assets(activity, repo_location)
+        activity['platform_versions'] = build.get_platform_versions(
+            activity, repo_location)
+        activity['release_info'] = {}
+        activity['release_info']['release_notes'] = gh_json['release']['body']
+        activity['release_info']['release_time'] = gh_json['release']['published_at']
+        build.clean_repo(name)
+        build.populate_database(activity, translations, processed_images)
         logger.info(activity)
+        logger.info(processed_images)
         logger.info(translations["es"])
     except BuildProcessError as e:
         logger.exception("Error in activity building process")
@@ -56,10 +63,20 @@ def handle_asset_release(gh_json):
 
         bundle_name = build.check_and_download_assets(release['assets'])
         activity = build.invoke_asset_build(bundle_name)
+        # Insert/Override repository tag
+        activity['repository'] = url
         extracted_bundle = build.extract_bundle(bundle_name)
-        imgur_links = build.upload_image_assets(activity,extracted_bundle)
-        translations = build.get_xo_translations(extracted_bundle)
+        processed_images = build.process_image_assets(
+            activity, extracted_bundle)
+        activity['platform_versions'] = build.get_platform_versions(
+            activity, extracted_bundle)
+        activity['release_info'] = {}
+        activity['release_info']['release_notes'] = gh_json['release']['body']
+        activity['release_info']['release_time'] = gh_json['release']['published_at']
 
+        translations = build.get_xo_translations(extracted_bundle)
+        build.populate_database(activity, translations, processed_images)
+        logger.info(processed_images)
         logger.info(translations["es"])
         logger.info(activity)
 
