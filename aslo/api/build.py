@@ -264,9 +264,9 @@ def get_platform_versions(activity, repo_location):
         for path in try_paths:
             if os.path.isfile(path):
                 with open(path) as f:
-                     text = f.read()
-                     for sign in GTK3_IMPORT_TYPES:
-                         if sign in text:
+                    text = f.read()
+                    for sign in GTK3_IMPORT_TYPES:
+                        if sign in text:
                             version = GTK3_IMPORT_TYPES[sign]
                             return version == 3
 
@@ -279,7 +279,7 @@ def get_platform_versions(activity, repo_location):
         for path in os.listdir(repo_location):
             if os.path.isfile(path):
                 with open(path) as f:
-                     text = f.read()
+                    text = f.read()
                 for sign in OLD_TOOLBAR_SIGNS:
                     if sign in text:
                         return True
@@ -296,7 +296,8 @@ def get_platform_versions(activity, repo_location):
     platform_versions['is_gtk3'] = is_gtk3()
     platform_versions['is_web'] = is_web()
     platform_versions['has_old_toolbars'] = has_old_toolbars()
-    platform_versions['min_sugar_version'] = determine_min_sugar_version(platform_versions['is_gtk3'], platform_versions['is_web'], platform_versions['has_old_toolbars'])
+    platform_versions['min_sugar_version'] = determine_min_sugar_version(
+        platform_versions['is_gtk3'], platform_versions['is_web'], platform_versions['has_old_toolbars'])
 
     return platform_versions
 
@@ -409,7 +410,9 @@ def populate_database(activity, translations, processed_images):
         metadata = MetaData()
         metadata.name.extend(translate_field(activity['name'], Name))
         metadata.bundle_id = activity['bundle_id']
-        metadata.summary.extend(translate_field(activity['summary'], Summary))
+        if 'summary' in activity:
+            summaries = translate_field(activity['summary'], Summary)
+            metadata.summary.extend(summaries)
         if 'categories' in activity:
             metadata.categories = activity['categories']
         metadata.repository = activity['repository']
@@ -417,16 +420,18 @@ def populate_database(activity, translations, processed_images):
 
         release = Release()
         release.activity_version = float(activity['activity_version'])
-        release.release_notes = activity['release_info']['release_time']
+        release.release_notes = activity['release_info']['release_notes']
         release.download_url = "https://mock.org/download_url"
-        release.min_sugar_version = float(activity['platform_versions']['min_sugar_version'])
+        release.min_sugar_version = float(
+            activity['platform_versions']['min_sugar_version'])
         release.is_web = activity['platform_versions']['is_web']
         release.has_old_toolbars = activity['platform_versions']['has_old_toolbars']
         release.screenshots.extend(processed_images['screenshots'])
-        release_time = datetime.datetime.strptime( activity['release_info']['release_time'], "%Y-%m-%dT%H:%M:%SZ" )
+        release_time = datetime.datetime.strptime(
+            activity['release_info']['release_time'], "%Y-%m-%dT%H:%M:%SZ")
         release.timestamp = release_time
-        release.save()
 
+        release.save()
         metadata.add_release(release)
         metadata.save()
 

@@ -44,7 +44,7 @@ class Release(Document):
 class MetaData(Document):
     name = EmbeddedDocumentListField(Name, required=True)
     bundle_id = StringField(required=True)
-    summary = EmbeddedDocumentListField(Summary, required=True)
+    summary = EmbeddedDocumentListField(Summary, required=False, default=[])
     # We aslo use ListField for categories but then we need to join and slice it from the MetaData
     categories = StringField(default="")
     #activity_version = StringField(required=True)
@@ -56,14 +56,21 @@ class MetaData(Document):
     previous_releases = ListField(ReferenceField(Release))
 
     def add_release(self, release):
-        if self.latest_release is not None and self.latest_release.activity_version >= release.activity_version:
-            # In that case delete the activity, since we can only reference data if we save it
-            release.delete()
-            raise ValidationError("New release activity version {} is less than the current version {}".format(
-                self.latest_release.activity_version, release.activity_version))
-        # If First release (No previous releases) then just copy the release
-        if self.latest_release is not None and len(self.previous_releases) == 0:
-            latest_release = release
-        else:
-            self.previous_releases.append(self.latest_release)
+        # first release
+        if not self.latest_release and len(self.previous_releases) == 0:
             self.latest_release = release
+            return
+
+        if self.latest_release.activity_version >= release.activity_version:
+            release.delete()
+            raise ValidationError(
+                'New activity release version {} is less or equal than the '
+                'current version {}'
+                .format(
+                    release.activity_version,
+                    self.latest_release.activity_version
+                )
+            )
+
+        self.previous_releases.append(self.latest_release)
+        self.latest_release = release
