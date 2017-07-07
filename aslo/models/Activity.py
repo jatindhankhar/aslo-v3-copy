@@ -1,59 +1,72 @@
-from mongoengine import Document, StringField, ListField, DynamicEmbeddedDocument, EmbeddedDocumentListField, IntField, FloatField, URLField, BooleanField, DateTimeField, ReferenceField, ValidationError
+import mongoengine as me
 
 
-class Name(DynamicEmbeddedDocument):
+class Name(me.DynamicEmbeddedDocument):
     # Empty class to avoid any empty object since we will have dynamic fields
     def __str__(self):
         return self.to_json()
 
+    def to_dict(self):
+        return self.to_mongo.to_dict()
 
-class Summary(DynamicEmbeddedDocument):
+
+class Summary(me.DynamicEmbeddedDocument):
     # Empty class to avoid any empty object since we will have dynamic fields
     def __str__(self):
         return self.to_json()
 
+    def to_dict(self):
+        return self.to_mongo.to_dict()
 
-class Developer(DynamicEmbeddedDocument):
-    name = StringField(required=True)
-    email = StringField()
-    page = StringField()
+
+class Developer(me.DynamicEmbeddedDocument):
+    name = me.StringField(required=True)
+    email = me.EmailField()
+    page = me.URLField()
+    avatar = me.URLField()
 
     def __str__(self):
         return self.to_json()
 
+    def to_dict(self):
+        return self.to_mongo.to_dict()
 
-class Release(Document):
-    # We can aslo use StringField for storing versions
-    activity_version = FloatField(required=True)
-    release_notes = StringField(required=True)
-    # Use custom class bound method to calculate min_sugar_version ?
-    min_sugar_version = FloatField(required=True)
+
+class Release(me.Document):
+    activity_version = me.FloatField(required=True)
+    release_notes = me.StringField(required=True)
+    min_sugar_version = me.FloatField(required=True)
     # Also known as xo_url
-    download_url = URLField(required=True)
-    is_web = BooleanField(required=True, default=False)
-    is_gtk = BooleanField(required=True, default=False)
-    has_old_toolbars = BooleanField(required=False, default=False)
+    download_url = me.URLField(required=True)
+    is_web = me.BooleanField(required=True, default=False)
+    is_gtk3 = me.BooleanField(required=True, default=False)
+    has_old_toolbars = me.BooleanField(required=False, default=False)
     # Timestamp when the release was made
-    screenshots = ListField(URLField(required=False), required=False)
-    timestamp = DateTimeField(required=True)
+    timestamp = me.DateTimeField(required=True)
 
     def __str__(self):
-        self.to_json()
+        return self.to_json()
+
+    def to_dict(self):
+        return self.to_mongo.to_dict()
 
 
-class MetaData(Document):
-    name = EmbeddedDocumentListField(Name, required=True)
-    bundle_id = StringField(required=True)
-    summary = EmbeddedDocumentListField(Summary, required=False, default=[])
-    # We aslo use ListField for categories but then we need to join and slice it from the MetaData
-    categories = StringField(default="")
-    #activity_version = StringField(required=True)
-    repository = StringField(required=True)
-    developers = EmbeddedDocumentListField(Developer, required=False)
-    # Base64 encoded string to store images
-    icon = StringField(required=True)
-    latest_release = ReferenceField(Release)
-    previous_releases = ListField(ReferenceField(Release))
+class Activity(me.Document):
+    bundle_id = me.StringField(required=True)
+    name = me.EmbeddedDocumentField(Name, required=True)
+    summary = me.EmbeddedDocumentField(Summary, required=True)
+    categories = me.ListField(me.StringField(max_length=30))
+    repository = me.StringField(required=True)
+    license = me.StringField(required=True)
+    developers = me.EmbeddedDocumentListField(Developer, required=True)
+    latest_release = me.ReferenceField(Release)
+    previous_releases = me.ListField(me.ReferenceField(Release))
+
+    def __str__(self):
+        return self.to_json()
+
+    def to_dict(self):
+        return self.to_mongo.to_dict()
 
     def add_release(self, release):
         # first release
@@ -63,14 +76,24 @@ class MetaData(Document):
 
         if self.latest_release.activity_version >= release.activity_version:
             release.delete()
-            raise ValidationError(
+            raise me.ValidationError(
                 'New activity release version {} is less or equal than the '
-                'current version {}'
-                .format(
+                'current version {}'.format(
                     release.activity_version,
                     self.latest_release.activity_version
-                )
+                 )
             )
 
         self.previous_releases.append(self.latest_release)
         self.latest_release = release
+
+    def set_developers(self, developers):
+        devs = []
+        for developer in developers:
+            dev = Developer()
+            dev.name = developer['name']
+            dev.email = developer['email']
+            dev.page = developer['page']
+            dev.avatar = developer['avatar']
+            devs.append(dev)
+        self.developers = devs

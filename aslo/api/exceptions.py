@@ -1,6 +1,10 @@
 
 
-class BuildProcessError(Exception):
+class ReleaseError(Exception):
+    pass
+
+
+class BuildProcessError(ReleaseError):
     pass
 
 

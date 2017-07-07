@@ -1,8 +1,8 @@
 from flask import request, current_app as app
 from . import api
 from .exceptions import ApiHttpError
-from .tasks import build_process
-from .utils import verify_signature
+from .tasks import release_process
+from .gh import verify_signature
 
 
 @api.route('/hook', methods=['POST'])
@@ -28,6 +28,6 @@ def hook():
     if not valid_signature:
         raise ApiHttpError('Invalid Signature', 400)
 
-    build_process.apply_async(args=[body_json])
+    release_process.apply_async(args=[body_json])
 
     return "{'status_code': 200, 'message': 'OK'}", 200
