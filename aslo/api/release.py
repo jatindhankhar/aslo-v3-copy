@@ -276,7 +276,9 @@ def handle_release(gh_json):
     release = gh_json['release']
     tag = release['tag_name']
     xo_asset = None
-
+    tag_commit = gh.find_tag_commit(gh_json['repository']['full_name'],tag)
+    #TODO: Extract message to constants file
+    gh.comment_on_commit(tag_commit,"Build has started :hourglass_flowing_sand:")  
     if 'assets' in release and len(release['assets']) != 0:
         xo_asset = xo_file_exists(release['assets'])
 

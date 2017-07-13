@@ -29,3 +29,19 @@ def get_developers(repo_url):
         developers.append(dev)
 
     return developers
+
+
+def find_tag_commit(repo_name, tag_name):
+    g = auth()
+    tags = g.get_repo(repo_name).get_tags()
+    tag_commit = None
+    for tag in tags:
+        if tag.name == tag_name:
+            tag_commit = tag.commit
+
+    return tag_commit
+
+
+# No needed though :| (just a wrapper)
+def comment_on_commit(commit, message):
+    commit.create_comment(message)
