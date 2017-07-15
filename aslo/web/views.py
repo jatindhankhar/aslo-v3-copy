@@ -13,7 +13,7 @@ def index():
         me.connect(host=app.config['MONGO_URI'])
         activities = model.Activity.objects
         return render_template('index.html',activities=activities)
-    except me.errors.InvalidQueryError:
+    except Exception as error:
         abort(404)
 
    
