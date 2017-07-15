@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
   <!-- Bootstrap Material Design -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.min.css"
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.min.css"
     integrity="sha256-X/mlyZAafJ8j5e74pWh4+qNUD1zurCvLA6hODVobQX0=" crossorigin="anonymous" />
 
   <style>
@@ -120,7 +120,7 @@
 
           <footer class="card-footer">
             <a class="btn btn-raised btn-success" href="{{ activity.latest_release.download_url }}"> <i class="fa fa-arrow-down"></i> Download</a>
-            <a class="btn btn-raised btn-primary"> <i class="fa fa-chevron-right" aria-hidden="true"></i> More</a>
+            <a class="btn btn-raised btn-primary" href="{{ url_for('web.activity_detail',bundle_id=activity.bundle_id,activity_version=activity.latest_release.activity_version) }}"> <i class="fa fa-chevron-right" aria-hidden="true"></i> More</a>
           </footer>
         </div>
       </div>
