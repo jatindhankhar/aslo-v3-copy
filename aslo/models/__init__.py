@@ -11,7 +11,7 @@ class MongoDBAccess():
             self._model.__name__, value))
 
     def get_all(self):
-        return self._model.objects()
+        return self._model.objects
 
     @staticmethod
     def add_or_update(model_object):

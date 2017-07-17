@@ -88,3 +88,15 @@ def insert_activity(data):
         except me.ValidationError as e:
             Release.delete(release)
             raise ReleaseError('Failed saving activity into db: %s' % e)
+
+
+def find_release(activity, activity_version):
+    if activity.latest_release.activity_version == activity_version:
+        return activity.latest_release
+
+    if len(activity.previous_releases) != 0:
+        for release in activity.previous_releases:
+            if release.activity_version == activity_version:
+                return release
+
+    return None
