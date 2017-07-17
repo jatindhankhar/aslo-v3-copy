@@ -42,6 +42,5 @@ def find_tag_commit(repo_name, tag_name):
     return tag_commit
 
 
-# No needed though :| (just a wrapper)
 def comment_on_commit(commit, message):
     commit.create_comment(message)

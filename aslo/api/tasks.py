@@ -18,5 +18,4 @@ def release_process(self, gh_json):
         logger.info('Activity release process has finished successfully!')
         tag_commit = find_tag_commit(
             gh_json['repository']['full_name'], gh_json['release']['tag_name'])
-        comment_on_commit(
-            tag_commit, "Build Passed :white_check_mark:  Download url will be provided soon :link:")
+        comment_on_commit(tag_commit, "Build Passed :white_check_mark:")
