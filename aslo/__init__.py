@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap
 import logging
 
 logger = logging.getLogger(__name__)
@@ -8,9 +7,6 @@ logger = logging.getLogger(__name__)
 def init_app():
     app = Flask(__name__)
     app.config.from_object('aslo.settings')
-
-    # init bootstrap
-    Bootstrap(app)
 
     # init celery
     from .celery_app import init_celery
@@ -36,5 +32,9 @@ def init_app():
     # setup db
     from .service import setup_db
     setup_db(app)
+
+    # custom jinja filters
+    from .filters import init_filters
+    init_filters(app)
 
     return app
