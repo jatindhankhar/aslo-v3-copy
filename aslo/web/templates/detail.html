@@ -1,240 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "partials/layout.html" %} 
+{% block title %}
 
-<head>
-    <title>Software Center | Sugar Labs</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Material Design Fonts -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+{% if 'en' in activity.name %} 
+    {{ activity.name.en }}
+{% elif 'en_US' in activity.name %} 
+   {{ activity.name.en_US}} 
+{% else %} {{ "No Name" }} {% endif %}
 
-    <!-- Font Awesome -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-        crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 center-block">
+ {% set screenshots=['http://via.placeholder.com/800x600','http://via.placeholder.com/800x600','http://via.placeholder.com/800x600'] %}
+{% with screenshots=screenshots %}
+{% include "elements/screenshot_carousel.html" %}
+{% endwith %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 center-block">
+        <div class="card" style="padding: 40px;">
+            <div class="row">
+                <div class="col-lg-5">
+                    
+                    <!-- Activity Card -->
+                    {% with activity=activity,release=release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+                    <!-- Developers Card -->
+                    {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
+                    <!-- End Developers Card -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
 
-    <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.min.css"
-        integrity="sha256-X/mlyZAafJ8j5e74pWh4+qNUD1zurCvLA6hODVobQX0=" crossorigin="anonymous" />
-    
-    <!--
-    <link rel="stylesheet" type="text/css" href="{{ url_for('web.static', filename='css/style.css') }}">
-    -->
+                        <div class="card-height-indicator"></div>
 
-    </style>
-</head>
+                        <div class="card-content">
 
-<body>
-    <nav class="navbar navbar-default navbar-fixed-top navbar-info" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-                <!--  <a class="navbar-brand navbar-left temp-fix pull-left navbar-left" href="#">SugarLabs</a> -->
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                <ul class="nav navbar-nav navbar-left">
-                    <li> <a href="#">Home</a> </li>
-                </ul>
-                <form class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                </form>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-    <div class="container-fluid" style="padding: 30px; padding-top: 100px;">
-    <div class="row">
-        <div class="col-lg-12 center-block">
-            <div class="card" style="padding: 40px;">
-                <div class="row">
-                    <div class="col-lg-5">
-                        <div class="card">
-
-                            <div class="card-height-indicator"></div>
-
-                            <div class="card-content text-center">
-                                <h3 class="card-image-headline"> {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US' in activity.name %}
-                                    {{ activity.name.en_US }} {% else %} {{ "No Name" }} {% endif %}</h3>
-
-                               <div class="card-image img-responsive">
-                               <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." />
-                               </div>
-                                <footer class="card-footer">
-                                    <a class="btn btn-raised btn-success" href="{{ current_release.download_url }}"> <i class="fa fa-arrow-down"></i> Download</a>
-                                   {% if activity.previous_releases|count != 0 %}
-                                        <div class="btn-group">
-                                        <a href="javascript:void(0)" class="btn btn-primary btn-raised">More Releases</a>
-                                        <a href="#" data-target="#" class="btn btn-primary btn-raised" data-toggle="dropdown"><span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                           {% for release in activity.previous_releases %} 
-                                            <li><a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=release.activity_version) }}">
-                                                {% if release.activity_version == current_release.activity_version %}
-                                                <p class="text-primary">Current Release</p>
-                                                {% else %}
-                                                {{ release.activity_version }}
-                                                {% endif %}
-                                            </a></li>
-                                            {% endfor %}
-                                        </ul>
-                                        </div>
-                                    {% endif %}
-                                </footer>
-                            </div>
-                            </div>
-                        <div class="card">
-
-                            <div class="card-height-indicator"></div>
-                            
-                            {% if activity.developers|count !=0 %}
-                            <div class="card-content text-center">
-                                <h3 class="card-image-headline">Developers</h3>
-                                
-                                <footer class="card-footer">
-                                    <div class="list-group">
-                                        {% for developer in activity.developers %}
-                                        <div class="list-group-item">
-                                            <img class="img-circle img-responsive" width="48px" height="48px" src="{{ developer.avatar }}+&s=48" alt="icon">
-                                            <p class="list-group-item-heading"> <a href="{{ developer.page }}"> {{ developer.name }} </a></p>
-                                        </div>
-                                        <div class="list-group-separator"></div>
-                                        {% endfor %}
-                                    </div>
-                                </footer>
-                            </div>
-                            {% endif %}
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="card">
-
-                            <div class="card-height-indicator"></div>
-
-                            <div class="card-content">
-
-                                <div class="card-body">
-                                    <h4 style="padding: 20px;">
+                            <div class="card-body">
+                                <h4 style="padding: 20px;">
                                     {{ activity.summary.en or activity.summary.en_US }}
-                                    </h4>
-                                </div>
-
-                                <footer class="card-footer">
-                                    
-                                    {% if activity.categories|count != 0 %}
-                                    <div class="row" style="margin: 5px;">
-                                        {% for category in activity.categories %}
-                                        <span class="badge label-info category-tag" style="padding: 10px; margin:10px;"> {{ category }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
-                                    <hr>
-                                    <div class="list-group">
-                                        <div class="list-group-item">
-                                            <div class="row-picture">
-                                                <i class="fa fa-hashtag fa-3x" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="row-content">
-                                                <h4 class="list-group-item-heading text-center">Min. Sugar Version</h4>
-                                                <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin:10px; margin-left: 0px;"> {{ current_release.min_sugar_version }}</h5>
-                                                <!--<i class="fa fa-check fa-2x" aria-hidden="true"></i> -->
-
-                                            </div>
-                                        </div>
-                                        <div class="list-group-item">
-                                            <div class="row-picture">
-                                                <i class="fa fa-chrome fa-3x" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="row-content">
-                                                <h4 class="list-group-item-heading">Web Activity</h4>
-                                                {% if current_release.is_web %}
-                                                    <i class="fa fa-check fa-2x" style="color: green;"></i>
-                                                {% else %}
-                                                    <i class="fa fa-times fa-2x" style="color: red;"></i>
-                                                {% endif %}
-
-                                            </div>
-                                        </div>
-                                         <div class="list-group-item">
-                                            <div class="row-picture">
-                                                <svg style="width:48px;height:48px" viewBox="0 0 24 24">
-    <path fill="#000000" d="M18.42,2C14.26,2 13.5,7.93 15.82,7.93C18.16,7.93 22.58,2 18.42,2M12,2.73C11.92,2.73 11.85,2.73 11.78,2.74C9.44,3.04 10.26,7.12 11.5,7.19C12.72,7.27 14.04,2.73 12,2.73M7.93,4.34C7.81,4.34 7.67,4.37 7.53,4.43C5.65,5.21 7.24,8.41 8.3,8.2C9.27,8 9.39,4.3 7.93,4.34M4.93,6.85C4.77,6.84 4.59,6.9 4.41,7.03C2.9,8.07 4.91,10.58 5.8,10.19C6.57,9.85 6.08,6.89 4.93,6.85M13.29,8.77C10.1,8.8 6.03,10.42 5.32,13.59C4.53,17.11 8.56,22 12.76,22C14.83,22 17.21,20.13 17.66,17.77C18,15.97 13.65,16.69 13.81,17.88C14,19.31 12.76,20 11.55,19.1C7.69,16.16 17.93,14.7 17.25,10.69C17.03,9.39 15.34,8.76 13.29,8.77Z" />
-</svg>
-                                            </div>
-                                            <div class="row-content">
-                                                <h4 class="list-group-item-heading">GTk 3</h4>
-                                                {% if current_release.is_gtk %}
-                                                    <i class="fa fa-check fa-2x" style="color: green;"></i>
-                                                {% else %}
-                                                    <i class="fa fa-times fa-2x" style="color: red;"></i>
-                                                {% endif %}
-
-                                            </div>
-                                        </div>
-                                        <div class="list-group-separator"></div>
-                                        <div class="list-group-item">
-                                            <div class="row-picture">
-                                                <i class="fa fa-university fa-3x" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="row-content">
-                                                <h4 class="list-group-item-heading">License</h4>
-
-                                                <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin: 10px; margin-left: 0px;"> {{ activity.license }}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="list-group-separator"></div>
-                                        <div class="list-group-item">
-                                            <div class="row-picture">
-                                                <i class="fa fa-bars fa-3x" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="row-content">
-                                                <h4 class="list-group-item-heading">Old ToolBars </h4>
-                                                {% if current_release.has_old_toolbars %}
-                                                    <i class="fa fa-check fa-2x" style="color: green;"></i>
-                                                {% else %}
-                                                    <i class="fa fa-times fa-2x" style="color: red;"></i>
-                                                {% endif %}
-
-                                            </div>
-                                        </div>
-                                        <div class="list-group-separator"></div>
-                                    </div>
-                                </footer>
-
+                                </h4>
                             </div>
+
+                            <footer class="card-footer">
+
+                                {% if activity.categories|count != 0 %}
+                                <div class="row" style="margin: 5px;">
+                                    {% for category in activity.categories %}
+                                    <span class="badge label-info category-tag" style="padding: 10px; margin:10px;"> {{ category }}</span>                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                <hr>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="row-picture">
+                                            <i class="fa fa-hashtag fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="row-content">
+                                            <h4 class="list-group-item-heading text-center">Min. Sugar Version</h4>
+                                            <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin:10px; margin-left: 0px;"> {{ current_release.min_sugar_version }}</h5>
+                                            <!--<i class="fa fa-check fa-2x" aria-hidden="true"></i> -->
+
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="row-picture">
+                                            <i class="fa fa-chrome fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="row-content">
+                                            <h4 class="list-group-item-heading">Web Activity</h4>
+                                            {% if current_release.is_web %}
+                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
+                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
+
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="row-picture">
+                                            <svg style="width:48px;height:48px" viewBox="0 0 24 24">
+                                                <path fill="#000000" d="M18.42,2C14.26,2 13.5,7.93 15.82,7.93C18.16,7.93 22.58,2 18.42,2M12,2.73C11.92,2.73 11.85,2.73 11.78,2.74C9.44,3.04 10.26,7.12 11.5,7.19C12.72,7.27 14.04,2.73 12,2.73M7.93,4.34C7.81,4.34 7.67,4.37 7.53,4.43C5.65,5.21 7.24,8.41 8.3,8.2C9.27,8 9.39,4.3 7.93,4.34M4.93,6.85C4.77,6.84 4.59,6.9 4.41,7.03C2.9,8.07 4.91,10.58 5.8,10.19C6.57,9.85 6.08,6.89 4.93,6.85M13.29,8.77C10.1,8.8 6.03,10.42 5.32,13.59C4.53,17.11 8.56,22 12.76,22C14.83,22 17.21,20.13 17.66,17.77C18,15.97 13.65,16.69 13.81,17.88C14,19.31 12.76,20 11.55,19.1C7.69,16.16 17.93,14.7 17.25,10.69C17.03,9.39 15.34,8.76 13.29,8.77Z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div class="row-content">
+                                            <h4 class="list-group-item-heading">GTk 3</h4>
+                                            {% if current_release.is_gtk %}
+                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
+                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
+
+                                        </div>
+                                    </div>
+                                    <div class="list-group-separator"></div>
+                                    <div class="list-group-item">
+                                        <div class="row-picture">
+                                            <i class="fa fa-university fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="row-content">
+                                            <h4 class="list-group-item-heading">License</h4>
+
+                                            <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin: 10px; margin-left: 0px;"> {{ activity.license }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-separator"></div>
+                                    <div class="list-group-item">
+                                        <div class="row-picture">
+                                            <i class="fa fa-bars fa-3x" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="row-content">
+                                            <h4 class="list-group-item-heading">Old ToolBars </h4>
+                                            {% if current_release.has_old_toolbars %}
+                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
+                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
+
+                                        </div>
+                                    </div>
+                                    <div class="list-group-separator"></div>
+                                </div>
+                            </footer>
 
                         </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
+   
     </div>
-    </div>
-    <!-- jQuery -->
-    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <!-- Twitter Bootstrap JS -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-    <!-- BootStrap Material Design -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.umd.min.js"
-        integrity="sha256-GYcdwXot2kSaBb8kr9o8zDKYBwQ1PCkugjcCYFQS+IA=" crossorigin="anonymous"></script>
-</body>
-
-</html>
+</div>
+{% endblock %}

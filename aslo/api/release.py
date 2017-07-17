@@ -319,7 +319,7 @@ def handle_release(gh_json):
     metadata['sugar'] = get_sugar_details(metadata, repo_path)
 
     metadata['release'] = {}
-    metadata['release']['notes'] = gh_json['release']['body']
+    metadata['release']['notes'] = gh.render_markdown(gh_json['release']['body'])
     metadata['release']['time'] = datetime.datetime.strptime(
         gh_json['release']['published_at'], '%Y-%m-%dT%H:%M:%SZ'
     )

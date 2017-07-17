@@ -7,3 +7,14 @@ a.btn{
     padding-right: 3.5rem;
     padding-left: 3.5rem;
 }
+
+.carousel-inner {
+  border-radius: 15px;
+}
+
+    .carousel {
+        background:rgba(0, 0, 0, 0.0); 
+        position: relative;
+        padding: 10px;     /* Shows as a border around the carousel */
+    }
+

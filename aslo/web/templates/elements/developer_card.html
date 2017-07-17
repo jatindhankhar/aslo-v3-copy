@@ -1,0 +1,23 @@
+<div class="card">
+
+    <div class="card-height-indicator"></div>
+
+    {% if developers|count !=0 %}
+    <div class="card-content text-center">
+        <h3 class="card-image-headline">Developers</h3>
+
+        <footer class="card-footer">
+            <div class="list-group">
+                {% for developer in developers %}
+                <div class="list-group-item">
+                    <img class="img-circle img-responsive" width="48px" height="48px" src="{{ developer.avatar }}+&s=48" alt="icon">
+                    <p class="list-group-item-heading"> <a href="{{ developer.page }}"> {{ developer.name }} </a></p>
+                </div>
+                <div class="list-group-separator"></div>
+                {% endfor %}
+            </div>
+        </footer>
+    </div>
+    {% endif %}
+
+</div>
