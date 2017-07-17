@@ -33,3 +33,11 @@ def get_translations(repo_path):
             translations[language_code][entry.msgid] = entry.msgstr
 
     return translations
+
+
+def translate_field(field_value, translations):
+    d = {}
+    for language_code in translations:
+        if field_value in translations[language_code]:
+            d[language_code] = translations[language_code][field_value]
+    return d

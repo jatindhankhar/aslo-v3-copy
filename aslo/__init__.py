@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def init_app():
     app = Flask(__name__)
-    app.config.from_object('aslo.default_settings')
+    app.config.from_object('aslo.settings')
 
     # init bootstrap
     Bootstrap(app)
@@ -32,5 +32,9 @@ def init_app():
 
     if app.config['DEBUG']:
         logger.setLevel(logging.DEBUG)
+
+    # setup db
+    from .service import setup_db
+    setup_db(app)
 
     return app

@@ -2,18 +2,19 @@ import os
 import shutil
 import configparser
 import requests
-import zipfile
 import datetime
+import zipfile
 import uuid
 import re
-import mongoengine as me
-import aslo.models.Activity as model
 import subprocess as sp
+
 from flask import current_app as app
+from aslo.service import activity as activity_service
 from aslo.celery_app import logger
-from .exceptions import ReleaseError, BuildProcessError
+from .exceptions import ReleaseError, BuildProcessError, ScreenshotDoesNotExist
 from . import gh
 from . import i18n
+from . import img
 
 
 def get_bundle_path(bundle_name):
@@ -245,53 +246,6 @@ def get_sugar_details(activity, repo_path):
     return sugar
 
 
-def db_insert_activity(metadata, translations):
-    def translate_field(field_value, model_class):
-        obj = model_class()
-        for language_code in translations:
-            if field_value in translations[language_code]:
-                obj[language_code] = translations[language_code][field_value]
-        return obj
-
-    try:
-        me.connect(host=app.config['MONGO_URI'])
-        activity = model.Activity.objects.get(bundle_id=metadata['bundle_id'])
-    except model.Activity.DoesNotExist:
-        activity = model.Activity()
-        activity.bundle_id = metadata['bundle_id']
-
-    activity.license = metadata['license']
-    activity.repository = metadata['repository']
-    activity.categories = metadata['categories'].split()
-    activity.name = translate_field(metadata['name'], model.Name)
-    activity.summary = translate_field(metadata['summary'], model.Summary)
-    activity.set_developers(gh.get_developers(metadata['repository']))
-
-    release = model.Release()
-    release.activity_version = float(metadata['activity_version'])
-    release.min_sugar_version = float(metadata['sugar']['min_sugar_version'])
-    release.is_web = metadata['sugar']['is_web']
-    release.has_old_toolbars = metadata['sugar']['has_old_toolbars']
-    release.download_url = 'https://mock.org/download_url'
-    release.release_notes = metadata['release']['notes']
-    release.timestamp = datetime.datetime.strptime(
-        metadata['release']['time'], '%Y-%m-%dT%H:%M:%SZ'
-    )
-
-    try:
-        release.save()
-        activity.add_release(release)
-    except me.ValidationError as e:
-        raise ReleaseError('Failed saving release into db: %s' % e)
-    else:
-        try:
-            logger.info('Saving activity information into db.')
-            activity.save()
-        except me.ValidationError as e:
-            release.delete()
-            raise ReleaseError('Failed saving activity into db: %s' % e)
-
-
 def store_bundle(tmp_bundle_path):
     try:
         shutil.copy2(tmp_bundle_path, app.config['BUILD_BUNDLE_DIR'])
@@ -338,14 +292,36 @@ def handle_release(gh_json):
 
     metadata = get_activity_metadata(repo_path)
     compare_version_in_bundlename_and_metadata(tmp_bundle_path, metadata)
+
     translations = i18n.get_translations(repo_path)
+    metadata['i18n_name'] = i18n.translate_field(metadata['name'],
+                                                 translations)
+    metadata['i18n_summary'] = i18n.translate_field(metadata['summary'],
+                                                    translations)
 
     metadata['repository'] = repo_url
-    metadata['release'] = {}
-    metadata['release']['notes'] = gh_json['release']['body']
-    metadata['release']['time'] = gh_json['release']['published_at']
+    metadata['developers'] = gh.get_developers(metadata['repository'])
+    metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])
+
+    try:
+        screenshots = img.get_screenshots(repo_path, metadata['bundle_id'])
+    except ScreenshotDoesNotExist as e:
+        screenshots = {}
+        logger.info(e)
+    finally:
+        metadata['screenshots'] = screenshots
+
     metadata['sugar'] = get_sugar_details(metadata, repo_path)
 
-    db_insert_activity(metadata, translations)
+    metadata['release'] = {}
+    metadata['release']['notes'] = gh_json['release']['body']
+    metadata['release']['time'] = datetime.datetime.strptime(
+        gh_json['release']['published_at'], '%Y-%m-%dT%H:%M:%SZ'
+    )
+
+    logger.info('Inserting activity into db.')
+    activity_service.insert_activity(metadata)
+    logger.info('Saving bundle.')
     store_bundle(tmp_bundle_path)
+    logger.info('Cleaning up.')
     clean_up(tmp_bundle_path, repo_path)

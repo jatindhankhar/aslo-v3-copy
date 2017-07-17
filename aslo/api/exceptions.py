@@ -8,6 +8,10 @@ class BuildProcessError(ReleaseError):
     pass
 
 
+class ScreenshotDoesNotExist(ReleaseError):
+    pass
+
+
 class ApiHttpError(Exception):
 
     def __init__(self, message, status_code=None):

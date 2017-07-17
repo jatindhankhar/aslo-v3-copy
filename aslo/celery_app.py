@@ -15,9 +15,6 @@ def init_celery(app):
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
 
-#        def on_failure(self, exc, task_id, args, kwargs, einfo):
-#            print('{0!r} failed: {1!r}'.format(task_id, exc))
-
     celery.Task = ContextTask
     celery.config_from_object(app.config, namespace='CELERY')
     app.celery = celery
