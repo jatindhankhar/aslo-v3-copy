@@ -34,12 +34,11 @@ def get_developers(repo_url):
 def find_tag_commit(repo_name, tag_name):
     g = auth()
     tags = g.get_repo(repo_name).get_tags()
-    tag_commit = None
     for tag in tags:
         if tag.name == tag_name:
-            tag_commit = tag.commit
+            return tag.commit
 
-    return tag_commit
+    return None
 
 
 def comment_on_commit(commit, message):
