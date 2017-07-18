@@ -9,14 +9,21 @@
 
 {% endblock %}
 {% block content %}
-<div class="row">
+
+<!-- Screenshot Carousel -->
+{% if current_release.screenshots %}
+<div class="row" style="padding: 40px;">
     <div class="col-lg-10 center-block">
- {% set screenshots=['http://via.placeholder.com/800x600','http://via.placeholder.com/800x600','http://via.placeholder.com/800x600'] %}
-{% with screenshots=screenshots %}
+ 
+{% with screenshots=current_release.screenshots.values() %}
 {% include "elements/screenshot_carousel.html" %}
 {% endwith %}
     </div>
 </div>
+{% endif %}
+<!-- End Screenshot Carousel -->
+
+
 <div class="row">
     <div class="col-lg-12 center-block">
         <div class="card" style="padding: 40px;">
@@ -24,7 +31,7 @@
                 <div class="col-lg-5">
                     
                     <!-- Activity Card -->
-                    {% with activity=activity,release=release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
+                    {% with activity=activity,release=current_release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
 
                     <!-- Developers Card -->
                     {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
