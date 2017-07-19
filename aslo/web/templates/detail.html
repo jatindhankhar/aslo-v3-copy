@@ -11,11 +11,11 @@
 {% block content %}
 
 <!-- Screenshot Carousel -->
-{% if current_release.screenshots %}
+<!-- TODO Make it generic to language code -->
+{% if current_release.screenshots and ('en' in current_release.screenshots) %}
 <div class="row" style="padding: 40px;">
     <div class="col-lg-10 center-block">
- 
-{% with screenshots=current_release.screenshots.values() %}
+{% with screenshots=current_release.screenshots['en'].values() %}
 {% include "elements/screenshot_carousel.html" %}
 {% endwith %}
     </div>

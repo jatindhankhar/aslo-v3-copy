@@ -12,7 +12,7 @@
     {% for screenshot in screenshots %}
     <!-- Only first item should be active -->
     <div class="item {%if loop.index0 == 0 %}{{"active"}}{% endif %}">
-      <img src="{{screenshot}}" class="img-responsive text-center"  alt="Screenshot">
+      <img src="{{screenshot[0]}}" class="img-responsive text-center"  alt="Screenshot">
     </div>
     {% endfor %}
 

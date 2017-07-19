@@ -47,4 +47,4 @@ def comment_on_commit(commit, message):
 def render_markdown(message):
     # https://developer.github.com/v3/markdown/
     g = auth()
-    g.render_markdown(message).decode()
+    return g.render_markdown(message).decode()
