@@ -304,13 +304,25 @@ def handle_release(gh_json):
                                                  translations)
        metadata['i18n_summary'] = i18n.translate_field(metadata['summary'],
                                                     translations)
+     
     else:
         metadata['i18n_name'] = {'en' : metadata['name']}
         if 'summary' not in metadata:
             metadata['i18n_summary'] = {'en' : "No summary"}
         else:
              metadata['i18n_summary'] = {'en' : metadata['summary']} 
- 
+
+    # If translations are there but name and summary fields are empty
+    if not any(metadata['i18n_name']):
+        metadata['i18n_name'] = {'en' : metadata['name']}
+    
+    if not any(metadata['i18n_summary']):
+        if 'summary' not in metadata:
+            metadata['i18n_summary'] = {'en' : "No summary"}
+        else:
+             metadata['i18n_summary'] = {'en' : metadata['summary']} 
+    
+     
     metadata['repository'] = repo_url
     metadata['developers'] = gh.get_developers(metadata['repository'])
     metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])
@@ -330,7 +342,7 @@ def handle_release(gh_json):
     metadata['release']['time'] = datetime.datetime.strptime(
         gh_json['release']['published_at'], '%Y-%m-%dT%H:%M:%SZ'
     )
-
+    
     logger.info('Inserting activity into db.')
     activity_service.insert_activity(metadata)
     logger.info('Saving bundle.')
