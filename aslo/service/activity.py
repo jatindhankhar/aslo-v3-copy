@@ -58,7 +58,8 @@ def insert_activity(data):
 
     activity.license = data['license']
     activity.repository = data['repository']
-    activity.categories = data['categories'].split()
+    if 'categories' in data:
+        activity.categories = data['categories'].split()
     activity.name = data['i18n_name']
     activity.summary = data['i18n_summary']
     set_developers(activity, data['developers'])

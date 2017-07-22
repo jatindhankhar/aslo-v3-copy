@@ -138,8 +138,8 @@ def get_activity_metadata(repo_path):
         return attributes
 
     def validate_mandatory_attributes(attributes):
-        MANDATORY_ATTRIBUTES = ['name', 'bundle_id', 'summary', 'license',
-                                'categories', 'icon', 'activity_version']
+        MANDATORY_ATTRIBUTES = ['name', 'bundle_id', 'license',
+                                'icon', 'activity_version']
         for attr in MANDATORY_ATTRIBUTES:
             if attr not in attributes:
                 raise ReleaseError(
@@ -299,11 +299,18 @@ def handle_release(gh_json):
     compare_version_in_bundlename_and_metadata(tmp_bundle_path, metadata)
 
     translations = i18n.get_translations(repo_path)
-    metadata['i18n_name'] = i18n.translate_field(metadata['name'],
+    if any(translations):
+       metadata['i18n_name'] = i18n.translate_field(metadata['name'],
                                                  translations)
-    metadata['i18n_summary'] = i18n.translate_field(metadata['summary'],
+       metadata['i18n_summary'] = i18n.translate_field(metadata['summary'],
                                                     translations)
-
+    else:
+        metadata['i18n_name'] = {'en' : metadata['name']}
+        if 'summary' not in metadata:
+            metadata['i18n_summary'] = {'en' : "No summary"}
+        else:
+             metadata['i18n_summary'] = {'en' : metadata['summary']} 
+ 
     metadata['repository'] = repo_url
     metadata['developers'] = gh.get_developers(metadata['repository'])
     metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])

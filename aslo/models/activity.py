@@ -16,10 +16,10 @@ class ActivityModel(AsloBaseModel):
     meta = {'collection': 'activity'}
     bundle_id = me.StringField(required=True, unique=True)
     name = me.DictField(required=True)
-    summary = me.DictField(required=True)
-    categories = me.ListField(me.StringField(max_length=30))
+    summary = me.DictField(required=True,default={'en' : "Unknown Summary"})
+    categories = me.ListField(me.StringField(max_length=30),default=["unknown"])
     repository = me.StringField(required=True)
-    license = me.StringField(required=True)
+    license = me.StringField(required=True,default="Unknown")
     icon = me.BinaryField(required=False, max_bytes=1000000)
     icon_hash = me.StringField(required=False)
     developers = me.EmbeddedDocumentListField(DeveloperModel, required=True)

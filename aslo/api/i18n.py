@@ -17,9 +17,8 @@ def get_translations(repo_path):
     translations = {}
     matched_files = glob.glob(os.path.join(po_files_location, '*.po'))
     if len(matched_files) == 0:
-        raise ReleaseError(
-            "No po files found at location . %s", po_files_location
-        )
+        # If no po files are found just continue working
+        return translations
 
     po_files = list(map(polib.pofile, matched_files))
     language_codes = list(map(get_language_code, matched_files))
