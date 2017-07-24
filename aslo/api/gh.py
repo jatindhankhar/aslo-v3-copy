@@ -44,6 +44,7 @@ def find_tag_commit(repo_name, tag_name):
 def comment_on_commit(commit, message):
     commit.create_comment(message)
 
+
 def render_markdown(message):
     # https://developer.github.com/v3/markdown/
     g = auth()

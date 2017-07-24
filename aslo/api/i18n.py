@@ -2,7 +2,6 @@ import os
 import glob
 import polib
 from aslo.celery_app import logger
-from .exceptions import ReleaseError
 
 
 def get_language_code(filepath):
@@ -23,7 +22,7 @@ def get_translations(repo_path):
     po_files = list(map(polib.pofile, matched_files))
     language_codes = list(map(get_language_code, matched_files))
 
-    # Intialize the dictionary
+    # Initialize the dictionary
     for language_code in language_codes:
         translations[language_code] = {}
 

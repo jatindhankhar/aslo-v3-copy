@@ -299,30 +299,22 @@ def handle_release(gh_json):
     compare_version_in_bundlename_and_metadata(tmp_bundle_path, metadata)
 
     translations = i18n.get_translations(repo_path)
-    if any(translations):
-       metadata['i18n_name'] = i18n.translate_field(metadata['name'],
-                                                 translations)
-       metadata['i18n_summary'] = i18n.translate_field(metadata['summary'],
-                                                    translations)
-     
-    else:
-        metadata['i18n_name'] = {'en' : metadata['name']}
-        if 'summary' not in metadata:
-            metadata['i18n_summary'] = {'en' : "No summary"}
-        else:
-             metadata['i18n_summary'] = {'en' : metadata['summary']} 
 
-    # If translations are there but name and summary fields are empty
-    if not any(metadata['i18n_name']):
-        metadata['i18n_name'] = {'en' : metadata['name']}
-    
-    if not any(metadata['i18n_summary']):
-        if 'summary' not in metadata:
-            metadata['i18n_summary'] = {'en' : "No summary"}
-        else:
-             metadata['i18n_summary'] = {'en' : metadata['summary']} 
-    
-     
+    if translations:
+        metadata['i18n_name'] = i18n.translate_field(metadata['name'],
+                                                     translations)
+        metadata['i18n_summary'] = i18n.translate_field(
+                                    metadata.get('summary', ''), translations)
+
+        # name and summary fields might have empty values or missing transl.
+        if not metadata['i18n_name']:
+            metadata['i18n_name'] = {'en': metadata['name']}
+        if not metadata['i18n_summary']:
+            metadata['i18n_summary'] = {'en': metadata.get('summary', '')}
+    else:
+        metadata['i18n_name'] = {'en': metadata['name']}
+        metadata['i18n_summary'] = {'en': metadata.get('summary', '')}
+
     metadata['repository'] = repo_url
     metadata['developers'] = gh.get_developers(metadata['repository'])
     metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])
@@ -338,11 +330,12 @@ def handle_release(gh_json):
     metadata['sugar'] = get_sugar_details(metadata, repo_path)
 
     metadata['release'] = {}
-    metadata['release']['notes'] = gh.render_markdown(gh_json['release']['body'])
+    metadata['release']['notes'] = gh.render_markdown(
+                                        gh_json['release']['body'])
     metadata['release']['time'] = datetime.datetime.strptime(
         gh_json['release']['published_at'], '%Y-%m-%dT%H:%M:%SZ'
     )
-    
+
     logger.info('Inserting activity into db.')
     activity_service.insert_activity(metadata)
     logger.info('Saving bundle.')
