@@ -316,7 +316,7 @@ def handle_release(gh_json):
         metadata['i18n_summary'] = {'en': metadata.get('summary', '')}
 
     metadata['repository'] = repo_url
-    metadata['developers'] = gh.get_developers(metadata['repository'])
+    metadata['developers'] = gh.get_developers(gh_json['repository']['full_name'])
     metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])
 
     try:
