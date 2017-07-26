@@ -10,3 +10,4 @@ mongoengine
 requests
 polib
 pygithub
+imgurpython
