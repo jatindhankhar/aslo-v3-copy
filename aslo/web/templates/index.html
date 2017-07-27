@@ -1,9 +1,9 @@
 {% extends "partials/layout.html" %}
 {% block title %} Software Center {% endblock %}
 {% block content %}
-{% if activities is none or activities|count == 0%}
+{% if activities is none or activities.items_per_page == 0%}
 <p> No activities build yet </p>
-{% else %} {% for activity_row in activities|batch(6) %}
+{% else %} {% for activity_row in activities.items|batch(6) %}
 <div class="row " style="margin-bottom: 15px;">
   {% for activity in activity_row %}
   <div class="col-lg-4">
