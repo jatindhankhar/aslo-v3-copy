@@ -1,7 +1,6 @@
 import hmac
 import hashlib
 from flask import current_app as app
-from urllib.parse import urlparse
 from github import Github
 
 
@@ -16,11 +15,8 @@ def auth():
 
 
 def get_developers(repo_url):
-    o = urlparse(repo_url)
-    repo = o.path[1:].strip('.git')
-
     g = auth()
-    repository = g.get_repo(repo)
+    repository = g.get_repo(repo_url)
     contributors = repository.get_contributors()
     developers = []
     for c in contributors:

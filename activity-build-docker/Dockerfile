@@ -1,4 +1,4 @@
-FROM fedora:22
+FROM fedora:26
 
 RUN dnf install -y git gettext sugar-toolkit-gtk3 sugar-toolkit
 

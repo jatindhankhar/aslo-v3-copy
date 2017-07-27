@@ -1,3 +1,4 @@
+flake8
 honcho
 gunicorn
 flask
@@ -9,3 +10,4 @@ mongoengine
 requests
 polib
 pygithub
+imgurpython

@@ -279,8 +279,9 @@ def handle_release(gh_json):
     xo_asset = None
 
     # TODO: Extract message to constants file
-    gh.comment_on_commit(tag_commit,
-                         "Build has started :hourglass_flowing_sand:")
+    gh.comment_on_commit(
+        tag_commit, "Build has started :hourglass_flowing_sand:"
+    )
 
     if 'assets' in release and len(release['assets']) != 0:
         xo_asset = xo_file_exists(release['assets'])
@@ -301,10 +302,12 @@ def handle_release(gh_json):
     translations = i18n.get_translations(repo_path)
 
     if translations:
-        metadata['i18n_name'] = i18n.translate_field(metadata['name'],
-                                                     translations)
+        metadata['i18n_name'] = i18n.translate_field(
+            metadata['name'], translations
+        )
         metadata['i18n_summary'] = i18n.translate_field(
-                                    metadata.get('summary', ''), translations)
+            metadata.get('summary', ''), translations
+        )
 
         # name and summary fields might have empty values or missing transl.
         if not metadata['i18n_name']:
@@ -316,7 +319,9 @@ def handle_release(gh_json):
         metadata['i18n_summary'] = {'en': metadata.get('summary', '')}
 
     metadata['repository'] = repo_url
-    metadata['developers'] = gh.get_developers(metadata['repository'])
+    metadata['developers'] = gh.get_developers(
+        gh_json['repository']['full_name']
+    )
     metadata['icon_bin'] = img.get_icon(repo_path, metadata['icon'])
 
     try:
@@ -331,7 +336,8 @@ def handle_release(gh_json):
 
     metadata['release'] = {}
     metadata['release']['notes'] = gh.render_markdown(
-                                        gh_json['release']['body'])
+        gh_json['release']['body']
+    )
     metadata['release']['time'] = datetime.datetime.strptime(
         gh_json['release']['published_at'], '%Y-%m-%dT%H:%M:%SZ'
     )

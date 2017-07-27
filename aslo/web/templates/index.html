@@ -28,4 +28,8 @@
   {% endfor %}
 </div>
 {% endfor %} {% endif %}
+
+{% with pagination=activities %}
+{% include "elements/pagination.html" %}
+{% endwith %}
 {% endblock %}
