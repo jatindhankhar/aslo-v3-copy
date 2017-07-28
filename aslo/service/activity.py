@@ -21,7 +21,7 @@ def add_release(activity, release):
             'current version {}'.format(
                 release.activity_version,
                 activity.latest_release.activity_version
-             )
+            )
         )
 
     activity.previous_releases.append(activity.latest_release)
@@ -101,3 +101,9 @@ def find_release(activity, activity_version):
                 return release
 
     return None
+
+
+def search_by_activity_name(activity_name):
+    en_query = me.Q(**{'name__en__icontains': activity_name})
+    en_US_query = me.Q(**{'name__en_US__icontains': activity_name})
+    return Activity.get_all().filter(en_query | en_US_query)

@@ -2,10 +2,10 @@ language: python
 python:
 - '3.5'
 - '3.6'
-
 sudo: false
 dist: trusty
-
 install: pip install -r requirements.txt
-
 script: cd aslo && flake8
+before_install:
+- openssl aes-256-cbc -K $encrypted_ad8f1517fc45_key -iv $encrypted_ad8f1517fc45_iv
+  -in .env.enc -out .env -d
