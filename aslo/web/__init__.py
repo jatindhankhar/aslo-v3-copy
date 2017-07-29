@@ -1,6 +1,22 @@
-from flask import Blueprint
+from flask import Blueprint, g
 
 web = Blueprint('web', __name__, template_folder='templates',
-                static_folder='static', static_url_path='/web/static')
+                static_folder='static',
+                static_url_path='/web/static',
+                url_prefix='/<lang_code>')
 
-from . import views # noqa
+
+@web.url_defaults
+def add_language_code(endpoint, values):
+    values.setdefault('lang_code', g.lang_code)
+
+
+@web.url_value_preprocessor
+def pull_lang_code(point, values):
+    g.lang_code = values.pop('lang_code')
+    if not g.lang_code.strip():
+        print("No code :(")
+        g.lang_code = 'en'
+
+
+from . import views  # noqa
