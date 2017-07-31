@@ -3,7 +3,9 @@
 {% block content %}
 {% if activities is none or activities.items_per_page == 0%}
 <p> No activities build yet </p>
-{% else %} {% for activity_row in activities.items|batch(6) %}
+{% else %} 
+{% include 'elements/flash_messages.html' %}
+{% for activity_row in activities.items|batch(6) %}
 <div class="row " style="margin-bottom: 15px;">
   {% for activity in activity_row %}
   <div class="col-lg-4">
@@ -29,7 +31,7 @@
 </div>
 {% endfor %} {% endif %}
 
-{% with pagination=activities %}
+{% with pagination=activities,search_query=search_query %}
 {% include "elements/pagination.html" %}
 {% endwith %}
 {% endblock %}
