@@ -1,4 +1,4 @@
-from flask import Blueprint, g
+from flask import Blueprint, g, session
 
 web = Blueprint('web', __name__, template_folder='templates',
                 static_folder='static',
@@ -14,9 +14,9 @@ def add_language_code(endpoint, values):
 @web.url_value_preprocessor
 def pull_lang_code(point, values):
     g.lang_code = values.pop('lang_code')
-    if not g.lang_code.strip():
-        print("No code :(")
-        g.lang_code = 'en'
+    # Tie user session to a particular language,
+    # so it can be retrived when we pop the request values
+    session['lang_code'] = g.lang_code
 
 
 from . import views  # noqa
