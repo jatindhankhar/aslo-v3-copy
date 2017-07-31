@@ -103,7 +103,13 @@ def find_release(activity, activity_version):
     return None
 
 
-def search_by_activity_name(activity_name):
-    en_query = me.Q(**{'name__en__icontains': activity_name})
-    en_US_query = me.Q(**{'name__en_US__icontains': activity_name})
-    return Activity.get_all().filter(en_query | en_US_query)
+def search_by_activity_name(activity_name, lang_code):
+    lang_filter_query = me.Q(**{'name__' + lang_code + '__exists': True})
+    name_match_query = me.Q(
+        **{'name__' + lang_code + '__icontains': activity_name})
+    return Activity.get_all().filter(lang_filter_query and name_match_query)
+
+
+def filter_by_language_code(lang_code):
+    lang_query = me.Q(**{'name__' + lang_code + '__exists': True})
+    return Activity.get_all().filter(lang_query)

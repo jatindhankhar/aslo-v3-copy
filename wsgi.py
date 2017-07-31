@@ -1,9 +1,20 @@
 from aslo import init_app
-from flask import request, redirect, g
+from flask import request, redirect, g, send_from_directory
 from flask.ext.babel import Babel
+import os
 
 application = init_app()
 babel = Babel(application)
+
+
+# Handle Annoyning Favicon.ico
+# TODO - Delegate static asset handling to Proxy Server
+# http://flask.pocoo.org/docs/0.12/patterns/favicon/
+@application.route('/favicon.ico')
+def handle_fav():
+    return send_from_directory(
+        os.path.join(application.root_path, 'web/static/'),
+        'favicon.ico')
 
 
 @babel.localeselector
@@ -21,7 +32,7 @@ def get_locale():
 
 @application.route('/')
 def handle_no_locale():
-    fallback_locale = get_locale()
+    fallback_locale = get_locale().strip()
     return redirect("/" + fallback_locale + request.full_path)
 
 
