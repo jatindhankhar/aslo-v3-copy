@@ -16,6 +16,9 @@ def env(variable, fallback_value=None):
 DEBUG = env('DEBUG', False)
 SECRET_KEY = env('SECRET_KEY', '')
 
+# BABEL
+BABEL_DEFAULT_LOCALE = env('BABEL_DEFAULT_LOCALE', 'en')
+
 # IMGUR API CREDENTIALS
 IMGUR_CLIENT_ID = env('IMGUR_CLIENT_ID', '')
 IMGUR_CLIENT_SECRET = env('IMGUR_CLIENT_SECRET', '')

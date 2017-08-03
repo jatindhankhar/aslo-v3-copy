@@ -3,9 +3,7 @@
     <div class="card-height-indicator"></div>
 
     <div class="card-content text-center">
-        <h3 class="card-image-headline"> {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US' in activity.name %} {{ activity.name.en_US
-            }} {% else %} {{ "No Name" }} {% endif %}</h3>
-
+        <h3 class="card-image-headline"> {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US','No Translation'))) }}</h3>
         <div class="card-image img-responsive">
             <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." />
         </div>

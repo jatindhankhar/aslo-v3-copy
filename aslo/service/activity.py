@@ -103,7 +103,35 @@ def find_release(activity, activity_version):
     return None
 
 
-def search_by_activity_name(activity_name):
-    en_query = me.Q(**{'name__en__icontains': activity_name})
-    en_US_query = me.Q(**{'name__en_US__icontains': activity_name})
-    return Activity.get_all().filter(en_query | en_US_query)
+def get_all(page=None, pagesize=None):
+    if page:
+        return Activity.paginate(page=page, pagesize=pagesize)
+    else:
+        return Activity.get_all()
+
+
+def filter_by_lang_code(lang_code, page=None, pagesize=None):
+    if lang_code in ['en_US', 'en']:
+        Qcomb = (me.Q(**{'name__en__exists': True}) |
+                 me.Q(**{'name__en_US__exists': True}))
+    else:
+        Qcomb = me.Q(**{'name__' + lang_code + '__exists': True})
+
+    if page:
+        return Activity.paginate(page=page, pagesize=pagesize, Qcomb=Qcomb)
+    else:
+        return Activity.query(Qcombination=Qcomb)
+
+
+def search_by_activity_name(activity_name, lang_code, page=None,
+                            pagesize=None):
+    if lang_code in ['en', 'en_US']:
+        Qcomb = (me.Q(**{'name__en__icontains': activity_name}) |
+                 me.Q(**{'name__en_US__icontains': activity_name}))
+    else:
+        Qcomb = me.Q(**{'name__' + lang_code + '__icontains': activity_name})
+
+    if page:
+        return Activity.paginate(page=page, pagesize=pagesize, Qcomb=Qcomb)
+    else:
+        return Activity.query(Qcombination=Qcomb)

@@ -2,30 +2,67 @@
 {% if pagination.num_pages > 1 %}
 <div class="text-center">
     <ul class="pagination pagination-lg">
-        <li {% if not pagination.has_prev %}class="disabled" {% endif %}>
+         {% if not pagination.has_prev %}
+            <li class="disabled" > <a>&laquo;</a> </li>
+         {% else %}
+         <li>
             {% if search_query %}
-            <a href="{{ url_for('web.search',name=[search_query],page=pagination.prev_page) }}">&laquo;</a>
+             <a href="{%if ignore_lang %}
+            {{ url_for('web.search',name=[search_query],page=pagination.prev_page,ignore_lang=true) }}
             {% else %}
-            <a href="{{ url_for('web.index',page=pagination.prev_page) }}">&laquo;</a>
+           {{ url_for('web.search',name=[search_query],page=pagination.prev_page) }}
+            {% endif %}"
+            >&laquo;</a>
+            {% else %}
+            <a href="{% if ignore_lang %}
+                  {{ url_for('web.index',page=pagination.prev_page,ignore_lang=true) }}
+                {% else %}
+                  {{ url_for('web.index',page=pagination.prev_page) }}
+                {% endif %}">&laquo;</a>
             {% endif %}
         </li>
+        {% endif %}
 
         {% for i in range(1, pagination.num_pages + 1) %}
         <li {% if pagination.page==i %}class="active" {% endif %}>
             {% if search_query %}
-            <a href="{{ url_for('web.search',name=[search_query],page=i)}}">{{ i }}</a>
+             <a href="{%if ignore_lang %}
+            {{ url_for('web.search',name=[search_query],page=i,ignore_lang=true) }}
             {% else %}
-            <a href="{{ url_for('web.index',page=i) }}">{{ i }}</a>
+           {{ url_for('web.search',name=[search_query],page=i) }}
+            {% endif %}"
+            >{{ i }}</a>
+            {% else %}
+            <a href="{% if ignore_lang %}
+                  {{ url_for('web.index',page=i,ignore_lang=true) }}
+                {% else %}
+                  {{ url_for('web.index',page=i) }}
+                {% endif %}">{{ i }}</a>
             {% endif %}
         </li>
         {% endfor %}
-        <li {% if not pagination.has_next %}class="disabled" {% endif %}>
+        {% if not pagination.has_next %}
+            <li class="disabled" > <a>&raquo;</a> </li>
+         {% else %}
+         <li>
             {% if search_query %}
-            <a href="{{ url_for('web.search',name=[search_query],page=pagination.next_page) }}">&raquo;</a>
+            <a href="{%if ignore_lang %}
+            {{ url_for('web.search',name=[search_query],page=pagination.next_page,ignore_lang=true) }}
             {% else %}
-            <a href="{{ url_for('web.index',page=pagination.next_page) }}">&raquo;</a>
+           {{ url_for('web.search',name=[search_query],page=pagination.next_page) }}
+            {% endif %}"
+            >
+            &raquo;</a>
+            {% else %}
+            <a href="{% if ignore_lang %}
+                  {{ url_for('web.index',page=pagination.next_page,ignore_lang=true) }}
+                {% else %}
+                  {{ url_for('web.index',page=pagination.next_page) }}
+                {% endif %}">
+           &raquo;</a>
             {% endif %}
         </li>
+        {% endif %}
     </ul>
 </div>
 {% endif %}
