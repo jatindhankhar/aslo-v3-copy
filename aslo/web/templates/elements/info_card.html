@@ -1,0 +1,26 @@
+<div class="card">
+    <h3 class="card-header warning-color-dark lighten-1 white-text text-center" style="padding: 15px;"> <i class="fa fa-database"></i> Details</h3>
+
+    
+
+        <div class="card-body">
+            <h4 style="padding: 20px;">
+                {{ activity.summary.get(lang_code,activity.summary.get('en',activity.summary.get('en_US','No Translation'))) }}
+            </h4>
+        </div>
+
+        <div class="card-footer">
+
+            {% if activity.categories|count != 0 %}
+            <div class="row" style="margin: 5px;">
+                {% for category in activity.categories %}
+                <a class="badge badge-tag grey" style="padding: 10px; margin:10px;"> <i class="fa fa-tag"></i>   {{ category }}</a> {%
+                endfor %}
+            </div>
+            {% endif %}
+           
+         {% with release=release,license=activity.license %} {% include "elements/meta_info_card.html" %} {% endwith %}
+
+        </div>
+
+</div>

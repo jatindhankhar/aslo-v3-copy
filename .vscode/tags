@@ -1,0 +1,313 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Access	../aslo/persistence/access.py	/^class Access(metaclass=abc.ABCMeta):$/;"	kind:class	line:5
+Access	../aslo/persistence/activity.py	/^from .access import Access$/;"	kind:namespace	line:1
+Access	../aslo/persistence/release.py	/^from .access import Access$/;"	kind:namespace	line:1
+Activity	../aslo/persistence/activity.py	/^class Activity(Access):$/;"	kind:class	line:5
+Activity	../aslo/service/activity.py	/^from aslo.persistence.activity import Activity$/;"	kind:namespace	line:8
+Activity	../aslo/web/views.py	/^from aslo.persistence.activity import Activity$/;"	kind:namespace	line:5
+ActivityModel	../aslo/models/activity.py	/^class ActivityModel(AsloBaseModel):$/;"	kind:class	line:15
+ActivityModel	../aslo/service/activity.py	/^from aslo.models.activity import ActivityModel, DeveloperModel$/;"	kind:namespace	line:5
+ApiHttpError	../aslo/api/errors.py	/^from .exceptions import ApiHttpError$/;"	kind:namespace	line:4
+ApiHttpError	../aslo/api/exceptions.py	/^class ApiHttpError(Exception):$/;"	kind:class	line:15
+ApiHttpError	../aslo/api/views.py	/^from .exceptions import ApiHttpError$/;"	kind:namespace	line:4
+AsloBaseModel	../aslo/models/activity.py	/^from .base import AsloBaseModel$/;"	kind:namespace	line:4
+AsloBaseModel	../aslo/models/base.py	/^class AsloBaseModel(me.Document):$/;"	kind:class	line:4
+AsloBaseModel	../aslo/models/release.py	/^from .base import AsloBaseModel$/;"	kind:namespace	line:4
+BABEL_DEFAULT_LOCALE	../aslo/settings.py	/^BABEL_DEFAULT_LOCALE = env('BABEL_DEFAULT_LOCALE', 'en')$/;"	kind:variable	line:20
+BUILD_BUNDLE_DIR	../aslo/settings.py	/^BUILD_BUNDLE_DIR = env('BUILD_BUNDLE_DIR', '\/srv\/activities\/')$/;"	kind:variable	line:46
+BUILD_CLONE_REPO	../aslo/settings.py	/^BUILD_CLONE_REPO = env('BUILD_CLONE_REPO', '\/var\/tmp\/activities\/')$/;"	kind:variable	line:44
+BUILD_DOCKER_IMAGE	../aslo/settings.py	/^BUILD_DOCKER_IMAGE = env('BUILD_DOCKER_IMAGE', 'sugar-activity-build')$/;"	kind:variable	line:42
+Babel	../wsgi.py	/^from flask.ext.babel import Babel$/;"	kind:namespace	line:3
+Blueprint	../aslo/api/__init__.py	/^from flask import Blueprint$/;"	kind:namespace	line:1
+Blueprint	../aslo/web/__init__.py	/^from flask import Blueprint, g, session$/;"	kind:namespace	line:1
+BuildProcessError	../aslo/api/exceptions.py	/^class BuildProcessError(ReleaseError):$/;"	kind:class	line:7
+BuildProcessError	../aslo/api/release.py	/^from .exceptions import ReleaseError, BuildProcessError, ScreenshotDoesNotExist$/;"	kind:namespace	line:14
+BuildProcessError	../aslo/api/tasks.py	/^from .exceptions import ReleaseError, BuildProcessError$/;"	kind:namespace	line:3
+CELERY_BROKER_URL	../aslo/settings.py	/^CELERY_BROKER_URL = env('CELERY_BROKER_URL', REDIS_URI)$/;"	kind:variable	line:33
+CELERY_TASK_IGNORE_RESULT	../aslo/settings.py	/^CELERY_TASK_IGNORE_RESULT = True$/;"	kind:variable	line:34
+Celery	../aslo/celery_app.py	/^from celery import Celery$/;"	kind:namespace	line:2
+ContextTask	../aslo/celery_app.py	/^    class ContextTask(TaskBase):$/;"	kind:class	line:11
+DEBUG	../aslo/settings.py	/^DEBUG = env('DEBUG', False)$/;"	kind:variable	line:16
+DeveloperModel	../aslo/models/activity.py	/^class DeveloperModel(me.DynamicEmbeddedDocument):$/;"	kind:class	line:8
+DeveloperModel	../aslo/service/activity.py	/^from aslo.models.activity import ActivityModel, DeveloperModel$/;"	kind:namespace	line:5
+Flask	../aslo/__init__.py	/^from flask import Flask$/;"	kind:namespace	line:1
+GITHUB_HOOK_SECRET	../aslo/settings.py	/^GITHUB_HOOK_SECRET = env('GITHUB_HOOK_SECRET', '')$/;"	kind:variable	line:27
+GITHUB_OAUTH_TOKEN	../aslo/settings.py	/^GITHUB_OAUTH_TOKEN = env('GITHUB_OAUTH_TOKEN', '')$/;"	kind:variable	line:29
+Github	../aslo/api/gh.py	/^from github import Github$/;"	kind:namespace	line:4
+HandleHttpApiError	../aslo/api/errors.py	/^def HandleHttpApiError(e):$/;"	kind:function	line:8
+IMGUR_CLIENT_ID	../aslo/settings.py	/^IMGUR_CLIENT_ID = env('IMGUR_CLIENT_ID', '')$/;"	kind:variable	line:23
+IMGUR_CLIENT_SECRET	../aslo/settings.py	/^IMGUR_CLIENT_SECRET = env('IMGUR_CLIENT_SECRET', '')$/;"	kind:variable	line:24
+ImgurClient	../aslo/api/img.py	/^from imgurpython import ImgurClient$/;"	kind:namespace	line:8
+MONGO_DBNAME	../aslo/settings.py	/^MONGO_DBNAME = env('MONGO_DBNAME', 'aslo')$/;"	kind:variable	line:37
+MONGO_URI	../aslo/settings.py	/^MONGO_URI = env('MONGO_URI', 'mongodb:\/\/localhost\/%s' % MONGO_DBNAME)$/;"	kind:variable	line:38
+MongoDBAccess	../aslo/models/__init__.py	/^class MongoDBAccess():$/;"	kind:class	line:3
+MongoDBAccess	../aslo/models/activity.py	/^from . import MongoDBAccess$/;"	kind:namespace	line:3
+MongoDBAccess	../aslo/models/base.py	/^class MongoDBAccess():$/;"	kind:class	line:15
+MongoDBAccess	../aslo/models/release.py	/^from . import MongoDBAccess$/;"	kind:namespace	line:3
+Pagination	../aslo/persistence/access.py	/^class Pagination:$/;"	kind:class	line:41
+Pagination	../aslo/web/views.py	/^from aslo.persistence.access import Pagination$/;"	kind:namespace	line:7
+REDIS_URI	../aslo/settings.py	/^REDIS_URI = env('REDIS_URL', 'redis:\/\/localhost:6379\/1')$/;"	kind:variable	line:32
+Release	../aslo/persistence/release.py	/^class Release(Access):$/;"	kind:class	line:5
+Release	../aslo/service/activity.py	/^from aslo.persistence.release import Release$/;"	kind:namespace	line:7
+ReleaseError	../aslo/api/exceptions.py	/^class ReleaseError(Exception):$/;"	kind:class	line:3
+ReleaseError	../aslo/api/img.py	/^from .exceptions import ReleaseError, ScreenshotDoesNotExist$/;"	kind:namespace	line:7
+ReleaseError	../aslo/api/release.py	/^from .exceptions import ReleaseError, BuildProcessError, ScreenshotDoesNotExist$/;"	kind:namespace	line:14
+ReleaseError	../aslo/api/tasks.py	/^from .exceptions import ReleaseError, BuildProcessError$/;"	kind:namespace	line:3
+ReleaseError	../aslo/service/activity.py	/^from aslo.api.exceptions import ReleaseError$/;"	kind:namespace	line:4
+ReleaseModel	../aslo/models/activity.py	/^from .release import ReleaseModel$/;"	kind:namespace	line:5
+ReleaseModel	../aslo/models/release.py	/^class ReleaseModel(AsloBaseModel):$/;"	kind:class	line:7
+ReleaseModel	../aslo/service/activity.py	/^from aslo.models.release import ReleaseModel$/;"	kind:namespace	line:6
+SECRET_KEY	../aslo/settings.py	/^SECRET_KEY = env('SECRET_KEY', '')$/;"	kind:variable	line:17
+ScreenshotDoesNotExist	../aslo/api/exceptions.py	/^class ScreenshotDoesNotExist(ReleaseError):$/;"	kind:class	line:11
+ScreenshotDoesNotExist	../aslo/api/img.py	/^from .exceptions import ReleaseError, ScreenshotDoesNotExist$/;"	kind:namespace	line:7
+ScreenshotDoesNotExist	../aslo/api/release.py	/^from .exceptions import ReleaseError, BuildProcessError, ScreenshotDoesNotExist$/;"	kind:namespace	line:14
+TEMP_BUNDLE_DIR	../aslo/settings.py	/^TEMP_BUNDLE_DIR = env('TEMP_BUNDLE_DIR', '\/var\/tmp\/bundles\/')$/;"	kind:variable	line:48
+TaskBase	../aslo/celery_app.py	/^TaskBase = celery.Task$/;"	kind:variable	line:6
+__call__	../aslo/celery_app.py	/^        def __call__(self, *args, **kwargs):$/;"	kind:member	line:14
+__init__	../aslo/api/exceptions.py	/^    def __init__(self, message, status_code=None):$/;"	kind:member	line:17
+__init__	../aslo/models/__init__.py	/^    def __init__(self, model):$/;"	kind:member	line:4
+__init__	../aslo/models/base.py	/^    def __init__(self, model):$/;"	kind:member	line:16
+__init__	../aslo/persistence/access.py	/^    def __init__(self, items, page, items_per_page, total_items):$/;"	kind:member	line:42
+__init__.py	../aslo/__init__.py	1;"	kind:file	line:1
+__init__.py	../aslo/api/__init__.py	1;"	kind:file	line:1
+__init__.py	../aslo/models/__init__.py	1;"	kind:file	line:1
+__init__.py	../aslo/persistence/__init__.py	1;"	kind:file	line:1
+__init__.py	../aslo/service/__init__.py	1;"	kind:file	line:1
+__init__.py	../aslo/web/__init__.py	1;"	kind:file	line:1
+_get_impl	../aslo/persistence/access.py	/^    def _get_impl(cls):$/;"	kind:member	line:9
+_get_impl	../aslo/persistence/activity.py	/^    def _get_impl(cls):$/;"	kind:member	line:9
+_get_impl	../aslo/persistence/release.py	/^    def _get_impl(cls):$/;"	kind:member	line:9
+abc	../aslo/persistence/access.py	/^import abc$/;"	kind:namespace	line:1
+abstract	../aslo/celery_app.py	/^        abstract = True$/;"	kind:variable	line:12
+access.py	../aslo/persistence/access.py	1;"	kind:file	line:1
+access_log_format	../gunicorn_config.py	/^access_log_format = '%(m)s %(U)s status=%(s)s time=%(T)ss size=%(B)sb'$/;"	kind:variable	line:11
+accesslog	../gunicorn_config.py	/^accesslog = '-'$/;"	kind:variable	line:10
+activity.py	../aslo/models/activity.py	1;"	kind:file	line:1
+activity.py	../aslo/persistence/activity.py	1;"	kind:file	line:1
+activity.py	../aslo/service/activity.py	1;"	kind:file	line:1
+activity_access	../aslo/models/activity.py	/^activity_access = MongoDBAccess(ActivityModel)$/;"	kind:variable	line:31
+activity_access	../aslo/persistence/activity.py	/^from aslo.models.activity import activity_access$/;"	kind:namespace	line:2
+activity_detail	../aslo/web/views.py	/^def activity_detail(bundle_id, activity_version):$/;"	kind:function	line:39
+activity_service	../aslo/api/img.py	/^from aslo.service import activity as activity_service$/;"	kind:namespace	line:6
+activity_service	../aslo/api/release.py	/^from aslo.service import activity as activity_service$/;"	kind:namespace	line:12
+activity_service	../aslo/web/views.py	/^from aslo.service import activity as activity_service$/;"	kind:namespace	line:6
+activity_version	../aslo/models/release.py	/^    activity_version = me.FloatField(required=True)$/;"	kind:variable	line:9
+add_language_code	../aslo/web/__init__.py	/^def add_language_code(endpoint, values):$/;"	kind:function	line:10
+add_or_update	../aslo/models/__init__.py	/^    def add_or_update(model_object):$/;"	kind:member	line:17
+add_or_update	../aslo/models/base.py	/^    def add_or_update(model_object):$/;"	kind:member	line:29
+add_or_update	../aslo/persistence/access.py	/^    def add_or_update(cls, obj):$/;"	kind:member	line:21
+add_release	../aslo/service/activity.py	/^def add_release(activity, release):$/;"	kind:function	line:11
+api	../aslo/__init__.py	/^    from .api import api$/;"	kind:namespace	line:19
+api	../aslo/api/__init__.py	/^api = Blueprint('api', __name__)$/;"	kind:variable	line:3
+api	../aslo/api/errors.py	/^from . import api$/;"	kind:namespace	line:3
+api	../aslo/api/views.py	/^from . import api$/;"	kind:namespace	line:3
+app	../aslo/api/gh.py	/^from flask import current_app as app$/;"	kind:namespace	line:3
+app	../aslo/api/img.py	/^from flask import current_app as app$/;"	kind:namespace	line:5
+app	../aslo/api/release.py	/^from flask import current_app as app$/;"	kind:namespace	line:11
+app	../aslo/api/views.py	/^from flask import request, current_app as app$/;"	kind:namespace	line:1
+application	../wsgi.py	/^application = init_app()$/;"	kind:variable	line:6
+auth	../aslo/api/gh.py	/^def auth():$/;"	kind:function	line:12
+avatar	../aslo/models/activity.py	/^    avatar = me.URLField()$/;"	kind:variable	line:12
+b64encode	../aslo/filters.py	/^def b64encode(s):$/;"	kind:function	line:4
+babel	../wsgi.py	/^babel = Babel(application)$/;"	kind:variable	line:7
+base.py	../aslo/models/base.py	1;"	kind:file	line:1
+base64	../aslo/filters.py	/^import base64$/;"	kind:namespace	line:1
+bind	../gunicorn_config.py	/^bind = '0.0.0.0:%s' % os.environ.get('PORT', '5000')$/;"	kind:variable	line:4
+bundle_id	../aslo/models/activity.py	/^    bundle_id = me.StringField(required=True, unique=True)$/;"	kind:variable	line:17
+categories	../aslo/models/activity.py	/^    categories = me.ListField(me.StringField(max_length=30),$/;"	kind:variable	line:20
+ceil	../aslo/persistence/access.py	/^from math import ceil$/;"	kind:namespace	line:2
+celery	../aslo/api/tasks.py	/^from aslo.celery_app import celery, logger$/;"	kind:namespace	line:1
+celery	../aslo/celery_app.py	/^celery = Celery(__name__)$/;"	kind:variable	line:5
+celery	../worker.py	/^celery = init_app().celery$/;"	kind:variable	line:3
+celery_app.py	../aslo/celery_app.py	1;"	kind:file	line:1
+check_bundle	../aslo/api/release.py	/^    def check_bundle():$/;"	kind:function	line:160
+clean_up	../aslo/api/release.py	/^def clean_up(tmp_bundle_path, repo_path):$/;"	kind:function	line:265
+clone_repo	../aslo/api/release.py	/^def clone_repo(url, tag, repo_path):$/;"	kind:function	line:93
+comment_on_commit	../aslo/api/gh.py	/^def comment_on_commit(commit, message):$/;"	kind:function	line:40
+comment_on_commit	../aslo/api/tasks.py	/^from .gh import find_tag_commit, comment_on_commit$/;"	kind:namespace	line:4
+compare_version_in_bundlename_and_metadata	../aslo/api/release.py	/^def compare_version_in_bundlename_and_metadata(tmp_bundle_path, metadata):$/;"	kind:function	line:180
+configparser	../aslo/api/release.py	/^import configparser$/;"	kind:namespace	line:3
+datetime	../aslo/api/release.py	/^import datetime$/;"	kind:namespace	line:5
+default	../aslo/models/activity.py	/^                              default=["unknown"])$/;"	kind:variable	line:21
+delete	../aslo/models/__init__.py	/^    def delete(model_object):$/;"	kind:member	line:21
+delete	../aslo/models/base.py	/^    def delete(model_object):$/;"	kind:member	line:33
+delete	../aslo/persistence/access.py	/^    def delete(cls, obj):$/;"	kind:member	line:25
+determine_min_sugar_version	../aslo/api/release.py	/^    def determine_min_sugar_version(is_gtk3, is_web, has_old_toolbars):$/;"	kind:function	line:231
+developers	../aslo/models/activity.py	/^    developers = me.EmbeddedDocumentListField(DeveloperModel, required=True)$/;"	kind:variable	line:26
+download_attached_xo	../aslo/api/release.py	/^def download_attached_xo(xo):$/;"	kind:function	line:34
+download_url	../aslo/models/release.py	/^    download_url = me.URLField(required=True)$/;"	kind:variable	line:13
+email	../aslo/models/activity.py	/^    email = me.EmailField()$/;"	kind:variable	line:10
+env	../aslo/settings.py	/^def env(variable, fallback_value=None):$/;"	kind:function	line:4
+errors	../aslo/api/__init__.py	/^from . import views, errors # noqa$/;"	kind:namespace	line:5
+errors.py	../aslo/api/errors.py	1;"	kind:file	line:1
+exceptions.py	../aslo/api/exceptions.py	1;"	kind:file	line:1
+extract_xo	../aslo/api/release.py	/^    def extract_xo(xo_archive):$/;"	kind:function	line:65
+filter_by_language_code	../aslo/service/activity.py	/^def filter_by_language_code(lang_code):$/;"	kind:function	line:113
+filters.py	../aslo/filters.py	1;"	kind:file	line:1
+find_release	../aslo/service/activity.py	/^def find_release(activity, activity_version):$/;"	kind:function	line:94
+find_tag_commit	../aslo/api/gh.py	/^def find_tag_commit(repo_name, tag_name):$/;"	kind:function	line:30
+find_tag_commit	../aslo/api/tasks.py	/^from .gh import find_tag_commit, comment_on_commit$/;"	kind:namespace	line:4
+g	../aslo/web/__init__.py	/^from flask import Blueprint, g, session$/;"	kind:namespace	line:1
+g	../wsgi.py	/^from flask import request, redirect, g, send_from_directory$/;"	kind:namespace	line:2
+get_activity_metadata	../aslo/api/release.py	/^def get_activity_metadata(repo_path):$/;"	kind:function	line:116
+get_all	../aslo/models/__init__.py	/^    def get_all(self):$/;"	kind:member	line:13
+get_all	../aslo/models/base.py	/^    def get_all(self):$/;"	kind:member	line:25
+get_all	../aslo/persistence/access.py	/^    def get_all(cls):$/;"	kind:member	line:17
+get_all_screenshots	../aslo/service/activity.py	/^def get_all_screenshots(bundle_id):$/;"	kind:function	line:43
+get_bundle_path	../aslo/api/release.py	/^def get_bundle_path(bundle_name):$/;"	kind:function	line:20
+get_by_bundle_id	../aslo/persistence/activity.py	/^    def get_by_bundle_id(cls, value):$/;"	kind:member	line:13
+get_by_id	../aslo/models/__init__.py	/^    def get_by_id(self, value):$/;"	kind:member	line:7
+get_by_id	../aslo/models/base.py	/^    def get_by_id(self, value):$/;"	kind:member	line:19
+get_by_id	../aslo/persistence/access.py	/^    def get_by_id(cls, _id):$/;"	kind:member	line:13
+get_developers	../aslo/api/gh.py	/^def get_developers(repo_url):$/;"	kind:function	line:17
+get_icon	../aslo/api/img.py	/^def get_icon(repo_path, icon_name):$/;"	kind:function	line:11
+get_img_hash	../aslo/api/img.py	/^def get_img_hash(img_path, blocksize=2**20):$/;"	kind:function	line:25
+get_language_code	../aslo/api/i18n.py	/^def get_language_code(filepath):$/;"	kind:function	line:7
+get_locale	../wsgi.py	/^def get_locale():$/;"	kind:function	line:21
+get_screenshots	../aslo/api/img.py	/^def get_screenshots(repo_path, bundle_id):$/;"	kind:function	line:42
+get_sugar_details	../aslo/api/release.py	/^def get_sugar_details(activity, repo_path):$/;"	kind:function	line:191
+get_task_logger	../aslo/celery_app.py	/^from celery.utils.log import get_task_logger$/;"	kind:namespace	line:3
+get_translations	../aslo/api/i18n.py	/^def get_translations(repo_path):$/;"	kind:function	line:12
+gh	../aslo/api/release.py	/^from . import gh$/;"	kind:namespace	line:15
+gh.py	../aslo/api/gh.py	1;"	kind:file	line:1
+glob	../aslo/api/i18n.py	/^import glob$/;"	kind:namespace	line:2
+glob	../aslo/api/img.py	/^import glob$/;"	kind:namespace	line:2
+gunicorn_config.py	../gunicorn_config.py	1;"	kind:file	line:1
+handle_fav	../wsgi.py	/^def handle_fav():$/;"	kind:function	line:14
+handle_no_locale	../wsgi.py	/^def handle_no_locale():$/;"	kind:function	line:34
+handle_release	../aslo/api/release.py	/^def handle_release(gh_json):$/;"	kind:function	line:273
+handle_release	../aslo/api/tasks.py	/^from .release import handle_release$/;"	kind:namespace	line:2
+has_next	../aslo/persistence/access.py	/^    def has_next(self):$/;"	kind:member	line:50
+has_old_toolbars	../aslo/api/release.py	/^    def has_old_toolbars():$/;"	kind:function	line:220
+has_old_toolbars	../aslo/models/release.py	/^    has_old_toolbars = me.BooleanField(required=False, default=False)$/;"	kind:variable	line:16
+has_prev	../aslo/persistence/access.py	/^    def has_prev(self):$/;"	kind:member	line:54
+hashlib	../aslo/api/gh.py	/^import hashlib$/;"	kind:namespace	line:2
+hashlib	../aslo/api/img.py	/^import hashlib$/;"	kind:namespace	line:3
+hashlib	../aslo/service/activity.py	/^import hashlib$/;"	kind:namespace	line:2
+hmac	../aslo/api/gh.py	/^import hmac$/;"	kind:namespace	line:1
+hook	../aslo/api/views.py	/^def hook():$/;"	kind:function	line:10
+host	../wsgi.py	/^    host = '0.0.0.0'$/;"	kind:variable	line:40
+i18n	../aslo/api/release.py	/^from . import i18n$/;"	kind:namespace	line:16
+i18n.py	../aslo/api/i18n.py	1;"	kind:file	line:1
+icon	../aslo/models/activity.py	/^    icon = me.BinaryField(required=False, max_bytes=1000000)$/;"	kind:variable	line:24
+icon_hash	../aslo/models/activity.py	/^    icon_hash = me.StringField(required=False)$/;"	kind:variable	line:25
+img	../aslo/api/release.py	/^from . import img$/;"	kind:namespace	line:17
+img.py	../aslo/api/img.py	1;"	kind:file	line:1
+impl	../aslo/persistence/activity.py	/^    impl = activity_access$/;"	kind:variable	line:6
+impl	../aslo/persistence/release.py	/^    impl = release_access$/;"	kind:variable	line:6
+index	../aslo/web/views.py	/^def index(page=1, items_per_page=10):$/;"	kind:function	line:12
+init_app	../aslo/__init__.py	/^def init_app():$/;"	kind:function	line:7
+init_app	../worker.py	/^from aslo import init_app$/;"	kind:namespace	line:1
+init_app	../wsgi.py	/^from aslo import init_app$/;"	kind:namespace	line:1
+init_celery	../aslo/__init__.py	/^    from .celery_app import init_celery$/;"	kind:namespace	line:12
+init_celery	../aslo/celery_app.py	/^def init_celery(app):$/;"	kind:function	line:10
+init_filters	../aslo/__init__.py	/^    from .filters import init_filters$/;"	kind:namespace	line:37
+init_filters	../aslo/filters.py	/^def init_filters(app):$/;"	kind:function	line:8
+insert_activity	../aslo/service/activity.py	/^def insert_activity(data):$/;"	kind:function	line:53
+invoke_bundle_build	../aslo/api/release.py	/^def invoke_bundle_build(repo_path):$/;"	kind:function	line:159
+is_gtk3	../aslo/api/release.py	/^    def is_gtk3():$/;"	kind:function	line:194
+is_gtk3	../aslo/models/release.py	/^    is_gtk3 = me.BooleanField(required=True, default=False)$/;"	kind:variable	line:15
+is_web	../aslo/api/release.py	/^    def is_web():$/;"	kind:function	line:215
+is_web	../aslo/models/release.py	/^    is_web = me.BooleanField(required=True, default=False)$/;"	kind:variable	line:14
+json	../aslo/api/errors.py	/^import json$/;"	kind:namespace	line:1
+latest_release	../aslo/models/activity.py	/^    latest_release = me.ReferenceField(ReleaseModel)$/;"	kind:variable	line:27
+license	../aslo/models/activity.py	/^    license = me.StringField(required=True)$/;"	kind:variable	line:23
+logger	../aslo/__init__.py	/^logger = logging.getLogger(__name__)$/;"	kind:variable	line:4
+logger	../aslo/api/i18n.py	/^from aslo.celery_app import logger$/;"	kind:namespace	line:4
+logger	../aslo/api/release.py	/^from aslo.celery_app import logger$/;"	kind:namespace	line:13
+logger	../aslo/api/tasks.py	/^from aslo.celery_app import celery, logger$/;"	kind:namespace	line:1
+logger	../aslo/celery_app.py	/^logger = get_task_logger(__name__)$/;"	kind:variable	line:7
+logging	../aslo/__init__.py	/^import logging$/;"	kind:namespace	line:2
+logging	../aslo/celery_app.py	/^import logging$/;"	kind:namespace	line:1
+make_response	../aslo/api/errors.py	/^from flask import make_response$/;"	kind:namespace	line:2
+me	../aslo/models/activity.py	/^import mongoengine as me$/;"	kind:namespace	line:1
+me	../aslo/models/base.py	/^import mongoengine as me$/;"	kind:namespace	line:1
+me	../aslo/models/release.py	/^import mongoengine as me$/;"	kind:namespace	line:1
+me	../aslo/service/__init__.py	/^import mongoengine as me$/;"	kind:namespace	line:1
+me	../aslo/service/activity.py	/^import mongoengine as me$/;"	kind:namespace	line:1
+meta	../aslo/models/activity.py	/^    meta = {'collection': 'activity'}$/;"	kind:variable	line:16
+meta	../aslo/models/base.py	/^    meta = {$/;"	kind:variable	line:7
+meta	../aslo/models/release.py	/^    meta = {'collection': 'release'}$/;"	kind:variable	line:8
+metadata_file_exists	../aslo/api/release.py	/^    def metadata_file_exists():$/;"	kind:function	line:117
+min_sugar_version	../aslo/models/release.py	/^    min_sugar_version = me.FloatField(required=True)$/;"	kind:variable	line:11
+multiprocessing	../gunicorn_config.py	/^import multiprocessing$/;"	kind:namespace	line:2
+name	../aslo/models/activity.py	/^    name = me.DictField(required=True)$/;"	kind:variable	line:18
+name	../aslo/models/activity.py	/^    name = me.StringField(required=True)$/;"	kind:variable	line:9
+next_page	../aslo/persistence/access.py	/^    def next_page(self):$/;"	kind:member	line:58
+noqa	../aslo/api/__init__.py	/^from . import views, errors # noqa$/;"	kind:namespace	line:5
+noqa	../aslo/web/__init__.py	/^from . import views  # noqa$/;"	kind:namespace	line:22
+os	../aslo/api/i18n.py	/^import os$/;"	kind:namespace	line:1
+os	../aslo/api/img.py	/^import os$/;"	kind:namespace	line:1
+os	../aslo/api/release.py	/^import os$/;"	kind:namespace	line:1
+os	../aslo/settings.py	/^import os$/;"	kind:namespace	line:1
+os	../gunicorn_config.py	/^import os$/;"	kind:namespace	line:1
+os	../wsgi.py	/^import os$/;"	kind:namespace	line:4
+page	../aslo/models/activity.py	/^    page = me.URLField()$/;"	kind:variable	line:11
+paginate	../aslo/persistence/access.py	/^    def paginate(cls, page=1, items_per_page=10):$/;"	kind:member	line:29
+parse_metadata_file	../aslo/api/release.py	/^    def parse_metadata_file(activity_file):$/;"	kind:function	line:126
+polib	../aslo/api/i18n.py	/^import polib$/;"	kind:namespace	line:3
+prev_page	../aslo/persistence/access.py	/^    def prev_page(self):$/;"	kind:member	line:62
+previous_releases	../aslo/models/activity.py	/^    previous_releases = me.ListField(me.ReferenceField(ReleaseModel))$/;"	kind:variable	line:28
+pull_lang_code	../aslo/web/__init__.py	/^def pull_lang_code(point, values):$/;"	kind:function	line:15
+re	../aslo/api/release.py	/^import re$/;"	kind:namespace	line:8
+redirect	../wsgi.py	/^from flask import request, redirect, g, send_from_directory$/;"	kind:namespace	line:2
+release.py	../aslo/api/release.py	1;"	kind:file	line:1
+release.py	../aslo/models/release.py	1;"	kind:file	line:1
+release.py	../aslo/persistence/release.py	1;"	kind:file	line:1
+release_access	../aslo/models/release.py	/^release_access = MongoDBAccess(ReleaseModel)$/;"	kind:variable	line:22
+release_access	../aslo/persistence/release.py	/^from aslo.models.release import release_access$/;"	kind:namespace	line:2
+release_notes	../aslo/models/release.py	/^    release_notes = me.StringField(required=True)$/;"	kind:variable	line:10
+release_process	../aslo/api/tasks.py	/^def release_process(self, gh_json):$/;"	kind:function	line:8
+release_process	../aslo/api/views.py	/^from .tasks import release_process$/;"	kind:namespace	line:5
+render_markdown	../aslo/api/gh.py	/^def render_markdown(message):$/;"	kind:function	line:44
+render_template	../aslo/web/views.py	/^from flask import (render_template,$/;"	kind:namespace	line:2
+repository	../aslo/models/activity.py	/^    repository = me.StringField(required=True)$/;"	kind:variable	line:22
+request	../aslo/api/views.py	/^from flask import request, current_app as app$/;"	kind:namespace	line:1
+request	../wsgi.py	/^from flask import request, redirect, g, send_from_directory$/;"	kind:namespace	line:2
+requests	../aslo/api/release.py	/^import requests$/;"	kind:namespace	line:4
+screenshots	../aslo/models/release.py	/^    screenshots = me.DictField()$/;"	kind:variable	line:17
+search	../aslo/web/views.py	/^def search(page=1, items_per_page=10):$/;"	kind:function	line:56
+search_by_activity_name	../aslo/service/activity.py	/^def search_by_activity_name(activity_name, lang_code):$/;"	kind:function	line:106
+send_from_directory	../wsgi.py	/^from flask import request, redirect, g, send_from_directory$/;"	kind:namespace	line:2
+session	../aslo/web/__init__.py	/^from flask import Blueprint, g, session$/;"	kind:namespace	line:1
+set_developers	../aslo/service/activity.py	/^def set_developers(activity, developers):$/;"	kind:function	line:31
+settings.py	../aslo/settings.py	1;"	kind:file	line:1
+setup_db	../aslo/__init__.py	/^    from .service import setup_db$/;"	kind:namespace	line:33
+setup_db	../aslo/service/__init__.py	/^def setup_db(app):$/;"	kind:function	line:4
+shutil	../aslo/api/release.py	/^import shutil$/;"	kind:namespace	line:2
+sp	../aslo/api/release.py	/^import subprocess as sp$/;"	kind:namespace	line:9
+static_folder	../aslo/web/__init__.py	/^                static_folder='static',$/;"	kind:variable	line:4
+static_url_path	../aslo/web/__init__.py	/^                static_url_path='\/web\/static',$/;"	kind:variable	line:5
+store_bundle	../aslo/api/release.py	/^def store_bundle(tmp_bundle_path):$/;"	kind:function	line:249
+summary	../aslo/models/activity.py	/^    summary = me.DictField(required=True)$/;"	kind:variable	line:19
+tasks.py	../aslo/api/tasks.py	1;"	kind:file	line:1
+timeout	../gunicorn_config.py	/^timeout = int(os.environ.get('G_TIMEOUT', 30))$/;"	kind:variable	line:8
+timestamp	../aslo/models/release.py	/^    timestamp = me.DateTimeField(required=True)$/;"	kind:variable	line:19
+to_dict	../aslo/api/exceptions.py	/^    def to_dict(self):$/;"	kind:member	line:22
+to_dict	../aslo/models/base.py	/^    def to_dict(self):$/;"	kind:member	line:11
+translate_field	../aslo/api/i18n.py	/^def translate_field(field_value, translations):$/;"	kind:function	line:36
+upload_img_to_imgur	../aslo/api/img.py	/^def upload_img_to_imgur(image_path):$/;"	kind:function	line:34
+url_prefix	../aslo/web/__init__.py	/^                url_prefix='\/<lang_code>')$/;"	kind:variable	line:6
+uuid	../aslo/api/release.py	/^import uuid$/;"	kind:namespace	line:7
+validate_mandatory_attributes	../aslo/api/release.py	/^    def validate_mandatory_attributes(attributes):$/;"	kind:function	line:140
+verify_and_extract_xo	../aslo/api/release.py	/^def verify_and_extract_xo(tmp_bundle_path):$/;"	kind:function	line:46
+verify_signature	../aslo/api/gh.py	/^def verify_signature(gh_signature, body, secret):$/;"	kind:function	line:7
+verify_signature	../aslo/api/views.py	/^from .gh import verify_signature$/;"	kind:namespace	line:6
+verify_xo	../aslo/api/release.py	/^    def verify_xo(xo_archive):$/;"	kind:function	line:47
+views	../aslo/api/__init__.py	/^from . import views, errors # noqa$/;"	kind:namespace	line:5
+views	../aslo/web/__init__.py	/^from . import views  # noqa$/;"	kind:namespace	line:22
+views.py	../aslo/api/views.py	1;"	kind:file	line:1
+views.py	../aslo/web/views.py	1;"	kind:file	line:1
+web	../aslo/__init__.py	/^    from .web import web$/;"	kind:namespace	line:16
+web	../aslo/web/__init__.py	/^web = Blueprint('web', __name__, template_folder='templates',$/;"	kind:variable	line:3
+web	../aslo/web/views.py	/^from . import web$/;"	kind:namespace	line:1
+worker.py	../worker.py	1;"	kind:file	line:1
+workers	../gunicorn_config.py	/^workers = int($/;"	kind:variable	line:5
+wsgi.py	../wsgi.py	1;"	kind:file	line:1
+xo_file_exists	../aslo/api/release.py	/^def xo_file_exists(assets):$/;"	kind:function	line:24
+zipfile	../aslo/api/release.py	/^import zipfile$/;"	kind:namespace	line:6
