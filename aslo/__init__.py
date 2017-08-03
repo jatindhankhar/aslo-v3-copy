@@ -8,6 +8,9 @@ def init_app():
     app = Flask(__name__)
     app.config.from_object('aslo.settings')
 
+    from .i18n import set_lang_redirect
+    set_lang_redirect(app)
+
     # init celery
     from .celery_app import init_celery
     init_celery(app)

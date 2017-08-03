@@ -12,10 +12,8 @@ def add_language_code(endpoint, values):
 
 
 @web.url_value_preprocessor
-def pull_lang_code(point, values):
+def pull_lang_code(endpoint, values):
     g.lang_code = values.pop('lang_code')
-    # Tie user session to a particular language,
-    # so it can be retrived when we pop the request values
     session['lang_code'] = g.lang_code
 
 

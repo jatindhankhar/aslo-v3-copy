@@ -11,4 +11,3 @@ requests
 polib
 pygithub
 imgurpython
-Flask-Babel
