@@ -8,6 +8,7 @@ a.btn{
     padding-left: 3.5rem;
 }
 
+
 .carousel-inner {
   border-radius: 15px;
 }
@@ -18,3 +19,62 @@ a.btn{
         padding: 10px;     /* Shows as a border around the carousel */
     }
 
+
+
+.chip {
+    display: inline-flex;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+.chip img {
+    float: left;
+    margin: 0 15px 0 -25px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+
+}
+
+
+
+
+.clear-left
+{
+    clear: left;
+}
+
+
+.controls
+{
+    margin-top: 20px;
+}
+[data-slide="prev"]
+{
+    margin-right: 10px;
+}
+
+/* Spin on hover Fab */
+.fa-spin-hover:hover {
+  -webkit-animation: fa-spin 2s infinite linear;
+  -moz-animation: fa-spin 2s infinite linear;
+  -o-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear;
+}
+
+/* Modify MD-Badge */
+.badge 
+{
+    font-size: 15px;
+    line-height: unset;
+}
+
+.badge-tag
+{
+    border-radius: 50px;
+}

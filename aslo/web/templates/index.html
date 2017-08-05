@@ -1,36 +1,13 @@
-{% extends "partials/layout.html" %}
-{% block title %} Software Center {% endblock %}
-{% block content %}
-{% if activities is none or activities.items_per_page == 0%}
+{% extends "partials/layout.html" %} {% block title %} Software Center {% endblock %} {% block content %} {% if activities
+is none or activities.items_per_page == 0%}
 <p> No activities build yet </p>
-{% else %} 
-{% include 'elements/flash_messages.html' %}
-{% for activity_row in activities.items|batch(6) %}
+{% else %} {% include 'elements/flash_messages.html' %} {% for activity_row in activities.items|batch(6) %}
 <div class="row " style="margin-bottom: 15px;">
   {% for activity in activity_row %}
-  <div class="col-lg-4">
-    <div class="card">
-      <div class="card-height-indicator"></div>
-      <div class="card-content text-center">
-        <h3 class="card-image-headline" style="padding: 20 px;">
-         {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US','No Translation'))) }} 
-        </h3>
-        <div class="card-image img-responsive">
-          <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." />
-        </div>
-
-        <footer class="card-footer">
-          <a class="btn btn-raised btn-success" href="{{ activity.latest_release.download_url }}"> <i class="fa fa-arrow-down"></i> Download</a>
-          <a class="btn btn-raised btn-primary" href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}"> <i class="fa fa-chevron-right" aria-hidden="true"></i> More</a>
-        </footer>
-      </div>
-    </div>
+  <div class="col-lg-4" style="padding: 15px;">
+   {% include "elements/front_card.html" %}
   </div>
   {% endfor %}
 </div>
-{% endfor %} {% endif %}
-
-{% with pagination=activities,search_query=search_query,ignore_lang=ignore_lang %}
-{% include "elements/pagination.html" %}
-{% endwith %}
-{% endblock %}
+{% endfor %} {% endif %} {% with pagination=activities,search_query=search_query,ignore_lang=ignore_lang %} {% include "elements/pagination.html"
+%} {% endwith %} {% endblock %}

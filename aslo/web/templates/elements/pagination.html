@@ -1,20 +1,21 @@
 <!-- Pagination -->
+
 {% if pagination.num_pages > 1 %}
-<div class="text-center">
-    <ul class="pagination pagination-lg">
+<nav class="text-center">
+    <ul class="pagination pagination-lg pagination-circle pg-blue mb-0">
          {% if not pagination.has_prev %}
-            <li class="disabled" > <a>&laquo;</a> </li>
+            <li class="page-item disabled" > <a>&laquo;</a> </li>
          {% else %}
-         <li>
+         <li class="page-item">
             {% if search_query %}
-             <a href="{%if ignore_lang %}
+             <a  class="page-link" href="{%if ignore_lang %}
             {{ url_for('web.search',name=[search_query],page=pagination.prev_page,ignore_lang=true) }}
             {% else %}
            {{ url_for('web.search',name=[search_query],page=pagination.prev_page) }}
             {% endif %}"
             >&laquo;</a>
             {% else %}
-            <a href="{% if ignore_lang %}
+            <a  class="page-link" href="{% if ignore_lang %}
                   {{ url_for('web.index',page=pagination.prev_page,ignore_lang=true) }}
                 {% else %}
                   {{ url_for('web.index',page=pagination.prev_page) }}
@@ -24,7 +25,7 @@
         {% endif %}
 
         {% for i in range(1, pagination.num_pages + 1) %}
-        <li {% if pagination.page==i %}class="active" {% endif %}>
+        <li {% if pagination.page==i %}class=" page-item active" {%else%} class="page-item" {% endif %}>
             {% if search_query %}
              <a href="{%if ignore_lang %}
             {{ url_for('web.search',name=[search_query],page=i,ignore_lang=true) }}
@@ -33,7 +34,7 @@
             {% endif %}"
             >{{ i }}</a>
             {% else %}
-            <a href="{% if ignore_lang %}
+            <a class="page-link" href="{% if ignore_lang %}
                   {{ url_for('web.index',page=i,ignore_lang=true) }}
                 {% else %}
                   {{ url_for('web.index',page=i) }}
@@ -42,11 +43,11 @@
         </li>
         {% endfor %}
         {% if not pagination.has_next %}
-            <li class="disabled" > <a>&raquo;</a> </li>
+            <li class="page-item disabled" > <a class="page-link">&raquo;</a> </li>
          {% else %}
-         <li>
+         <li class="page-item">
             {% if search_query %}
-            <a href="{%if ignore_lang %}
+            <a class="page-link" href="{%if ignore_lang %}
             {{ url_for('web.search',name=[search_query],page=pagination.next_page,ignore_lang=true) }}
             {% else %}
            {{ url_for('web.search',name=[search_query],page=pagination.next_page) }}
@@ -54,7 +55,7 @@
             >
             &raquo;</a>
             {% else %}
-            <a href="{% if ignore_lang %}
+            <a class="page-link" href="{% if ignore_lang %}
                   {{ url_for('web.index',page=pagination.next_page,ignore_lang=true) }}
                 {% else %}
                   {{ url_for('web.index',page=pagination.next_page) }}
@@ -64,6 +65,6 @@
         </li>
         {% endif %}
     </ul>
-</div>
+</nav>
 {% endif %}
 <!-- End Pagination -->

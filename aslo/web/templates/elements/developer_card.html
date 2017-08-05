@@ -1,23 +1,62 @@
 <div class="card">
 
-    <div class="card-height-indicator"></div>
+    <!-- {% if developers|count !=0 %}
+    <div>
+        <h3 class="card-header info-color lighten-1 white-text text-center" style="padding: 15px;"> <i class="fa fa-users"></i> Developers</h3>
 
-    {% if developers|count !=0 %}
-    <div class="card-content text-center">
-        <h3 class="card-image-headline">Developers</h3>
-
-        <footer class="card-footer">
-            <div class="list-group">
+        <div class="card-body">
+            <section>
                 {% for developer in developers %}
-                <div class="list-group-item">
-                    <img class="img-circle img-responsive" width="48px" height="48px" src="{{ developer.avatar }}+&s=48" alt="icon">
-                    <p class="list-group-item-heading"> <a href="{{ developer.page }}"> {{ developer.name }} </a></p>
-                </div>
-                <div class="list-group-separator"></div>
-                {% endfor %}
-            </div>
-        </footer>
-    </div>
-    {% endif %}
+                <div class="chip" style="margin: 10px;">
 
+                    <img class="img-circle img-responsive" width="48px" height="48px" src="{{ developer.avatar }}+&s=48" alt="icon">
+                    <a href="{{ developer.page }}"> {{ developer.name }} </a></p>
+                </div>
+                {% endfor %}
+        </div>
+        </section>
+    </div>
+    {% endif %} -->
+    <h3 class="card-header info-color lighten-1 white-text text-center" style="padding: 15px;"> <i class="fa fa-users"></i> Developers</h3>
+
+    <!-- Customized from here https://bootsnipp.com/snippets/featured/carousel-product-cart-slider -->
+    <div class="card-body">
+        <div class="row">
+            
+            <div id="carousel-example-generic" class="carousel col-md-12 slide hidden-xs text-center" data-ride="carousel" style="padding: 30px;">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    {% for developer_batch in developers|batch(3) %}
+                    <div class="item {% if loop.index == 1 %} {{" active "}} {% endif %}">
+                        <div class="row">
+                            {% for developer in developer_batch %}
+                            <div class="col-sm-4">
+                                <div>
+                                    <div class="chip">
+
+                                        <img class="img-circle img-responsive" width="48px" height="48px" src="{{ developer.avatar }}+&s=48" alt="icon">
+                                        <a href="{{ developer.page }}"> {{ developer.name }} </a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Controls -->
+                    <div class="controls text-center hidden-xs">
+                        <a class="left fa fa-chevron-left btn btn-sm btn-primary" href="#carousel-example-generic" data-slide="prev"></a>
+                        <a
+                            class="right fa fa-chevron-right btn btn-sm btn-primary" href="#carousel-example-generic" data-slide="next"></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 </div>

@@ -1,139 +1,20 @@
-{% extends "partials/layout.html" %} 
-{% block title %}
-
-{% if 'en' in activity.name %} 
-    {{ activity.name.en }}
-{% elif 'en_US' in activity.name %} 
-   {{ activity.name.en_US}} 
-{% else %} {{ "No Name" }} {% endif %}
-
-{% endblock %}
-{% block content %}
-
-<!-- Screenshot Carousel -->
-<!-- TODO Make it generic to language code -->
-{% if current_release.screenshots and (lang_code in current_release.screenshots) %}
-<div class="row" style="padding: 40px;">
-    <div class="col-lg-10 center-block">
-{% with screenshots=current_release.screenshots[lang_code].values() %}
-{% include "elements/screenshot_carousel.html" %}
-{% endwith %}
-    </div>
-</div>
-{% endif %}
-<!-- End Screenshot Carousel -->
-
+{% extends "partials/layout.html" %} {% block title %} {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US'
+in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif %} {% endblock %} {% block content %}
 
 <div class="row">
-    <div class="col-lg-12 center-block">
-        <div class="card" style="padding: 40px;">
-            <div class="row">
-                <div class="col-lg-5">
-                    
-                    <!-- Activity Card -->
-                    {% with activity=activity,release=current_release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
+    <div class="col-lg-5">
 
-                    <!-- Developers Card -->
-                    {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
-                    <!-- End Developers Card -->
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
+        <!-- Activity Card -->
+        {% with activity=activity,release=current_release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
 
-                        <div class="card-height-indicator"></div>
+        <!-- Developers Card -->
+        {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
+        <!-- End Developers Card -->
 
-                        <div class="card-content">
+    </div>
 
-                            <div class="card-body">
-                                <h4 style="padding: 20px;">
-                                {{ activity.summary.get(lang_code,activity.summary.get('en',activity.summary.get('en_US','No Translation'))) }}
-                                </h4>
-                            </div>
-
-                            <footer class="card-footer">
-
-                                {% if activity.categories|count != 0 %}
-                                <div class="row" style="margin: 5px;">
-                                    {% for category in activity.categories %}
-                                    <span class="badge label-info category-tag" style="padding: 10px; margin:10px;"> {{ category }}</span>                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                <hr>
-                                <div class="list-group">
-                                    <div class="list-group-item">
-                                        <div class="row-picture">
-                                            <i class="fa fa-hashtag fa-3x" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="row-content">
-                                            <h4 class="list-group-item-heading text-center">Min. Sugar Version</h4>
-                                            <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin:10px; margin-left: 0px;"> {{ current_release.min_sugar_version }}</h5>
-                                            <!--<i class="fa fa-check fa-2x" aria-hidden="true"></i> -->
-
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="row-picture">
-                                            <i class="fa fa-chrome fa-3x" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="row-content">
-                                            <h4 class="list-group-item-heading">Web Activity</h4>
-                                            {% if current_release.is_web %}
-                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
-                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
-
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="row-picture">
-                                            <svg style="width:48px;height:48px" viewBox="0 0 24 24">
-                                                <path fill="#000000" d="M18.42,2C14.26,2 13.5,7.93 15.82,7.93C18.16,7.93 22.58,2 18.42,2M12,2.73C11.92,2.73 11.85,2.73 11.78,2.74C9.44,3.04 10.26,7.12 11.5,7.19C12.72,7.27 14.04,2.73 12,2.73M7.93,4.34C7.81,4.34 7.67,4.37 7.53,4.43C5.65,5.21 7.24,8.41 8.3,8.2C9.27,8 9.39,4.3 7.93,4.34M4.93,6.85C4.77,6.84 4.59,6.9 4.41,7.03C2.9,8.07 4.91,10.58 5.8,10.19C6.57,9.85 6.08,6.89 4.93,6.85M13.29,8.77C10.1,8.8 6.03,10.42 5.32,13.59C4.53,17.11 8.56,22 12.76,22C14.83,22 17.21,20.13 17.66,17.77C18,15.97 13.65,16.69 13.81,17.88C14,19.31 12.76,20 11.55,19.1C7.69,16.16 17.93,14.7 17.25,10.69C17.03,9.39 15.34,8.76 13.29,8.77Z"
-                                                />
-                                            </svg>
-                                        </div>
-                                        <div class="row-content">
-                                            <h4 class="list-group-item-heading">GTk 3</h4>
-                                            {% if current_release.is_gtk %}
-                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
-                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
-
-                                        </div>
-                                    </div>
-                                    <div class="list-group-separator"></div>
-                                    <div class="list-group-item">
-                                        <div class="row-picture">
-                                            <i class="fa fa-university fa-3x" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="row-content">
-                                            <h4 class="list-group-item-heading">License</h4>
-
-                                            <h5 class="list-group-item-heading badge label-success" style="padding: 10px; margin: 10px; margin-left: 0px;"> {{ activity.license }}</h5>
-                                        </div>
-                                    </div>
-                                    <div class="list-group-separator"></div>
-                                    <div class="list-group-item">
-                                        <div class="row-picture">
-                                            <i class="fa fa-bars fa-3x" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="row-content">
-                                            <h4 class="list-group-item-heading">Old ToolBars </h4>
-                                            {% if current_release.has_old_toolbars %}
-                                            <i class="fa fa-check fa-2x" style="color: green;"></i> {% else %}
-                                            <i class="fa fa-times fa-2x" style="color: red;"></i> {% endif %}
-
-                                        </div>
-                                    </div>
-                                    <div class="list-group-separator"></div>
-                                </div>
-                            </footer>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-   
+    <div class="col-lg-6">
+       {% with activity=activity,release=current_release %} {% include "elements/info_card.html" %} {% endwith %}
     </div>
 </div>
-{% endblock %}
+    {% endblock %}
