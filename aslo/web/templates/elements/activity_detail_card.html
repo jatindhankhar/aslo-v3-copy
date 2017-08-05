@@ -14,14 +14,18 @@
                 <a href="#" data-target="#" class="btn btn-primary btn-md btn-raised" data-toggle="dropdown"><span class="caret"></span></a>
 
                 <ul class="dropdown-menu">
+                    {% if release != activity.latest_release %}
+                    <li><a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}">
+                                                {{ activity.latest_release.activity_version }} (Latest)
+                                            </a></li                    
+                    {% endif %}
+
                     {% for release in activity.previous_releases %}
                     <li><a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=release.activity_version) }}">
-                                                {% if release.activity_version == current_release.activity_version %}
-                                                <p class="text-primary"> ({{release.activity_version}}) Latest Release</p>
-                                                {% else %}
+                                                
                                                 {{ release.activity_version }}
-                                                {% endif %}
-                                            </a></li>
+                
+                                            </a></li
                     {% endfor %}
                 </ul>
             </div>
