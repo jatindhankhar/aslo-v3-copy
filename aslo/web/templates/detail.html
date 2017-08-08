@@ -11,6 +11,16 @@ in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif
         <!-- Developers Card -->
         {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
         <!-- End Developers Card -->
+
+        <!-- Screenshot Carousel -->
+
+    {% if current_release.screenshots and (lang_code in current_release.screenshots) %}
+       {% with screenshots=current_release.screenshots[lang_code].values() %}{% include "elements/screenshot_carousel.html" %}{%endwith %}
+    {% endif %}
+ 
+
+</div>
+<!-- Screenshot Carousel End -->
     </div>
 
     <div class="col-lg-6">
@@ -18,16 +28,5 @@ in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif
     </div>
 </div>
 
-<!-- Screenshot Carousel -->
- <div class="row" style="padding: 30px;">
-    {% if current_release.screenshots and (lang_code in current_release.screenshots) %}
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4 center-block text-center">
-        {% with screenshots=current_release.screenshots[lang_code].values() %}{% include "elements/screenshot_carousel.html" %}{%
-        endwith %}
-    </div>
-    <div class="col-lg-4"></div>
-    {% endif %}
-</div>
-<!-- Screenshot Carousel End -->
+
 {% endblock %}
