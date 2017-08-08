@@ -1,6 +1,7 @@
 {% extends "partials/layout.html" %} {% block title %} {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US'
 in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif %} {% endblock %} {% block content %}
 
+
 <div class="row">
     <div class="col-lg-5">
 
@@ -10,11 +11,23 @@ in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif
         <!-- Developers Card -->
         {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
         <!-- End Developers Card -->
-
     </div>
 
     <div class="col-lg-6">
-       {% with activity=activity,release=current_release %} {% include "elements/info_card.html" %} {% endwith %}
+        {% with activity=activity,release=current_release %} {% include "elements/info_card.html" %} {% endwith %}
     </div>
 </div>
-    {% endblock %}
+
+<!-- Screenshot Carousel -->
+ <div class="row" style="padding: 30px;">
+    {% if current_release.screenshots and (lang_code in current_release.screenshots) %}
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 center-block text-center">
+        {% with screenshots=current_release.screenshots[lang_code].values() %}{% include "elements/screenshot_carousel.html" %}{%
+        endwith %}
+    </div>
+    <div class="col-lg-4"></div>
+    {% endif %}
+</div>
+<!-- Screenshot Carousel End -->
+{% endblock %}
