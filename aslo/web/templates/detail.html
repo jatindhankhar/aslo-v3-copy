@@ -1,5 +1,5 @@
 {% extends "partials/layout.html" %} {% block title %} {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US'
-in activity.name %} {{ activity.name.en_US}} {% else %} {{ "No Name" }} {% endif %} {% endblock %} {% block content %}
+in activity.name %} {{ activity.name.en_US}} {% else %} {{ _("No Name") }} {% endif %} {% endblock %} {% block content %}
 
 
 <div class="row">

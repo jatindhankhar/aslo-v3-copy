@@ -1,0 +1,255 @@
+# Translations template for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-08-09 21:50+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: aslo/web/views.py:55
+msgid "Search Results for {})"
+msgstr ""
+
+#: aslo/web/templates/detail.html:2
+msgid "No Name"
+msgstr ""
+
+#: aslo/web/templates/index.html:1
+msgid "Software Center"
+msgstr ""
+
+#: aslo/web/templates/index.html:3
+msgid "No activities build yet"
+msgstr ""
+
+#: aslo/web/templates/elements/developer_card.html:3
+msgid "Developers"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:6
+msgid "Web Activity"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:9
+msgid "Yes"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:11
+msgid "No"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:17
+msgid "Min. Sugar Version"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:25
+msgid "License"
+msgstr ""
+
+#: aslo/web/templates/elements/meta_info_card.html:33
+msgid "Published On"
+msgstr ""
+
+#: aslo/web/templates/elements/screenshot_carousel.html:3
+msgid "Screenshots"
+msgstr ""
+
+#: aslo/web/templates/elements/screenshot_carousel.html:32
+msgid "Previous"
+msgstr ""
+
+#: aslo/web/templates/elements/screenshot_carousel.html:36
+msgid "Next"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:3
+msgid "Back to top"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:9
+msgid "Sugar Labs"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:12
+msgid "About Us"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:13
+msgid "Get Involved"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:14
+msgid "Support Sugar"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:15
+msgid "Contact Us"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:16
+msgid "For Students"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:17
+msgid "For School Administrators"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:18
+msgid "For Parents"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:19
+msgid "For Developers"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:20
+msgid "Sugar Stories"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:25
+msgid "Development"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:28
+msgid "Sugar Labs Wiki"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:29
+msgid "Join mailing list"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:30
+msgid "Documentation"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:31
+msgid "IRC Channels"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:32
+msgid "Bug Tracker"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:33
+msgid "Development code"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:34
+msgid "Translation Platform"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:39
+msgid "Resources"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:42
+msgid "Culture and pedagogy"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:43
+msgid "Press Resources"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:44
+msgid "School Server Resources"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:45
+msgid "Planet Sugar Labs"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:46
+msgid "Libre Software Culture"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:47
+msgid "About IRC"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:48
+msgid "Sugar Lesson Plans"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:84
+msgid "Base Template (Airspace) by Themefisher"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:86
+msgid "Re-design and Modification by aslo-v3 team"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:88
+msgid "Made  with"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:88
+msgid "and"
+msgstr ""
+
+#: aslo/web/templates/partials/footer.html:88
+msgid "over the"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:25
+msgid "Home"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:26
+msgid "About"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:28
+msgid "Join Us"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:30
+msgid "Community Mailing Lists"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:31
+msgid "Developer's Guide"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:32
+msgid "Start a local lab"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:35
+msgid "Contribute to Translation"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:36
+msgid "Contribute to Usability"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:37
+msgid "Contribute to Software"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:38
+msgid "Contribute to Central Organisation"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:40
+msgid "Related Projects"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:46
+msgid "Blog Archive"
+msgstr ""
+
+#: aslo/web/templates/partials/nav.html:52
+msgid "Search"
+msgstr ""
+

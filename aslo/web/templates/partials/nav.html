@@ -22,34 +22,34 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1" style="padding-bottom:0px;margin-bottom: 0px;">
               <ul class="nav navbar-nav navbar-right abc">
-                <li><a href="{{ url_for('web.index') }}">Home</a></li>
-                <li><a href="https://geekrypter.github.io/sugarLabsWebsiteRedesign/about_us">About</a></li>
+                <li><a href="{{ url_for('web.index') }}">{{ _('Home') }}</a></li>
+                <li><a href="https://geekrypter.github.io/sugarLabsWebsiteRedesign/about_us">{{ _('About') }}</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Join Us<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Join Us') }}<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="https://wiki.sugarlabs.org/go/Mailing_Lists" style="color:#0099FF">Community Mailing Lists</a></li>
-                    <li><a href="#" style="color:#0099FF">Developer's Guide</a></li>
-                    <li><a href="#" style="color:#0099FF">Start a local lab</a></li>
+                    <li><a href="https://wiki.sugarlabs.org/go/Mailing_Lists" style="color:#0099FF"> {{ _('Community Mailing Lists') }}</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _("Developer's Guide") }}</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _('Start a local lab') }}</a></li>
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-header"></li>
-                    <li><a href="http://translate.sugarlabs.org" style="color:#0099FF">Contribute to Translation</a></li>
-                    <li><a href="#" style="color:#0099FF">Contribute to Usability</a></li>
-                    <li><a href="#" style="color:#0099FF">Contribute to Software</a></li>
-                    <li><a href="#" style="color:#0099FF">Contribute to Central Organisation</a></li>
+                    <li><a href="http://translate.sugarlabs.org" style="color:#0099FF">{{ _('Contribute to Translation') }}</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _('Contribute to Usability') }}</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _('Contribute to Software') }}</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _('Contribute to Central Organisation') }}</a></li>
 
-                    <li><a href="#" style="color:#0099FF">Related Projects</a></li>
+                    <li><a href="#" style="color:#0099FF">{{ _('Related Projects') }}</a></li>
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">_('Blog')<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="http://planet.sugarlabs.org" style="color:#0099FF">Blog Archive</a></li>
+                    <li><a href="http://planet.sugarlabs.org" style="color:#0099FF">{{ _("Blog Archive") }}</a></li>
                   </ul>
                 </li>
 
-                 <li class="navbar-form"><form role="search" method="POST" action="/en/search">
+                 <li class="navbar-form"><form role="search" method="POST" action="/search">
             <div class="form-group">
-              <input type="text" class="form-control" name="name" placeholder="Search">
+              <input type="text" class="form-control" name="name" placeholder="{{ _('Search') }}">
             </div>
           <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
         </form> </li>
