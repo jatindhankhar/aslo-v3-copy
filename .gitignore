@@ -4,3 +4,4 @@ env
 dist
 bundles
 repos
+.vscode/
