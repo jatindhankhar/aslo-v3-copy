@@ -8,8 +8,8 @@
           <img width="80px" height="80px" src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." class="center-block img-fluid" />
         
         <footer class="card-footer">
-          <a class="btn btn-raised btn-success waves-effect" href="{{ activity.latest_release.download_url }}"> <i class="fa fa-arrow-down"></i> _('Download')</a>
-          <a class="btn btn-raised btn-primary waves-effect" href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}"> <i class="fa fa-chevron-right" aria-hidden="true"></i> _('More')</a>
+          <a class="btn btn-raised btn-success waves-effect" href="{{ activity.latest_release.download_url }}"> <i class="fa fa-arrow-down"></i> {{ _('Download') }}</a>
+          <a class="btn btn-raised btn-primary waves-effect" href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}"> <i class="fa fa-chevron-right" aria-hidden="true"></i> {{ _('More') }}</a>
         </footer>
       </div>
     </div>

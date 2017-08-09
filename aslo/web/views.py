@@ -4,6 +4,7 @@ from flask import (render_template,
                    url_for, flash, session)
 from aslo.persistence.activity import Activity
 from aslo.service import activity as activity_service
+from flask.ext.babel import gettext
 
 
 @web.route('/', defaults={'page': 1})
@@ -52,6 +53,6 @@ def search(page=1, items_per_page=10):
     activities = activity_service.search_by_activity_name(
         lang_code=lang_code, activity_name=name, page=page
     )
-    flash("Search Results for {}".format(name), 'success')
+    flash(gettext("Search Results for {})").format(name), 'success')
     return render_template('index.html', activities=activities,
                            search_query=name, lang_code=lang_code)
