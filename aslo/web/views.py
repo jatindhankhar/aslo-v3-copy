@@ -4,7 +4,7 @@ from flask import (render_template,
                    url_for, flash, session)
 from aslo.persistence.activity import Activity
 from aslo.service import activity as activity_service
-from flask.ext.babel import gettext
+from flask_babel import gettext
 
 
 @web.route('/', defaults={'page': 1})
