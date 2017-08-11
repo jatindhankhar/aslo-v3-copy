@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_babel import Babel
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,6 +15,9 @@ def init_app():
     # init celery
     from .celery_app import init_celery
     init_celery(app)
+
+    # init Babel
+    babel = Babel(app)  # noqa
 
     # blueprints
     from .web import web

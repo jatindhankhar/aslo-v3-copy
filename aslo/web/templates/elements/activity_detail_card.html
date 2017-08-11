@@ -3,7 +3,7 @@
       <h3 class="card-header pink lighten-1 white-text text-center" style="padding: 15px;"> <i class="fa fa-superpowers"></i> {{ _('Activity') }}</h3>
 
     <div class="card-content text-center">
-        <h3 class="card-image-headline"> {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US',{{ _('No Translation') }})) }}</h3>
+        <h3 class="card-image-headline"> {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US', _('No Translation') ))) }}</h3>
         <div class="card-image img-responsive">
             <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}"  alt="Loading image..." class="center-block"/>
         </div>

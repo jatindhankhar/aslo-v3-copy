@@ -2,7 +2,7 @@
       <div class="card-height-indicator"></div>
       <div class="card-content text-center">
         <h3>
-          {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US',{{ _('No Translation') }})) }}
+          {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US', _('No Translation') ))) }}
         </h3>
       
           <img width="80px" height="80px" src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." class="center-block img-fluid" />
