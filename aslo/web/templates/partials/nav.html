@@ -47,7 +47,7 @@
                   </ul>
                 </li>
 
-                 <li class="navbar-form"><form role="search" method="POST" action="/search">
+                 <li class="navbar-form"><form role="search" method="POST" action="{{ url_for('web.search') }}">
             <div class="form-group">
               <input type="text" class="form-control" name="name" placeholder="{{ _('Search') }}">
             </div>
