@@ -1,38 +1,47 @@
-[![Build Status](https://travis-ci.org/jatindhankhar/aslo-v3.svg?branch=master)](https://travis-ci.org/jatindhankhar/aslo-v3)
+[![Build Status](https://travis-ci.org/sugarlabs/aslo-v3.svg?branch=master)](https://travis-ci.org/sugarlabs/aslo-v3)
 
-### aslo-v3
-This repo hosts the upcoming version of ASLO (Software centre) for SugarLabs
+## Activities Platform (ASLOv3)
+This repository hosts the upcoming version of ASLO (Software center) for SugarLabs.
 
-### Instructions
+## Requirements
+* Python (3.x)
+* Docker - For running build tasks
+* Mongo - Primary Database Engine
+* Celery - For running background tasks
+* Redis - Broker for Background Tasks
+* Imgur - For hosting Screenshots
 
-#### Install Dependenices
-**Python 3.x** supported 
+## Hacking
 
-* **Docker (System)** - For running build tasks
-* **Mongo (System)** - Primary Database Engine
-* **Redis (System)** - Broker for Background Tasks
-* **Celery** - For running background tasks
-* **Imgur** - For hosting Screenshots
-* **Flower (Optional)** - Dashboard for Celery
+Setup your development environment:
+1. Install dependencies: python3-dev, docker, mongo, and redis.
+2. Create virtualenv and install python dependencies:
+```
+$ git clone https://github.com/sugarlabs/aslo-v3.git
+$ cd aslo-v3;
+$ python3 -m venv env
+$ . env/bin/activate
+$ pip install -r requirements.txt
+```
 
-Install most of the app/python dependencies  by running `pip install -r requirements.txt `
-
-##### How to Run
-
-`honcho` which is used in this project, looks for `.env` file, so define all the environment variables like `GITHUB_HOOK_SECRET`, `IMGUR_CLIENT_ID` , `IMGUR_CLIENT_SECRET` and others defined in the `default_settings.py` 
-
-**A sample example**
+3. We use [honcho](https://github.com/nickstenning/honcho). Honcho looks for `.env` file in order to define the environment 
+variables that will provide the configuration for our app. You can look default values into `aslo/settings.py`. Define at least `SECRET_KEY` to start. But certainly you will need more env to test it. Have fun ;)
 
 ``` bash 
-$ cat >.env <<EOM
-PORT=5000
-GITHUB_HOOK_SECRET="XXXXXXXX"
-IMGUR_CLIENT_ID="XXXXXXXXXXXXXXXX"
-IMGUR_CLIENT_SECRET="XXXXXXXXXXXXXXX"
-REDIS_URI=redis://localhost:6789/0
-EOM
-
+$ cat >.env <<EOF
+MONGO_DBNAME=aslo-dev
+SECRET_KEY=123abc123abc123abc
+GITHUB_HOOK_SECRET=aaaaabbbbbcccc
+EOF
 ```
-Run `./start.sh` to run the server 
 
-Run `flower -A worker --port=5555` to run the dashboard server 
+4. Execute `./start.sh` to run the server. It actually executes the gunicorn process and the celery worker. Check the Procfile.
+
+## Contributing
+
+We welcome and appreciate contributions of any kind (code, tests, documentation, bug fixes, etc). You can also check 
+our [issues](https://github.com/sugarlabs/aslo-v3/issues) page in order to find tasks to contribute with.
+
+### Code Style Guide
+We follow [PEP8 Python Style Guide](https://www.python.org/dev/peps/pep-0008/) for Python code and we use 4 spaces for tab.
+Regarding HTML, we prefer to stick with 2 spaces for tab.
