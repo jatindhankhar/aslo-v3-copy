@@ -9,15 +9,16 @@ def init_app():
     app = Flask(__name__)
     app.config.from_object('aslo.settings')
 
-    from .i18n import set_lang_redirect
+    from .i18n import set_lang_redirect, get_app_locale
     set_lang_redirect(app)
+
+    # init Babel
+    babel = Babel(app)
+    babel.localeselector(get_app_locale)
 
     # init celery
     from .celery_app import init_celery
     init_celery(app)
-
-    # init Babel
-    babel = Babel(app)  # noqa
 
     # blueprints
     from .web import web

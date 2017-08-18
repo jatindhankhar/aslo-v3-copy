@@ -1,31 +1,39 @@
-{% extends "partials/layout.html" %} {% block title %} {% if 'en' in activity.name %} {{ activity.name.en }} {% elif 'en_US'
-in activity.name %} {{ activity.name.en_US}} {% else %} {{ _("No Name") }} {% endif %} {% endblock %} {% block content %}
+{% extends "partials/layout.html" %}
 
+{% block title %} 
+  {% if 'en' in activity.name %} 
+    {{ activity.name.en }} 
+  {% elif 'en_US' in activity.name %}
+    {{ activity.name.en_US }} 
+  {% else %} 
+    {{ _("No Name") }} 
+  {% endif %} 
+{% endblock %} 
 
-<div class="row">
+{% block content %}
+  <div class="row">
     <div class="col-lg-5">
+      <!-- Activity Card -->
+      {% with activity=activity, release=current_release %}
+        {% include "elements/activity_detail_card.html" %} 
+      {% endwith %}
 
-        <!-- Activity Card -->
-        {% with activity=activity,release=current_release %} {% include "elements/activity_detail_card.html" %} {% endwith %}
+      <!-- Developers Card -->
+      {% with developers=activity.developers %} 
+        {% include "elements/developer_card.html" %} 
+      {% endwith %}
 
-        <!-- Developers Card -->
-        {% with developers=activity.developers %} {% include "elements/developer_card.html" %} {% endwith %}
-        <!-- End Developers Card -->
-
-        <!-- Screenshot Carousel -->
-
-    {% if current_release.screenshots and (lang_code in current_release.screenshots) %}
-       {% with screenshots=current_release.screenshots[lang_code].values() %}{% include "elements/screenshot_carousel.html" %}{%endwith %}
-    {% endif %}
- 
-
-</div>
-<!-- Screenshot Carousel End -->
-
-    <div class="col-lg-6">
-        {% with activity=activity,release=current_release %} {% include "elements/info_card.html" %} {% endwith %}
+      <!-- Screenshot Carousel -->
+      {% if current_release.screenshots and (lang_code in current_release.screenshots) %}
+        {% with screenshots=current_release.screenshots[lang_code].values() %}
+          {% include "elements/screenshot_carousel.html" %}
+        {%endwith %}
+      {% endif %}
     </div>
-</div>
-
-
+    <div class="col-lg-6">
+      {% with activity=activity, release=current_release %}
+        {% include "elements/info_card.html" %} 
+      {% endwith %}
+    </div>
+  </div>
 {% endblock %}

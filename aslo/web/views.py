@@ -10,7 +10,7 @@ from flask_babel import gettext
 @web.route('/', defaults={'page': 1})
 @web.route('/page/<int:page>')
 def index(page=1, items_per_page=9):
-    # If Ignore_lang in the parameters, show all Language
+    # If Ignore_lang in the parameters, show all other non-translated apps
     lang_code = session['lang_code']
     ignore_lang = request.args.get('ignore_lang', False, type=bool)
     if ignore_lang:
@@ -53,6 +53,6 @@ def search(page=1, items_per_page=10):
     activities = activity_service.search_by_activity_name(
         lang_code=lang_code, activity_name=name, page=page
     )
-    flash(gettext("Search Results for {})").format(name), 'success')
+    flash(gettext("Search Results for {}").format(name), 'success')
     return render_template('index.html', activities=activities,
                            search_query=name, lang_code=lang_code)

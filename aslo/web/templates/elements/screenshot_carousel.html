@@ -1,46 +1,43 @@
 <div class="card hidden-xs hidden-sm">
-
-  <h3 class="card-header success-color white-text text-center" style="padding: 15px;"> <i class="fa fa-picture-o"></i> {{ _('Screenshots') }}</h3>
-
+  <h3 class="card-header success-color white-text text-center" style="padding: 15px;"><i class="fa fa-picture-o"></i>{{ _('Screenshots') }}</h3>
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
         <div id="screenshot-carousel" class="carousel slide img-responsive" data-ride="carousel">
           {% if screenshots|count !=0 %}
-          <!-- Indicators -->
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              {% for i in range(screenshots|count) %}
+                <li data-target="#lightbox" data-slide-to="{{i}}" {% if i==0 %} class="active" {% endif %}></li>
+              {% endfor %}
+            </ol>
 
-          <ol class="carousel-indicators">
-            {% for i in range(screenshots|count) %}
-            <li data-target="#lightbox" data-slide-to="{{i}}" {% if i==0 %} class="active" {% endif %}></li>
-            {% endfor %}
-          </ol>
-
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner container">
-            {% for screenshot in screenshots %}
-            <!-- Only first item should be active -->
-            <div class="item {%if loop.index0 == 0 %}{{" active "}}{% endif %}">
-              <a href="#" class="thumbnail" data-toggle="modal" data-target="#lightbox">
-      <img src="{{screenshot[0]}}" class="img-thumbnail"  alt="Screenshot">
-     </a>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner container">
+              {% for screenshot in screenshots %}
+                <!-- Only first item should be active -->
+                <div class="item {%if loop.index0 == 0 %}{{" active "}}{% endif %}">
+                  <a href="#" class="thumbnail" data-toggle="modal" data-target="#lightbox">
+                    <img src="{{screenshot[0]}}" class="img-thumbnail"  alt="Screenshot">
+                 </a>
+                </div>
+              {% endfor %}
+            
+              <!-- Left and right controls -->
+              <a class="left carousel-control" href="#screenshot-carousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">{{ _("Previous") }}</span>
+              </a>
+              <a class="right carousel-control" href="#screenshot-carousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">{{ _('Next') }}</span>
+              </a>
             </div>
-            {% endfor %}
-
-            <!-- Left and right controls -->
-            <a class="left carousel-control" href="#screenshot-carousel" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    <span class="sr-only">{{ _("Previous") }}</span>
-  </a>
-            <a class="right carousel-control" href="#screenshot-carousel" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-    <span class="sr-only">{{ _('Next') }}</span>
-  </a>
-          </div>
           {% endif %}
         </div>
+        
         <style>
           /* Modified form of https://bootsnipp.com/snippets/featured/bootstrap-lightbox */
-
           #lightbox .modal-content {
             display: inline-block;
             text-align: center;
@@ -60,11 +57,9 @@
             position: absolute;
             top: -15px;
             right: -55px;
-
             z-index: 1032;
           }
         </style>
-
 
         <div id="lightbox" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
           <div class="modal-dialog">

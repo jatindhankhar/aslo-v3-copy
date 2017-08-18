@@ -1,13 +1,26 @@
-{% extends "partials/layout.html" %} {% block title %} {{ _('Software Center') }} {% endblock %} {% block content %} {% if activities
-is none or activities.items_per_page == 0%}
-<p> {{_('No activities build yet')}} </p>
-{% else %} {% include 'elements/flash_messages.html' %} {% for activity_row in activities.items|batch(6) %}
-<div class="row " style="margin-bottom: 15px;">
-  {% for activity in activity_row %}
-  <div class="col-lg-4" style="padding: 15px;">
-   {% include "elements/front_card.html" %}
-  </div>
-  {% endfor %}
-</div>
-{% endfor %} {% endif %} {% with pagination=activities,search_query=search_query,ignore_lang=ignore_lang %} {% include "elements/pagination.html"
-%} {% endwith %} {% endblock %}
+{% extends "partials/layout.html" %}
+
+{% block title %} 
+  {{ _('Software Center') }} 
+{% endblock %} 
+
+{% block content %} 
+  {% if activities is none or activities.items_per_page == 0 %}
+    <p> {{_('No activities build yet')}} </p>
+  {% else %}
+    {% include 'elements/flash_messages.html' %} 
+    {% for activity_row in activities.items|batch(6) %}
+      <div class="row " style="margin-bottom: 15px;">
+        {% for activity in activity_row %}
+          <div class="col-lg-4" style="padding: 15px;">
+            {% include "elements/front_card.html" %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %} 
+  {% endif %} 
+  
+  {% with pagination=activities, search_query=search_query, ignore_lang=ignore_lang %} 
+    {% include "elements/pagination.html" %} 
+  {% endwith %} 
+{% endblock %}

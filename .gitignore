@@ -6,3 +6,4 @@ bundles
 repos
 .vscode/
 .cache/
+*.mo

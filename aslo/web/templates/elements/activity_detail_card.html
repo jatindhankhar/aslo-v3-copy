@@ -1,38 +1,35 @@
 <div class="card">
-
-      <h3 class="card-header pink lighten-1 white-text text-center" style="padding: 15px;"> <i class="fa fa-superpowers"></i> {{ _('Activity') }}</h3>
-
-    <div class="card-content text-center">
-        <h3 class="card-image-headline"> {{ activity.name.get(lang_code,activity.name.get('en',activity.name.get('en_US', _('No Translation') ))) }}</h3>
-        <div class="card-image img-responsive">
-            <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}"  alt="Loading image..." class="center-block"/>
-        </div>
-        <footer class="card-footer">
-            <a class="btn btn-raised btn-md btn-success" href="{{ current_release.download_url }}"> <i class="fa fa-arrow-down"></i> {{  _('Download') }}</a>   {% if activity.previous_releases|count != 0 %}
-            <div class="btn-group">
-                <a href="javascript:void(0)" class="btn btn-primary  btn-md btn-raised">{{ _('More Releases') }}</a>
-                <a href="#" data-target="#" class="btn btn-primary btn-md btn-raised" data-toggle="dropdown"><span class="caret"></span></a>
-
-                <ul class="dropdown-menu">
-                    {% if release != activity.latest_release %}
-                    <li><a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}">
-                                                {{ activity.latest_release.activity_version }} ( {{ _('Latest') }})
-                                            </a></li                    
-                    {% endif %}
-
-                    {% for release in activity.previous_releases %}
-                    <li><a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=release.activity_version) }}">
-                                                
-                                                {{ release.activity_version }}
-                
-                                            </a></li
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-                        <a href="{{ activity.repository}}" class="btn btn-outline-secondary btn-md waves-effect"> <i class="fa fa-github fa-2x"></i> {{ _('Repo') }}</a>
-
-        </footer>
+  <h3 class="card-header pink lighten-1 white-text text-center" style="padding: 15px;"><i class="fa fa-superpowers"></i>{{ _('Activity') }}</h3>
+  <div class="card-content text-center">
+    <h3 class="card-image-headline"> {{ activity.name.get(lang_code, activity.name.get('en', activity.name.get('en_US', _('No Translation') ))) }}</h3>
+    <div class="card-image img-responsive">
+      <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." class="center-block"/>
     </div>
-    
+    <footer class="card-footer">
+      <a class="btn btn-raised btn-md btn-success" href="{{ current_release.download_url }}"> <i class="fa fa-arrow-down"></i>{{ _('Download') }}</a>
+      {% if activity.previous_releases|count != 0 %}
+        <div class="btn-group">
+          <a href="javascript:void(0)" class="btn btn-primary btn-md btn-raised">{{ _('More Releases') }}</a>
+          <a href="#" data-target="#" class="btn btn-primary btn-md btn-raised" data-toggle="dropdown"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {% if release != activity.latest_release %}
+              <li>
+                <a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=activity.latest_release.activity_version) }}">
+                  {{ activity.latest_release.activity_version }} ({{ _('Latest') }})
+                </a>
+              </li>
+            {% endif %}
+            {% for release in activity.previous_releases %}
+              <li>
+                <a href="{{ url_for('web.activity_detail', bundle_id=activity.bundle_id, activity_version=release.activity_version) }}">
+                  {{ release.activity_version }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <a href="{{ activity.repository}}" class="btn btn-outline-secondary btn-md waves-effect"> <i class="fa fa-github fa-2x"></i>{{ _('Repo') }}</a>
+    </footer>
+  </div>  
 </div>

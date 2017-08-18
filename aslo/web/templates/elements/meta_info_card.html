@@ -1,40 +1,32 @@
-<div>
-    
-<ul class="list-group">
+<div>    
+  <ul class="list-group">
     <li class="list-group-item d-flex  align-items-center">
-        <div class="card-body">
-            <h4 class="card-title"> <i class="fa fa-chrome fa-2x fa-spin-hover"></i>  &nbsp; {{ _('Web Activity') }}</h4>
-          
-           {% if release.is_web %}
-            <span class="badge success-color card-text"> {{ _('Yes') }} </span> 
-          {% else %}
-           <span class="badge danger-color card-text"> {{ _('No') }}</span>
-          {% endif %}
-        </div>       
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-chrome fa-2x fa-spin-hover"></i>&nbsp;{{ _('Web Activity') }}</h4>
+        {% if release.is_web %}
+          <span class="badge success-color card-text">{{ _('Yes') }}</span> 
+        {% else %}
+          <span class="badge danger-color card-text">{{ _('No') }}</span>
+        {% endif %}
+      </div>       
     </li>
     <li class="list-group-item d-flex  align-items-center">
-        <div class="card-body">
-            <h4 class="card-title"> <i class="fa fa-hashtag fa-2x fa-spin-hover"></i>  &nbsp; {{ _('Min. Sugar Version') }}</h4>
-           <span class="badge "> {{ release.min_sugar_version}} </span>
-
-        </div>       
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-hashtag fa-2x fa-spin-hover"></i>&nbsp;{{ _('Min. Sugar Version') }}</h4>
+        <span class="badge ">{{ release.min_sugar_version }}</span>
+      </div>       
     </li>
-
     <li class="list-group-item d-flex  align-items-center">
-        <div class="card-body">
-            <h4 class="card-title"> <i class="fa fa-university fa-2x fa-spin-hover"></i>  &nbsp; {{ _('License') }}</h4>
-           <span class="badge badge-info info-color "> {{ license }} </span>
-
-        </div>       
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-university fa-2x fa-spin-hover"></i>&nbsp;{{ _('License') }}</h4>
+        <span class="badge badge-info info-color ">{{ license }}</span>
+      </div>
     </li>
-   
     <li class="list-group-item d-flex  align-items-center">
-        <div class="card-body">
-            <h4 class="card-title"> <i class="fa fa-calendar fa-2x fa-spin-hover"></i>  &nbsp; {{ _('Published On') }}</h4>
-           <span class="badge badge-info warning-color-dark "> {{ release.timestamp.strftime("%d %b, %Y") }} </span>
-
-        </div>       
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-calendar fa-2x fa-spin-hover"></i>&nbsp;{{ _('Published On') }}</h4>
+        <span class="badge badge-info warning-color-dark ">{{ release.timestamp.strftime("%d %b, %Y") }}</span>
+      </div>
     </li>
-</ul>
-                
+  </ul>              
 </div>
