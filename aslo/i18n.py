@@ -13,7 +13,7 @@ def get_language():
     # treat 'en_*' languages as 'en' except for en_US and en_GB
     if 'en_' in lang and lang not in ['en_US', 'en_GB']:
         lang = 'en'
-    
+
     return lang
 
 
