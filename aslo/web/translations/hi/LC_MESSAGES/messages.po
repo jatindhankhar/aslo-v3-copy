@@ -1,0 +1,299 @@
+# Hindi translations for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-08-18 17:18-0400\n"
+"PO-Revision-Date: 2017-08-19 14:54+0530\n"
+"Language: hi\n"
+"Language-Team: hi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 2.0.3\n"
+
+#: aslo/web/views.py:56
+msgid "Search Results for {}"
+msgstr "{} के लिए खोज परिणाम "
+
+#: aslo/web/templates/detail.html:9
+msgid "No Name"
+msgstr "बेनाम "
+
+#: aslo/web/templates/index.html:4
+msgid "Software Center"
+msgstr "सॉफ्टवेयर सेण्टर "
+
+#: aslo/web/templates/index.html:9
+msgid "No activities build yet"
+msgstr "कोई एक्टिविटी तैयार नहीं है "
+
+#: aslo/web/templates/elements/activity_detail_card.html:2
+msgid "Activity"
+msgstr "एक्टिविटी "
+
+#: aslo/web/templates/elements/activity_detail_card.html:4
+#: aslo/web/templates/elements/front_card.html:4
+#: aslo/web/templates/elements/info_card.html:5
+msgid "No Translation"
+msgstr "अनुवाद उपलब्ध नहीं है "
+
+#: aslo/web/templates/elements/activity_detail_card.html:9
+#: aslo/web/templates/elements/front_card.html:7
+msgid "Download"
+msgstr "डाउनलोड "
+
+#: aslo/web/templates/elements/activity_detail_card.html:12
+msgid "More Releases"
+msgstr "अधिक विज्ञप्ति"
+
+#: aslo/web/templates/elements/activity_detail_card.html:18
+msgid "Latest"
+msgstr "नवीनतम"
+
+#: aslo/web/templates/elements/activity_detail_card.html:32
+msgid "Repo"
+msgstr "रेपो "
+
+#: aslo/web/templates/elements/developer_card.html:2
+msgid "Developers"
+msgstr "डेवेलपर्स "
+
+#: aslo/web/templates/elements/front_card.html:8
+msgid "More"
+msgstr "अधिक "
+
+#: aslo/web/templates/elements/info_card.html:2
+msgid "Details"
+msgstr "विवरण"
+
+#: aslo/web/templates/elements/meta_info_card.html:5
+msgid "Web Activity"
+msgstr "वेब एक्टिविटी "
+
+#: aslo/web/templates/elements/meta_info_card.html:7
+msgid "Yes"
+msgstr "हां "
+
+#: aslo/web/templates/elements/meta_info_card.html:9
+msgid "No"
+msgstr "नहीं "
+
+#: aslo/web/templates/elements/meta_info_card.html:15
+msgid "Min. Sugar Version"
+msgstr "न्यूनतम शुगर वर्शन "
+
+#: aslo/web/templates/elements/meta_info_card.html:21
+msgid "License"
+msgstr "लाइसेंस"
+
+#: aslo/web/templates/elements/meta_info_card.html:27
+msgid "Published On"
+msgstr "प्रकाशित तिधि "
+
+#: aslo/web/templates/elements/screenshot_carousel.html:2
+msgid "Screenshots"
+msgstr "स्क्रीनशॉट्स "
+
+#: aslo/web/templates/elements/screenshot_carousel.html:29
+msgid "Previous"
+msgstr "पिछला "
+
+#: aslo/web/templates/elements/screenshot_carousel.html:33
+msgid "Next"
+msgstr "अगला "
+
+#: aslo/web/templates/partials/footer.html:3
+msgid "Back to top"
+msgstr "ऊपर जाए "
+
+#: aslo/web/templates/partials/footer.html:8
+msgid "Sugar Labs"
+msgstr "शुगर लैब्स "
+
+#: aslo/web/templates/partials/footer.html:11
+msgid "About Us"
+msgstr "हमारे बारे में "
+
+#: aslo/web/templates/partials/footer.html:12
+msgid "Get Involved"
+msgstr "शामिल हुए "
+
+#: aslo/web/templates/partials/footer.html:13
+msgid "Support Sugar"
+msgstr "शुगर का समर्थन करे "
+
+#: aslo/web/templates/partials/footer.html:14
+msgid "Contact Us"
+msgstr "संपर्क करें"
+
+#: aslo/web/templates/partials/footer.html:15
+msgid "For Students"
+msgstr "विद्यार्थियों के लिए "
+
+#: aslo/web/templates/partials/footer.html:16
+msgid "For School Administrators"
+msgstr "विद्यालय प्रशाशन के लिए "
+
+#: aslo/web/templates/partials/footer.html:17
+msgid "For Parents"
+msgstr "माता-पिता के लिए "
+
+#: aslo/web/templates/partials/footer.html:18
+msgid "For Developers"
+msgstr "डेवेलपर्स के लिए "
+
+#: aslo/web/templates/partials/footer.html:19
+msgid "Sugar Stories"
+msgstr "शुगर कहानियाँ "
+
+#: aslo/web/templates/partials/footer.html:24
+msgid "Development"
+msgstr "विकास"
+
+#: aslo/web/templates/partials/footer.html:27
+msgid "Sugar Labs Wiki"
+msgstr "शुगर लैब्स विकी "
+
+#: aslo/web/templates/partials/footer.html:28
+msgid "Join mailing list"
+msgstr "मेलिंग सूची में शामिल हो "
+
+#: aslo/web/templates/partials/footer.html:29
+msgid "Documentation"
+msgstr "प्रलेखन"
+
+#: aslo/web/templates/partials/footer.html:30
+msgid "IRC Channels"
+msgstr "आई.आर.सी. चैनल "
+
+#: aslo/web/templates/partials/footer.html:31
+msgid "Bug Tracker"
+msgstr "बग ट्रैकर "
+
+#: aslo/web/templates/partials/footer.html:32
+msgid "Development code"
+msgstr "कोड "
+
+#: aslo/web/templates/partials/footer.html:33
+msgid "Translation Platform"
+msgstr "अनुवाद मंच "
+
+#: aslo/web/templates/partials/footer.html:38
+msgid "Resources"
+msgstr "साधन"
+
+#: aslo/web/templates/partials/footer.html:41
+msgid "Culture and pedagogy"
+msgstr "संस्कृति और शिक्षा शास्त्र"
+
+#: aslo/web/templates/partials/footer.html:42
+msgid "Press Resources"
+msgstr "प्रेस साधन "
+
+#: aslo/web/templates/partials/footer.html:43
+msgid "School Server Resources"
+msgstr "विद्यालय सर्वर साधन "
+
+#: aslo/web/templates/partials/footer.html:44
+msgid "Planet Sugar Labs"
+msgstr "प्लेनेट शुगर लैब्स "
+
+#: aslo/web/templates/partials/footer.html:45
+msgid "Libre Software Culture"
+msgstr "मुक्त सॉफ्टवेयर संस्कृति"
+
+#: aslo/web/templates/partials/footer.html:46
+msgid "About IRC"
+msgstr "आई.आर.सी. के बारे में "
+
+#: aslo/web/templates/partials/footer.html:47
+msgid "Sugar Lesson Plans"
+msgstr "शुगर पाठ योजना "
+
+#: aslo/web/templates/partials/footer.html:74
+msgid "Base Template (Airspace) by Themefisher"
+msgstr "आधार टेम्पलेट (एयरस्पेस), थीम फिशर द्वारा "
+
+#: aslo/web/templates/partials/footer.html:76
+msgid "Re-design and Modification by aslo-v3 team"
+msgstr "नया स्वरूप और परिवर्तन असलो-तृत्य समूह द्वारा "
+
+#: aslo/web/templates/partials/footer.html:77
+msgid "Made  with"
+msgstr "निर्मित"
+
+#: aslo/web/templates/partials/footer.html:77
+msgid "and"
+msgstr "और"
+
+#: aslo/web/templates/partials/footer.html:77
+msgid "over the"
+msgstr "ऊपर"
+
+#: aslo/web/templates/partials/layout.html:9
+msgid "SugarLabs"
+msgstr "शुगर लैब्स"
+
+#: aslo/web/templates/partials/nav.html:24
+msgid "Home"
+msgstr "होम"
+
+#: aslo/web/templates/partials/nav.html:25
+msgid "About"
+msgstr "बारे में"
+
+#: aslo/web/templates/partials/nav.html:26
+msgid "Join Us"
+msgstr "शामिल हो "
+
+#: aslo/web/templates/partials/nav.html:28
+msgid "Community Mailing Lists"
+msgstr "समुदाय मेलिंग सूची"
+
+#: aslo/web/templates/partials/nav.html:29
+msgid "Developer's Guide"
+msgstr "डेवेलपर्स मार्गदर्शक"
+
+#: aslo/web/templates/partials/nav.html:30
+msgid "Start a local lab"
+msgstr "स्थानीय लैब शुरू करे"
+
+#: aslo/web/templates/partials/nav.html:33
+msgid "Contribute to Translation"
+msgstr "अनुवाद में योगदान दे"
+
+#: aslo/web/templates/partials/nav.html:34
+msgid "Contribute to Usability"
+msgstr "प्रयोज्य में योगदान दे"
+
+#: aslo/web/templates/partials/nav.html:35
+msgid "Contribute to Software"
+msgstr "सॉफ्टवेयर में योगदान दे"
+
+#: aslo/web/templates/partials/nav.html:36
+msgid "Contribute to Central Organisation"
+msgstr "केंद्रीय संगठन में योगदान दे"
+
+#: aslo/web/templates/partials/nav.html:37
+msgid "Related Projects"
+msgstr "सम्बंधित प्रोजेक्ट्स"
+
+#: aslo/web/templates/partials/nav.html:41
+msgid "Blog"
+msgstr "ब्लॉग"
+
+#: aslo/web/templates/partials/nav.html:43
+msgid "Blog Archive"
+msgstr "ब्लॉग संग्रह"
+
+#: aslo/web/templates/partials/nav.html:49
+msgid "Search"
+msgstr "खोजे"
