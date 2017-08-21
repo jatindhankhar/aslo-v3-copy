@@ -67,6 +67,7 @@ def insert_activity(data):
     if icon_hash != activity.icon_hash:
         activity.icon = data['icon_bin']
         activity.icon_hash = icon_hash
+        activity.icon_type = data.get('icon_type', 'image/svg+xml')
 
     release = ReleaseModel()
     release.activity_version = float(data['activity_version'])
