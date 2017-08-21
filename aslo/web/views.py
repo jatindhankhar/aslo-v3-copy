@@ -56,3 +56,13 @@ def search(page=1, items_per_page=10):
     flash(gettext("Search Results for {}").format(name), 'success')
     return render_template('index.html', activities=activities,
                            search_query=name, lang_code=lang_code)
+
+
+@web.route('/categories/<category_name>')
+@web.route('/categories/<category_name>/<int:page>')
+def categories(category_name, page=1, items_per_page=10):
+    if not category_name:
+        return redirect(url_for('web.index'))
+
+    activities = activity_service.search_by_category(category_name, page=page)
+    return render_template('index.html', activities=activities)
