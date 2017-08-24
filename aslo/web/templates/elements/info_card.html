@@ -9,8 +9,11 @@
   <div class="card-footer">
     {% if activity.categories|count != 0 %}
       <div class="row" style="margin: 5px;">
+        <!-- {{ _('programming')}} {{ _('robotics')}}  {{ _('internet')}} {{ _('science')}}  {{ _('maths')}} 
+          {{ _('language')}}  {{ _('geography')}}  {{ _('documents')}}  {{ _('music')}}  {{ _('media')}} 
+          {{ _('art')}}  {{ _('teacher')}}  {{ _('system')}} --> 
         {% for category in activity.categories %}
-          <a class="badge badge-tag grey" style="padding: 10px; margin:10px;"><i class="fa fa-tag"></i>{{ category }}</a>
+          <a class="badge badge-tag grey" style="padding: 10px; margin:10px;"><i class="fa fa-tag"></i>{{ _(category) }}</a>
         {% endfor %}
       </div>
     {% endif %}
