@@ -1,10 +1,12 @@
 from . import web
 from flask import (render_template,
                    abort, request, redirect,
-                   url_for, flash, session)
+                   url_for, flash, session, send_from_directory)
+from flask import current_app as app
 from aslo.persistence.activity import Activity
 from aslo.service import activity as activity_service
 from flask_babel import gettext
+import os
 
 
 @web.route('/', defaults={'page': 1})
@@ -56,3 +58,14 @@ def search(page=1, items_per_page=10):
     flash(gettext("Search Results for {}").format(name), 'success')
     return render_template('index.html', activities=activities,
                            search_query=name, lang_code=lang_code)
+
+
+@web.route("/downloads/<bundle_id>/<bundle_name>")
+def serve_bundle(bundle_id, bundle_name):
+    bundle_location = os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_id)
+    file_location = os.path.join(bundle_location, bundle_name)
+    if os.path.exists(file_location):
+        return send_from_directory(bundle_location, bundle_name)
+    else:
+        flash("{} doesn't exists".format(bundle_name), 'error')
+        return redirect(url_for('web.index'))
