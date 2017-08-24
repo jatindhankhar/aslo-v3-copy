@@ -74,7 +74,7 @@ def insert_activity(data):
     release.min_sugar_version = float(data['sugar']['min_sugar_version'])
     release.is_web = data['sugar']['is_web']
     release.has_old_toolbars = data['sugar']['has_old_toolbars']
-    release.download_url = 'https://mock.org/download_url'
+    release.bundle_name = data['bundle_name']
     release.release_notes = data['release']['notes']
     release.timestamp = data['release']['time']
     release.screenshots = data['screenshots']

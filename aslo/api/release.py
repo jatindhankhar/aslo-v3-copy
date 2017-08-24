@@ -246,11 +246,15 @@ def get_sugar_details(activity, repo_path):
     return sugar
 
 
-def store_bundle(tmp_bundle_path):
+def store_bundle(tmp_bundle_path, bundle_id):
+    # Create bundle_id folder if it doesn't exist
+    bundle_id_path = os.path.join(app.config['BUILD_BUNDLE_DIR'], bundle_id)
+    if not os.path.exists(bundle_id_path):
+        os.makedirs(bundle_id_path, exist_ok=True)
     try:
-        shutil.copy2(tmp_bundle_path, app.config['BUILD_BUNDLE_DIR'])
+        shutil.copy2(tmp_bundle_path, bundle_id_path)
         stored_bundle = os.path.join(
-            app.config['BUILD_BUNDLE_DIR'],
+            bundle_id_path,
             os.path.basename(tmp_bundle_path)
         )
         os.chmod(stored_bundle, 0o644)
@@ -277,7 +281,7 @@ def handle_release(gh_json):
     tag = release['tag_name']
     tag_commit = gh.find_tag_commit(gh_json['repository']['full_name'], tag)
     xo_asset = None
-
+    bundle_name = None
     # TODO: Extract message to constants file
     gh.comment_on_commit(
         tag_commit, "Build has started :hourglass_flowing_sand:"
@@ -290,11 +294,13 @@ def handle_release(gh_json):
         logger.info('[bundle-release] No bundle building process needed.')
         tmp_bundle_path = download_attached_xo(xo_asset)
         repo_path = verify_and_extract_xo(tmp_bundle_path)
+        bundle_name = xo_asset['name']
     else:
         logger.info('[sourcecode-release] Building bundle from source code.')
         repo_path = os.path.join(app.config['BUILD_CLONE_REPO'], repo_name)
         clone_repo(repo_url, tag, repo_path)
         tmp_bundle_path = invoke_bundle_build(repo_path)
+        bundle_name = os.path.basename(tmp_bundle_path)
 
     metadata = get_activity_metadata(repo_path)
     compare_version_in_bundlename_and_metadata(tmp_bundle_path, metadata)
@@ -333,7 +339,7 @@ def handle_release(gh_json):
         metadata['screenshots'] = screenshots
 
     metadata['sugar'] = get_sugar_details(metadata, repo_path)
-
+    metadata['bundle_name'] = bundle_name
     metadata['release'] = {}
     metadata['release']['notes'] = gh.render_markdown(
         gh_json['release']['body']
@@ -345,6 +351,6 @@ def handle_release(gh_json):
     logger.info('Inserting activity into db.')
     activity_service.insert_activity(metadata)
     logger.info('Saving bundle.')
-    store_bundle(tmp_bundle_path)
+    store_bundle(tmp_bundle_path, metadata['bundle_id'])
     logger.info('Cleaning up.')
     clean_up(tmp_bundle_path, repo_path)
