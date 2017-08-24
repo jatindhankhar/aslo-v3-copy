@@ -23,6 +23,7 @@ class ActivityModel(AsloBaseModel):
     license = me.StringField(required=True)
     icon = me.BinaryField(required=False, max_bytes=1000000)
     icon_hash = me.StringField(required=False)
+    icon_type = me.StringField(required=False)
     developers = me.EmbeddedDocumentListField(DeveloperModel, required=True)
     latest_release = me.ReferenceField(ReleaseModel)
     previous_releases = me.ListField(me.ReferenceField(ReleaseModel))

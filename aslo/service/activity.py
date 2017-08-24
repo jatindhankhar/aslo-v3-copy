@@ -67,13 +67,14 @@ def insert_activity(data):
     if icon_hash != activity.icon_hash:
         activity.icon = data['icon_bin']
         activity.icon_hash = icon_hash
+        activity.icon_type = data.get('icon_type', 'image/svg+xml')
 
     release = ReleaseModel()
     release.activity_version = float(data['activity_version'])
     release.min_sugar_version = float(data['sugar']['min_sugar_version'])
     release.is_web = data['sugar']['is_web']
     release.has_old_toolbars = data['sugar']['has_old_toolbars']
-    release.download_url = 'https://mock.org/download_url'
+    release.bundle_name = data['bundle_name']
     release.release_notes = data['release']['notes']
     release.timestamp = data['release']['time']
     release.screenshots = data['screenshots']

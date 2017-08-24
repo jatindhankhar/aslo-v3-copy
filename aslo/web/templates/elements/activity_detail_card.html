@@ -3,10 +3,10 @@
   <div class="card-content text-center">
     <h3 class="card-image-headline"> {{ activity.name.get(lang_code, activity.name.get('en', activity.name.get('en_US', _('No Translation') ))) }}</h3>
     <div class="card-image img-responsive">
-      <img src="data:image/svg+xml;base64,{{ activity.icon|b64encode }}" alt="Loading image..." class="center-block"/>
+      <img src="data:{{ activity.icon_type }};base64,{{ activity.icon|b64encode }}" alt="Loading image..." class="center-block"/>
     </div>
     <footer class="card-footer">
-      <a class="btn btn-raised btn-md btn-success" href="{{ current_release.download_url }}"> <i class="fa fa-arrow-down"></i>{{ _('Download') }}</a>
+      <a class="btn btn-raised btn-md btn-success" href="{{ url_for('web.serve_bundle', bundle_id=activity.bundle_id, bundle_name=current_release.bundle_name) }}"> <i class="fa fa-arrow-down"></i>{{ _('Download') }}</a>
       {% if activity.previous_releases|count != 0 %}
         <div class="btn-group">
           <a href="javascript:void(0)" class="btn btn-primary btn-md btn-raised">{{ _('More Releases') }}</a>

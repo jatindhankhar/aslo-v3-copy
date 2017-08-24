@@ -9,8 +9,7 @@ class ReleaseModel(AsloBaseModel):
     activity_version = me.FloatField(required=True)
     release_notes = me.StringField(required=True)
     min_sugar_version = me.FloatField(required=True)
-    # Also known as xo_url
-    download_url = me.URLField(required=True)
+    bundle_name = me.StringField(required=True)
     is_web = me.BooleanField(required=True, default=False)
     is_gtk3 = me.BooleanField(required=True, default=False)
     has_old_toolbars = me.BooleanField(required=False, default=False)
