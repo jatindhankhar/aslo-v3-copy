@@ -82,3 +82,13 @@ a.btn{
 footer a {
     color: white;
 }
+
+.dropdown-menu {
+    height: auto;
+    max-height: 600px;
+    overflow-x: hidden
+}
+
+.dropdown-menu  li {
+    display: initial;
+    }

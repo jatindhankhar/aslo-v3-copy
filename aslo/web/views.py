@@ -11,7 +11,7 @@ import os
 
 @web.route('/', defaults={'page': 1})
 @web.route('/page/<int:page>')
-def index(page=1, items_per_page=9):
+def index(page=1):
     # If Ignore_lang in the parameters, show all other non-translated apps
     lang_code = session['lang_code']
     ignore_lang = request.args.get('ignore_lang', False, type=bool)
@@ -42,22 +42,45 @@ def activity_detail(bundle_id, activity_version):
 
 @web.route('/search', methods=['GET', 'POST'])
 @web.route('/search/page/<int:page>', methods=['GET', 'POST'])
-def search(page=1, items_per_page=10):
+def search(page=1):
     if request.method == 'POST':
         name = request.form['name']
+        category_option = request.form['category-option']
+        category_option_query = request.form['category-option-query']
     else:
         name = request.args.get('name')
+        category_option = request.args.get('category-option')
+        category_option_query = request.args.get('category-option-query')
 
-    if not name:
+    if not name and not category_option:
         return redirect(url_for('web.index'))
 
     lang_code = session['lang_code']
+
+    if not category_option_query or 'all' in category_option_query:
+        category_option_query = None
+    else:
+        category_option_query = category_option_query.strip().lower()
+
     activities = activity_service.search_by_activity_name(
-        lang_code=lang_code, activity_name=name, page=page
-    )
-    flash(gettext("Search Results for {}").format(name), 'success')
+        lang_code=lang_code, activity_name=name,
+        page=page, category_name=category_option_query)
+
+    if name and not category_option_query:
+        flash(gettext("Search Results for {}").format(name), 'success')
+    elif name and category_option_query:
+        flash(gettext("Search Results for {} and {} category").format(
+            name, category_option), 'success')
+    else:
+        flash(gettext("Search Results for {} category").format(
+            category_option), 'success')
+    category_options = {'placeholder': category_option,
+                        'actual_query': category_option_query
+                        }
     return render_template('index.html', activities=activities,
-                           search_query=name, lang_code=lang_code)
+                           search_query=name,
+                           category_options=category_options,
+                           lang_code=lang_code)
 
 
 @web.route("/downloads/<bundle_id>/<bundle_name>")
@@ -73,9 +96,11 @@ def serve_bundle(bundle_id, bundle_name):
 
 @web.route('/categories/<category_name>')
 @web.route('/categories/<category_name>/<int:page>')
-def categories(category_name, page=1, items_per_page=10):
+def categories(category_name, page=1):
+    lang_code = session['lang_code']
     if not category_name:
         return redirect(url_for('web.index'))
-    activities = activity_service.search_by_category(category_name, page=page)
+    activities = activity_service.search_by_category(
+        category_name, lang_code=lang_code, page=page)
     return render_template('index.html', activities=activities,
-                           category_query=category_name)
+                           lang_code=lang_code, category_query=category_name)
