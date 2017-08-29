@@ -47,6 +47,32 @@
                 <form role="search" method="POST" action="{{ url_for('web.search') }}">
                   <div class="form-group">
                     <input type="text" class="form-control" name="name" placeholder="{{ _('Search') }}">
+                    <input type="hidden" value="" name="category-option">
+                    <input type="hidden" value="" name="category-option-query">
+                    <div class="input-group small">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-md dropdown-toggle orange" data-toggle="dropdown" aria-expanded="false" style="border-radius: 35px;">
+                          <i class="fa fa-tag "></i>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" id="category-option">
+                          <li value="all"><a href="#"> <i class="fa "> All</i>
+                          <li value="programming"><a href="#"> {{ _("programming") }}</a></li>
+                          <li value="robotics"><a href="#"> {{ _("robotics") }}</a></li>
+                          <li value="internet"><a href="#"> {{ _("internet") }}</a></li>
+                          <li value="science"><a href="#"> {{ _("science") }}</a></li>
+                          <li value="maths"><a href="#"> {{ _("maths") }}</a></li>
+                          <li value="language"><a href="#"> {{ _("language") }}</a></li>
+                          <li value="geography"><a href="#"> {{ _("geography") }}</a></li>
+                          <li value="documents"><a href="#"> {{ _("documents") }}</a></li>
+                          <li value="music"><a href="#"> {{ _("music") }}</a></li>
+                          <li value="media"><a href="#"> {{ _("media") }}</a></li>                          
+                          <li value="art"><a href="#"> {{ _("art") }}</a></li> 
+                          <li value="teacher"><a href="#"> {{ _("teacher") }}</a></li>
+                          <li value="system"><a href="#"> {{ _("system") }}</a></li>
+                        </ul>
+                      </div><!-- /btn-group -->
+                    </div>
                   </div>
                   <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                  </form> 

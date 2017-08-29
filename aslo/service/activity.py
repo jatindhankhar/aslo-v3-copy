@@ -125,13 +125,36 @@ def filter_by_lang_code(lang_code, page=None, pagesize=None):
 
 
 def search_by_activity_name(activity_name, lang_code, page=None,
-                            pagesize=None):
+                            pagesize=None, category_name=None):
     if lang_code in ['en', 'en_US']:
         Qcomb = (me.Q(**{'name__en__icontains': activity_name}) |
                  me.Q(**{'name__en_US__icontains': activity_name}))
+        if category_name:
+            Qcomb = ((me.Q(**{'name__en__icontains': activity_name}) |
+                      me.Q(**{'name__en_US__icontains': activity_name})) &
+                     me.Q(**{'categories__iexact': category_name}))
     else:
         Qcomb = me.Q(**{'name__' + lang_code + '__icontains': activity_name})
+        if category_name:
+            Qcomb = (me.Q(**{'name__' + lang_code +
+                             '__icontains': activity_name}) &
+                     me.Q(**{'categories__iexact': category_name}))
 
+    if page:
+        return Activity.paginate(page=page, pagesize=pagesize, Qcomb=Qcomb)
+    else:
+        return Activity.query(Qcombination=Qcomb)
+
+
+def search_by_category(category_name, lang_code, page=None, pagesize=None):
+    if lang_code in ['en', 'en_US']:
+        Qcomb = ((me.Q(**{'name__en__icontains': ""}) |
+                  me.Q(**{'name__en_US__icontains': ""})) &
+                 me.Q(**{'categories__iexact': category_name}))
+    else:
+        Qcomb = (me.Q(**{'categories__iexact': category_name}) &
+                 me.Q(**{'name__' + lang_code +
+                         '__icontains': ""}))
     if page:
         return Activity.paginate(page=page, pagesize=pagesize, Qcomb=Qcomb)
     else:
