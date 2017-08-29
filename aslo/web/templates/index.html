@@ -10,7 +10,7 @@
   {% else %}
     {% include 'elements/flash_messages.html' %} 
     {% for activity_row in activities.items|batch(6) %}
-      <div class="row " style="margin-bottom: 15px;">
+      <div class="row auto-clear" style="margin-bottom: 15px;">
         {% for activity in activity_row %}
           <div class="col-lg-4" style="padding: 15px;">
             {% include "elements/front_card.html" %}

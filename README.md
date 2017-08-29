@@ -3,6 +3,10 @@
 ## Activities Platform (ASLOv3)
 This repository hosts the upcoming version of ASLO (Software center) for SugarLabs.
 
+## GSOC 
+Big thanks to Google for funding and Sugarlabs for guidance as part of GSOC`17. 
+Majority of work is done and aslo-v3 is almost ready for beta release. For more detailed outlook on growth of aslo-v3, take a look at [GSOC Weekly Blogs](https://jatindhankhar.in/posts/). 
+
 ## Requirements
 * Python (3.x)
 * Docker - For running build tasks
