@@ -1,7 +1,7 @@
 
 [![Build Status](https://travis-ci.org/sugarlabs/aslo-v3.svg?branch=master)](https://travis-ci.org/sugarlabs/aslo-v3)
 
-## Contributions welcome and should be directed here [https://github.com/sugarlabs/aslo-v3](https://github.com/sugarlabs/aslo-v3), this repo is personal fork of the upstream. 
+## Contributions welcome and should be directed to [https://github.com/sugarlabs/aslo-v3](https://github.com/sugarlabs/aslo-v3), this repo is personal fork of the upstream. 
 
 ## Activities Platform (ASLOv3)
 This repository hosts the upcoming version of ASLO (Software center) for SugarLabs.
